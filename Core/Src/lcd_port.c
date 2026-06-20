@@ -28,6 +28,16 @@ void LCD_Port_DrawPixel(uint16_t x, uint16_t y, uint16_t color)
   ILI9341_DrawPixel(x, y, color);
 }
 
+void LCD_Port_DrawPixels(uint16_t x, uint16_t y, uint16_t width, const uint16_t *colors)
+{
+  if ((width == 0U) || (colors == 0))
+  {
+    return;
+  }
+
+  ILI9341_DrawRGB565Buffer(x, y, width, 1U, colors);
+}
+
 void LCD_Port_FillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
 {
   if ((width == 0U) || (height == 0U))

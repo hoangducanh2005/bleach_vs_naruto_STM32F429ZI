@@ -19,9 +19,17 @@
 #define BACKGROUND_ANIMATION_ENABLED  0U
 
 #define DEMO_GROUND_Y          190
-#define ICHIGO_IDLE_X          64
-#define ICHIGO_IDLE_Y          (DEMO_GROUND_Y - (int16_t)ICHIGO_IDLE_HEIGHT)
-#define ICHIGO_TICKS_PER_FRAME 2U
+#define ICHIGO_SKILL_X         50
+#define ICHIGO_SKILL_Y         (DEMO_GROUND_Y - (int16_t)ICHIGO_GETSUGA_HEIGHT)
+#define ICHIGO_SKILL_TICKS_PER_FRAME 1U
+#define ICHIGO_PROJECTILE_SPAWN_FRAME 3U
+#define NARUTO_IDLE_X          220
+#define NARUTO_IDLE_Y          (DEMO_GROUND_Y - (int16_t)NARUTO_IDLE_HEIGHT)
+#define NARUTO_TICKS_PER_FRAME 2U
+#define GETSUGA_START_X        (ICHIGO_SKILL_X + 55)
+#define GETSUGA_START_Y        (ICHIGO_SKILL_Y + 18)
+#define GETSUGA_SPEED_X        35
+#define GETSUGA_TICKS_PER_FRAME 1U
 
 #define RGB565_BLACK           0x0000U
 #define RGB565_WHITE           0xFFFFU
@@ -44,11 +52,20 @@
 
 static uint32_t s_lastFrameMs;
 static uint32_t s_frameCounter;
-static uint8_t s_ichigoFrameIndex;
+static uint8_t s_ichigoSkillFrameIndex;
+static uint8_t s_narutoFrameIndex;
+static int16_t s_getsugaX;
+static int16_t s_getsugaY;
+static uint8_t s_getsugaFrameIndex;
+static uint8_t s_getsugaActive;
 
 static void Demo_DrawBackground(uint32_t frame);
 static void Demo_DrawIchigo(uint8_t frameIndex);
+static void Demo_DrawNaruto(uint8_t frameIndex);
 static void Demo_UpdateIchigo(void);
+static void Demo_UpdateNaruto(void);
+static void Demo_SpawnGetsuga(void);
+static void Demo_UpdateGetsuga(void);
 static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Demo_DrawStaticSky(void);
 static void Demo_DrawSun(uint16_t x, uint16_t y);
@@ -64,9 +81,15 @@ void GameBackgroundDemo_Init(void)
   LCD_Port_Init();
   s_lastFrameMs = HAL_GetTick();
   s_frameCounter = 0U;
-  s_ichigoFrameIndex = 0U;
+  s_ichigoSkillFrameIndex = 0U;
+  s_narutoFrameIndex = 0U;
+  s_getsugaActive = 0U;
+  s_getsugaFrameIndex = 0U;
+  s_getsugaX = GETSUGA_START_X;
+  s_getsugaY = GETSUGA_START_Y;
   Demo_DrawBackground(s_frameCounter);
-  Demo_DrawIchigo(s_ichigoFrameIndex);
+  Demo_DrawIchigo(s_ichigoSkillFrameIndex);
+  Demo_DrawNaruto(s_narutoFrameIndex);
   LCD_Port_Flush();
 }
 
@@ -86,6 +109,8 @@ void GameBackgroundDemo_Update(void)
   Demo_DrawBackground(s_frameCounter);
 #else
   Demo_UpdateIchigo();
+  Demo_UpdateGetsuga();
+  Demo_UpdateNaruto();
 #endif
 
   LCD_Port_Flush();
@@ -105,32 +130,123 @@ static void Demo_DrawBackground(uint32_t frame)
 
 static void Demo_DrawIchigo(uint8_t frameIndex)
 {
-  SpriteRender_Draw(ICHIGO_IDLE_X,
-                    ICHIGO_IDLE_Y,
-                    ichigo_idle_frames[frameIndex],
-                    ICHIGO_IDLE_WIDTH,
-                    ICHIGO_IDLE_HEIGHT,
+  SpriteRender_Draw(ICHIGO_SKILL_X,
+                    ICHIGO_SKILL_Y,
+                    ichigo_getsuga_frames[frameIndex],
+                    ICHIGO_GETSUGA_WIDTH,
+                    ICHIGO_GETSUGA_HEIGHT,
                     0U);
+}
+
+static void Demo_DrawNaruto(uint8_t frameIndex)
+{
+  SpriteRender_Draw(NARUTO_IDLE_X,
+                    NARUTO_IDLE_Y,
+                    naruto_idle_frames[frameIndex],
+                    NARUTO_IDLE_WIDTH,
+                    NARUTO_IDLE_HEIGHT,
+                    1U);
 }
 
 static void Demo_UpdateIchigo(void)
 {
-  uint8_t nextFrame = (uint8_t)((s_frameCounter / ICHIGO_TICKS_PER_FRAME) % ICHIGO_IDLE_FRAME_COUNT);
+  uint8_t nextFrame = (uint8_t)((s_frameCounter / ICHIGO_SKILL_TICKS_PER_FRAME) % ICHIGO_GETSUGA_FRAME_COUNT);
 
-  if (nextFrame == s_ichigoFrameIndex)
+  if (nextFrame == s_ichigoSkillFrameIndex)
   {
     return;
   }
 
-  SpriteRender_DrawDiff(ICHIGO_IDLE_X,
-                        ICHIGO_IDLE_Y,
-                        ichigo_idle_frames[s_ichigoFrameIndex],
-                        ichigo_idle_frames[nextFrame],
-                        ICHIGO_IDLE_WIDTH,
-                        ICHIGO_IDLE_HEIGHT,
+  SpriteRender_DrawDiff(ICHIGO_SKILL_X,
+                        ICHIGO_SKILL_Y,
+                        ichigo_getsuga_frames[s_ichigoSkillFrameIndex],
+                        ichigo_getsuga_frames[nextFrame],
+                        ICHIGO_GETSUGA_WIDTH,
+                        ICHIGO_GETSUGA_HEIGHT,
                         0U,
                         Demo_GetBackgroundPixel);
-  s_ichigoFrameIndex = nextFrame;
+
+  if (nextFrame == ICHIGO_PROJECTILE_SPAWN_FRAME)
+  {
+    Demo_SpawnGetsuga();
+  }
+
+  s_ichigoSkillFrameIndex = nextFrame;
+}
+
+static void Demo_UpdateNaruto(void)
+{
+  uint8_t nextFrame = (uint8_t)((s_frameCounter / NARUTO_TICKS_PER_FRAME) % NARUTO_IDLE_FRAME_COUNT);
+
+  if (nextFrame == s_narutoFrameIndex)
+  {
+    return;
+  }
+
+  SpriteRender_DrawDiff(NARUTO_IDLE_X,
+                        NARUTO_IDLE_Y,
+                        naruto_idle_frames[s_narutoFrameIndex],
+                        naruto_idle_frames[nextFrame],
+                        NARUTO_IDLE_WIDTH,
+                        NARUTO_IDLE_HEIGHT,
+                        1U,
+                        Demo_GetBackgroundPixel);
+  s_narutoFrameIndex = nextFrame;
+}
+
+static void Demo_SpawnGetsuga(void)
+{
+  if (s_getsugaActive != 0U)
+  {
+    return;
+  }
+
+  s_getsugaX = GETSUGA_START_X;
+  s_getsugaY = GETSUGA_START_Y;
+  s_getsugaFrameIndex = 0U;
+  s_getsugaActive = 1U;
+
+  SpriteRender_Draw(s_getsugaX,
+                    s_getsugaY,
+                    getsuga_projectile_frames[s_getsugaFrameIndex],
+                    GETSUGA_PROJECTILE_WIDTH,
+                    GETSUGA_PROJECTILE_HEIGHT,
+                    0U);
+}
+
+static void Demo_UpdateGetsuga(void)
+{
+  if (s_getsugaActive == 0U)
+  {
+    return;
+  }
+
+  SpriteRender_Erase(s_getsugaX,
+                     s_getsugaY,
+                     getsuga_projectile_frames[s_getsugaFrameIndex],
+                     GETSUGA_PROJECTILE_WIDTH,
+                     GETSUGA_PROJECTILE_HEIGHT,
+                     0U,
+                     Demo_GetBackgroundPixel);
+
+  s_getsugaX = (int16_t)(s_getsugaX + GETSUGA_SPEED_X);
+  s_getsugaFrameIndex = (uint8_t)((s_frameCounter / GETSUGA_TICKS_PER_FRAME) % GETSUGA_PROJECTILE_FRAME_COUNT);
+
+  if (s_getsugaX > (int16_t)LCD_PORT_WIDTH)
+  {
+    s_getsugaActive = 0U;
+    return;
+  }
+
+  SpriteRender_Draw(s_getsugaX,
+                    s_getsugaY,
+                    getsuga_projectile_frames[s_getsugaFrameIndex],
+                    GETSUGA_PROJECTILE_WIDTH,
+                    GETSUGA_PROJECTILE_HEIGHT,
+                    0U);
+
+  Demo_DrawIchigo(s_ichigoSkillFrameIndex);
+  Demo_DrawNaruto(s_narutoFrameIndex);
 }
 
 static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y)

@@ -141,6 +141,7 @@ void ILI9341_DrawColor(uint16_t color);
 void ILI9341_DrawColorBurst(uint16_t color, uint32_t size);
 void ILI9341_FillScreen(uint16_t color);
 void ILI9341_DrawPixel(uint16_t x,uint16_t y,uint16_t color);
+void ILI9341_DrawRGB565Buffer(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint16_t *colors);
 void ILI9341_DrawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 void ILI9341_DrawHLine(uint16_t x, uint16_t y, uint16_t width, uint16_t color);
 void ILI9341_DrawVLine(uint16_t x, uint16_t y, uint16_t height, uint16_t color);

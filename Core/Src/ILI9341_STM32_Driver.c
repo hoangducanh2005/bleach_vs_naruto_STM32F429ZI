@@ -424,6 +424,46 @@ void ILI9341_DrawPixel(uint16_t x,uint16_t y,uint16_t color)
 	ILI9341_WriteBuffer(bufferC, sizeof(bufferC));	//COLOR
 }
 
+void ILI9341_DrawRGB565Buffer(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint16_t *colors)
+{
+	if ((colors == 0) || (width == 0U) || (height == 0U)) return;
+	if ((x >= LCD_WIDTH) || (y >= LCD_HEIGHT)) return;
+	if ((x + width - 1U) >= LCD_WIDTH) return;
+	if ((y + height - 1U) >= LCD_HEIGHT) return;
+
+	static uint8_t txBuffer[BURST_MAX_SIZE];
+	uint32_t pixelCount = (uint32_t)width * height;
+	uint32_t index = 0U;
+
+	ILI9341_SetAddress(x, y, x + width - 1U, y + height - 1U);
+
+	HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_RESET);
+
+	while (index < pixelCount)
+	{
+		uint32_t pixelsThisBlock = pixelCount - index;
+		uint32_t maxPixels = BURST_MAX_SIZE / 2U;
+
+		if (pixelsThisBlock > maxPixels)
+		{
+			pixelsThisBlock = maxPixels;
+		}
+
+		for (uint32_t i = 0U; i < pixelsThisBlock; i++)
+		{
+			uint16_t color = colors[index + i];
+			txBuffer[(i * 2U)] = (uint8_t)(color >> 8);
+			txBuffer[(i * 2U) + 1U] = (uint8_t)color;
+		}
+
+		ILI9341_SPI_TxBuffer(txBuffer, (uint16_t)(pixelsThisBlock * 2U));
+		index += pixelsThisBlock;
+	}
+
+	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_SET);
+}
+
 void ILI9341_DrawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
 {
 	if((x >=LCD_WIDTH) || (y >=LCD_HEIGHT)) return;
@@ -499,7 +539,7 @@ static void ILI9341_BusInit(void)
 
 	SPI5->CR1 = 0U;
 	SPI5->CR2 = 0U;
-	SPI5->CR1 = SPI_CR1_MSTR | SPI_CR1_SSM | SPI_CR1_SSI | SPI_CR1_BR_0;
+	SPI5->CR1 = SPI_CR1_MSTR | SPI_CR1_SSM | SPI_CR1_SSI;
 	SPI5->CR1 |= SPI_CR1_SPE;
 }
 

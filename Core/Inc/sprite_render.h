@@ -34,6 +34,14 @@ void SpriteRender_DrawDiff(int16_t x,
                            uint8_t flipX,
                            SpriteRender_BackgroundAt backgroundAt);
 
+void SpriteRender_Erase(int16_t x,
+                        int16_t y,
+                        const uint16_t *pixels,
+                        uint16_t width,
+                        uint16_t height,
+                        uint8_t flipX,
+                        SpriteRender_BackgroundAt backgroundAt);
+
 #ifdef __cplusplus
 }
 #endif

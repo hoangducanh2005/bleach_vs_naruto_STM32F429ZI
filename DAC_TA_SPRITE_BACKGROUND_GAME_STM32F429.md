@@ -170,7 +170,7 @@ Demo đầu tiên chỉ cần hiển thị idle. Tuy nhiên nên đặt cấu tr
 |---|---:|---|
 | Idle | 2 | Đứng thở nhẹ |
 | Run | 4 | Chạy trái/phải |
-| Jump | 1 | Đang ở trên không |
+| Jump | 5 | Đang ở trên không |
 | Attack | 2 | Đánh thường |
 | Skill | 2 | Tung kỹ năng |
 | Hit | 1 | Bị trúng đòn |
