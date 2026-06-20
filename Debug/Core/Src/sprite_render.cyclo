@@ -1,0 +1,2 @@
+../Core/Src/sprite_render.c:15:6:SpriteRender_Draw	10
+../Core/Src/sprite_render.c:58:6:SpriteRender_DrawDiff	14

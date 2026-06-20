@@ -10,11 +10,18 @@
 #include "game_background_demo.h"
 
 #include "lcd_port.h"
+#include "sprite_data.h"
+#include "sprite_render.h"
 #include "stm32f4xx_hal.h"
 
 #define GAME_FPS               30U
 #define FRAME_TIME_MS          (1000U / GAME_FPS)
 #define BACKGROUND_ANIMATION_ENABLED  0U
+
+#define DEMO_GROUND_Y          190
+#define ICHIGO_IDLE_X          64
+#define ICHIGO_IDLE_Y          (DEMO_GROUND_Y - (int16_t)ICHIGO_IDLE_HEIGHT)
+#define ICHIGO_TICKS_PER_FRAME 2U
 
 #define RGB565_BLACK           0x0000U
 #define RGB565_WHITE           0xFFFFU
@@ -37,8 +44,12 @@
 
 static uint32_t s_lastFrameMs;
 static uint32_t s_frameCounter;
+static uint8_t s_ichigoFrameIndex;
 
 static void Demo_DrawBackground(uint32_t frame);
+static void Demo_DrawIchigo(uint8_t frameIndex);
+static void Demo_UpdateIchigo(void);
+static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Demo_DrawStaticSky(void);
 static void Demo_DrawSun(uint16_t x, uint16_t y);
 static void Demo_DrawCloud(int16_t x, uint16_t y);
@@ -53,13 +64,14 @@ void GameBackgroundDemo_Init(void)
   LCD_Port_Init();
   s_lastFrameMs = HAL_GetTick();
   s_frameCounter = 0U;
+  s_ichigoFrameIndex = 0U;
   Demo_DrawBackground(s_frameCounter);
+  Demo_DrawIchigo(s_ichigoFrameIndex);
   LCD_Port_Flush();
 }
 
 void GameBackgroundDemo_Update(void)
 {
-#if BACKGROUND_ANIMATION_ENABLED
   uint32_t now = HAL_GetTick();
 
   if ((now - s_lastFrameMs) < FRAME_TIME_MS)
@@ -70,9 +82,13 @@ void GameBackgroundDemo_Update(void)
   s_lastFrameMs += FRAME_TIME_MS;
   s_frameCounter++;
 
+#if BACKGROUND_ANIMATION_ENABLED
   Demo_DrawBackground(s_frameCounter);
-  LCD_Port_Flush();
+#else
+  Demo_UpdateIchigo();
 #endif
+
+  LCD_Port_Flush();
 }
 
 static void Demo_DrawBackground(uint32_t frame)
@@ -85,6 +101,95 @@ static void Demo_DrawBackground(uint32_t frame)
   Demo_DrawDojoWall();
   Demo_DrawGround(frame);
   Demo_DrawArenaMarks(frame);
+}
+
+static void Demo_DrawIchigo(uint8_t frameIndex)
+{
+  SpriteRender_Draw(ICHIGO_IDLE_X,
+                    ICHIGO_IDLE_Y,
+                    ichigo_idle_frames[frameIndex],
+                    ICHIGO_IDLE_WIDTH,
+                    ICHIGO_IDLE_HEIGHT,
+                    0U);
+}
+
+static void Demo_UpdateIchigo(void)
+{
+  uint8_t nextFrame = (uint8_t)((s_frameCounter / ICHIGO_TICKS_PER_FRAME) % ICHIGO_IDLE_FRAME_COUNT);
+
+  if (nextFrame == s_ichigoFrameIndex)
+  {
+    return;
+  }
+
+  SpriteRender_DrawDiff(ICHIGO_IDLE_X,
+                        ICHIGO_IDLE_Y,
+                        ichigo_idle_frames[s_ichigoFrameIndex],
+                        ichigo_idle_frames[nextFrame],
+                        ICHIGO_IDLE_WIDTH,
+                        ICHIGO_IDLE_HEIGHT,
+                        0U,
+                        Demo_GetBackgroundPixel);
+  s_ichigoFrameIndex = nextFrame;
+}
+
+static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y)
+{
+  uint16_t color = RGB565_SKY_LOW;
+
+  if (y < 48U)
+  {
+    color = RGB565_SKY_TOP;
+  }
+  else if (y < 96U)
+  {
+    color = RGB565_SKY_MID;
+  }
+  else if (y < 148U)
+  {
+    uint16_t mountainX = (uint16_t)((x / 8U) * 8U);
+    uint16_t localX = (uint16_t)(x - mountainX);
+    uint16_t h1 = (uint16_t)(22U + ((mountainX * 5U) % 38U));
+    uint16_t h2 = (uint16_t)(14U + ((mountainX * 7U) % 28U));
+
+    if ((localX < 4U) && (y >= (uint16_t)(148U - h2)))
+    {
+      color = RGB565_MOUNTAIN_LIGHT;
+    }
+    else if (y >= (uint16_t)(148U - h1))
+    {
+      color = RGB565_MOUNTAIN_DARK;
+    }
+  }
+  else if (y < 182U)
+  {
+    color = RGB565_WALL_DARK;
+
+    if ((y < 150U) || ((x % 32U) < 2U))
+    {
+      color = RGB565_WALL_LIGHT;
+    }
+
+    if (y >= 180U)
+    {
+      color = RGB565_BLACK;
+    }
+  }
+  else
+  {
+    color = RGB565_GROUND;
+
+    if (y < 188U)
+    {
+      color = RGB565_GROUND_TOP;
+    }
+    else if (y >= 232U)
+    {
+      color = RGB565_GROUND_DARK;
+    }
+  }
+
+  return color;
 }
 
 static void Demo_DrawStaticSky(void)

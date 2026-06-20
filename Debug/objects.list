@@ -4,6 +4,8 @@
 "./Core/Src/game_background_demo.o"
 "./Core/Src/lcd_port.o"
 "./Core/Src/main.o"
+"./Core/Src/sprite_data.o"
+"./Core/Src/sprite_render.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
 "./Core/Src/stm32f4xx_it.o"
 "./Core/Src/syscalls.o"
