@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "game_background_demo.h"
+#include "difficulty_select_demo.h"
 
 /* USER CODE END Includes */
 
@@ -86,7 +86,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  GameBackgroundDemo_Init();
+  DifficultySelectDemo_Init();
 
   /* USER CODE END 2 */
 
@@ -97,7 +97,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    GameBackgroundDemo_Update();
+    DifficultySelectDemo_Update();
   }
   /* USER CODE END 3 */
 }

@@ -14,9 +14,12 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 void GameUI_DrawSplash(void);
 void GameUI_DrawMainMenuBackground(void);
 void GameUI_DrawMainMenu(void);
+void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty);
 
 #ifdef __cplusplus
 }

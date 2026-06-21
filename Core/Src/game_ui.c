@@ -29,6 +29,9 @@ static void GameUI_DrawMenuButton(uint16_t x,
                                   uint16_t width,
                                   const char *label,
                                   uint8_t selected);
+static void GameUI_DrawDifficultyOption(uint16_t y,
+                                        const char *label,
+                                        uint8_t selected);
 
 void GameUI_DrawSplash(void)
 {
@@ -68,6 +71,25 @@ void GameUI_DrawMainMenu(void)
   ILI9341_DrawText("JOYSTICK: MOVE   BTN: SELECT", FONT1, 57U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
+void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
+{
+  GameUI_DrawMainMenuBackground();
+
+  ILI9341_DrawFilledRectangleCoord(22U, 18U, 298U, 58U, UI_COLOR_PANEL_DARK);
+  ILI9341_DrawHollowRectangleCoord(22U, 18U, 298U, 58U, UI_COLOR_ORANGE);
+  ILI9341_DrawText("SELECT DIFFICULTY", FONT4, 54U, 28U, UI_COLOR_YELLOW, UI_COLOR_PANEL_DARK);
+
+  ILI9341_DrawFilledRectangleCoord(36U, 76U, 284U, 197U, UI_COLOR_PANEL);
+  ILI9341_DrawHollowRectangleCoord(36U, 76U, 284U, 197U, UI_COLOR_CYAN);
+
+  GameUI_DrawDifficultyOption(91U, "EASY", selectedDifficulty == 0U);
+  GameUI_DrawDifficultyOption(126U, "NORMAL", selectedDifficulty == 1U);
+  GameUI_DrawDifficultyOption(161U, "HARD", selectedDifficulty == 2U);
+
+  ILI9341_DrawText("CONFIRM: BACK TO MAIN MENU", FONT1, 59U, 216U, UI_COLOR_WHITE, UI_COLOR_BLACK);
+  ILI9341_DrawText("UP/DOWN: CHANGE LEVEL", FONT1, 76U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+}
+
 static void GameUI_DrawMenuButton(uint16_t x,
                                   uint16_t y,
                                   uint16_t width,
@@ -87,4 +109,24 @@ static void GameUI_DrawMenuButton(uint16_t x,
   }
 
   ILI9341_DrawText(label, FONT3, x + 34U, y + 5U, textColor, fillColor);
+}
+
+static void GameUI_DrawDifficultyOption(uint16_t y,
+                                        const char *label,
+                                        uint8_t selected)
+{
+  uint16_t borderColor = selected ? UI_COLOR_YELLOW : UI_COLOR_WHITE;
+  uint16_t textColor = selected ? UI_COLOR_BLACK : UI_COLOR_WHITE;
+  uint16_t fillColor = selected ? UI_COLOR_ORANGE : UI_COLOR_PANEL_DARK;
+  uint16_t labelX = selected ? 123U : 136U;
+
+  ILI9341_DrawFilledRectangleCoord(75U, y, 245U, (uint16_t)(y + 25U), fillColor);
+  ILI9341_DrawHollowRectangleCoord(75U, y, 245U, (uint16_t)(y + 25U), borderColor);
+
+  if (selected != 0U)
+  {
+    ILI9341_DrawText(">", FONT3, 94U, (uint16_t)(y + 5U), UI_COLOR_BLACK, fillColor);
+  }
+
+  ILI9341_DrawText(label, FONT3, labelX, (uint16_t)(y + 5U), textColor, fillColor);
 }
