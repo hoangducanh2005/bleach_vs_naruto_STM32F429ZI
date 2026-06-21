@@ -1,1 +1,4 @@
-../Core/Src/game_ui.c:15:6:GameUI_DrawSplash	1
+../Core/Src/game_ui.c:33:6:GameUI_DrawSplash	1
+../Core/Src/game_ui.c:42:6:GameUI_DrawMainMenuBackground	1
+../Core/Src/game_ui.c:51:6:GameUI_DrawMainMenu	1
+../Core/Src/game_ui.c:71:13:GameUI_DrawMenuButton	5

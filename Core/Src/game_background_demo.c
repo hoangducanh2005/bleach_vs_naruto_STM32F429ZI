@@ -19,6 +19,7 @@
 #define FRAME_TIME_MS          (1000U / GAME_FPS)
 #define BACKGROUND_ANIMATION_ENABLED  0U
 #define SPLASH_HOLD_MS         2000U
+#define MAIN_MENU_DEMO_ENABLED 1U
 
 #define DEMO_GROUND_Y          190
 #define ICHIGO_SKILL_X         50
@@ -60,6 +61,7 @@ static int16_t s_getsugaX;
 static int16_t s_getsugaY;
 static uint8_t s_getsugaFrameIndex;
 static uint8_t s_getsugaActive;
+static uint8_t s_mainMenuVisible;
 
 static void Demo_DrawBackground(uint32_t frame);
 static void Demo_DrawIchigo(uint8_t frameIndex);
@@ -85,6 +87,14 @@ void GameBackgroundDemo_Init(void)
   LCD_Port_Flush();
   HAL_Delay(SPLASH_HOLD_MS);
 
+  if (MAIN_MENU_DEMO_ENABLED != 0U)
+  {
+    GameUI_DrawMainMenu();
+    LCD_Port_Flush();
+    s_mainMenuVisible = 1U;
+    return;
+  }
+
   s_lastFrameMs = HAL_GetTick();
   s_frameCounter = 0U;
   s_ichigoSkillFrameIndex = 0U;
@@ -102,6 +112,11 @@ void GameBackgroundDemo_Init(void)
 void GameBackgroundDemo_Update(void)
 {
   uint32_t now = HAL_GetTick();
+
+  if (s_mainMenuVisible != 0U)
+  {
+    return;
+  }
 
   if ((now - s_lastFrameMs) < FRAME_TIME_MS)
   {

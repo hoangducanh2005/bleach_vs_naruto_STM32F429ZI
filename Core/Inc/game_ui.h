@@ -15,6 +15,8 @@ extern "C" {
 #endif
 
 void GameUI_DrawSplash(void);
+void GameUI_DrawMainMenuBackground(void);
+void GameUI_DrawMainMenu(void);
 
 #ifdef __cplusplus
 }

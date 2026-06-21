@@ -6,6 +6,7 @@
 "./Core/Src/game_ui.o"
 "./Core/Src/lcd_port.o"
 "./Core/Src/main.o"
+"./Core/Src/mainmenu.o"
 "./Core/Src/sprite_data.o"
 "./Core/Src/sprite_render.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
