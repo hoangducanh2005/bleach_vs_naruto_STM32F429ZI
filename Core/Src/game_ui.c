@@ -10,6 +10,8 @@
 #include "game_ui.h"
 
 #include "bleach_vs_naruto_splash.h"
+#include "choose_char.h"
+#include "choose_ui_assets.h"
 #include "ILI9341_GFX.h"
 #include "lcd_port.h"
 #include "mainmenu.h"
@@ -23,6 +25,17 @@
 #define UI_COLOR_CYAN         0x07FFU
 #define UI_COLOR_RED          0xF800U
 #define UI_COLOR_GRAY         0x8410U
+#define UI_COLOR_SHADOW       0x0004U
+
+#define CHARACTER_GRID_X0       80U
+#define CHARACTER_GRID_Y0       58U
+#define CHARACTER_GRID_GAP_X    20U
+#define CHARACTER_GRID_GAP_Y    14U
+#define CHARACTER_CURSOR_PAD    2U
+#define CHARACTER_CURSOR_SIZE   44U
+#define CHARACTER_BANNER_Y      184U
+#define CHARACTER_P1_BANNER_X   5U
+#define CHARACTER_CPU_BANNER_X  165U
 
 static void GameUI_DrawMenuButton(uint16_t x,
                                   uint16_t y,
@@ -32,6 +45,17 @@ static void GameUI_DrawMenuButton(uint16_t x,
 static void GameUI_DrawDifficultyOption(uint16_t y,
                                         const char *label,
                                         uint8_t selected);
+static void GameUI_DrawChooseBackgroundRect(uint16_t x,
+                                            uint16_t y,
+                                            uint16_t width,
+                                            uint16_t height);
+static void GameUI_DrawCharacterGrid(void);
+static void GameUI_DrawCharacterAvatar(uint8_t character);
+static void GameUI_DrawCharacterCursor(uint8_t character);
+static void GameUI_DrawCharacterBanners(uint8_t selectedCharacter,
+                                        uint8_t cpuCharacter);
+static uint16_t GameUI_GetCharacterAvatarX(uint8_t character);
+static uint16_t GameUI_GetCharacterAvatarY(uint8_t character);
 
 void GameUI_DrawSplash(void)
 {
@@ -90,6 +114,50 @@ void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
   ILI9341_DrawText("UP/DOWN: CHANGE LEVEL", FONT1, 76U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
+void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)
+{
+  selectedCharacter %= CHOOSE_CHARACTER_COUNT;
+  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+
+  LCD_Port_DrawRGB565Bytes(0U,
+                           0U,
+                           CHOOSE_CHAR_WIDTH,
+                           CHOOSE_CHAR_HEIGHT,
+                           choose_char_map);
+
+  ILI9341_DrawFilledRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_SHADOW);
+  ILI9341_DrawHollowRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_ORANGE);
+  ILI9341_DrawText("> SELECT CHARACTER <", FONT3, 52U, 18U, UI_COLOR_YELLOW, UI_COLOR_SHADOW);
+
+  GameUI_DrawCharacterGrid();
+  GameUI_DrawCharacterBanners(selectedCharacter, cpuCharacter);
+  GameUI_DrawCharacterCursor(selectedCharacter);
+}
+
+void GameUI_UpdateCharacterSelect(uint8_t previousCharacter,
+                                  uint8_t selectedCharacter,
+                                  uint8_t cpuCharacter)
+{
+  previousCharacter %= CHOOSE_CHARACTER_COUNT;
+  selectedCharacter %= CHOOSE_CHARACTER_COUNT;
+  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+
+  if (previousCharacter != selectedCharacter)
+  {
+    uint16_t oldX = (uint16_t)(GameUI_GetCharacterAvatarX(previousCharacter) - CHARACTER_CURSOR_PAD);
+    uint16_t oldY = (uint16_t)(GameUI_GetCharacterAvatarY(previousCharacter) - CHARACTER_CURSOR_PAD);
+
+    GameUI_DrawChooseBackgroundRect(oldX,
+                                    oldY,
+                                    CHARACTER_CURSOR_SIZE,
+                                    CHARACTER_CURSOR_SIZE);
+    GameUI_DrawCharacterAvatar(previousCharacter);
+  }
+
+  GameUI_DrawCharacterBanners(selectedCharacter, cpuCharacter);
+  GameUI_DrawCharacterCursor(selectedCharacter);
+}
+
 static void GameUI_DrawMenuButton(uint16_t x,
                                   uint16_t y,
                                   uint16_t width,
@@ -129,4 +197,110 @@ static void GameUI_DrawDifficultyOption(uint16_t y,
   }
 
   ILI9341_DrawText(label, FONT3, labelX, (uint16_t)(y + 5U), textColor, fillColor);
+}
+
+static void GameUI_DrawChooseBackgroundRect(uint16_t x,
+                                            uint16_t y,
+                                            uint16_t width,
+                                            uint16_t height)
+{
+  uint16_t row;
+
+  if ((width == 0U) || (height == 0U))
+  {
+    return;
+  }
+
+  for (row = 0U; row < height; row++)
+  {
+    const uint8_t *line = &choose_char_map[((((uint32_t)y + row) * CHOOSE_CHAR_WIDTH) + x) * 2U];
+    LCD_Port_DrawRGB565Bytes(x, (uint16_t)(y + row), width, 1U, line);
+  }
+}
+
+static void GameUI_DrawCharacterGrid(void)
+{
+  uint8_t character;
+
+  for (character = 0U; character < CHOOSE_CHARACTER_COUNT; character++)
+  {
+    GameUI_DrawCharacterAvatar(character);
+  }
+}
+
+static void GameUI_DrawCharacterAvatar(uint8_t character)
+{
+  character %= CHOOSE_CHARACTER_COUNT;
+
+  LCD_Port_DrawRGB565Bytes(GameUI_GetCharacterAvatarX(character),
+                           GameUI_GetCharacterAvatarY(character),
+                           CHOOSE_AVATAR_WIDTH,
+                           CHOOSE_AVATAR_HEIGHT,
+                           choose_avatar_maps[character]);
+}
+
+static void GameUI_DrawCharacterCursor(uint8_t character)
+{
+  uint16_t x;
+  uint16_t y;
+
+  character %= CHOOSE_CHARACTER_COUNT;
+  x = (uint16_t)(GameUI_GetCharacterAvatarX(character) - CHARACTER_CURSOR_PAD);
+  y = (uint16_t)(GameUI_GetCharacterAvatarY(character) - CHARACTER_CURSOR_PAD);
+
+  ILI9341_DrawHollowRectangleCoord(x,
+                                   y,
+                                   (uint16_t)(x + CHARACTER_CURSOR_SIZE - 1U),
+                                   (uint16_t)(y + CHARACTER_CURSOR_SIZE - 1U),
+                                   UI_COLOR_YELLOW);
+  ILI9341_DrawHollowRectangleCoord((uint16_t)(x + 1U),
+                                   (uint16_t)(y + 1U),
+                                   (uint16_t)(x + CHARACTER_CURSOR_SIZE - 2U),
+                                   (uint16_t)(y + CHARACTER_CURSOR_SIZE - 2U),
+                                   UI_COLOR_ORANGE);
+}
+
+static void GameUI_DrawCharacterBanners(uint8_t selectedCharacter,
+                                        uint8_t cpuCharacter)
+{
+  selectedCharacter %= CHOOSE_CHARACTER_COUNT;
+  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+
+  LCD_Port_DrawRGB565Bytes(CHARACTER_P1_BANNER_X,
+                           CHARACTER_BANNER_Y,
+                           CHOOSE_BANNER_WIDTH,
+                           CHOOSE_BANNER_HEIGHT,
+                           choose_banner_maps[selectedCharacter]);
+  LCD_Port_DrawRGB565Bytes(CHARACTER_CPU_BANNER_X,
+                           CHARACTER_BANNER_Y,
+                           CHOOSE_BANNER_WIDTH,
+                           CHOOSE_BANNER_HEIGHT,
+                           choose_banner_maps[cpuCharacter]);
+
+  ILI9341_DrawHollowRectangleCoord(CHARACTER_P1_BANNER_X,
+                                   CHARACTER_BANNER_Y,
+                                   (uint16_t)(CHARACTER_P1_BANNER_X + CHOOSE_BANNER_WIDTH - 1U),
+                                   (uint16_t)(CHARACTER_BANNER_Y + CHOOSE_BANNER_HEIGHT - 1U),
+                                   UI_COLOR_CYAN);
+  ILI9341_DrawHollowRectangleCoord(CHARACTER_CPU_BANNER_X,
+                                   CHARACTER_BANNER_Y,
+                                   (uint16_t)(CHARACTER_CPU_BANNER_X + CHOOSE_BANNER_WIDTH - 1U),
+                                   (uint16_t)(CHARACTER_BANNER_Y + CHOOSE_BANNER_HEIGHT - 1U),
+                                   UI_COLOR_RED);
+  ILI9341_DrawText("P1", FONT1, 12U, 187U, UI_COLOR_CYAN, UI_COLOR_BLACK);
+  ILI9341_DrawText("CPU", FONT1, 172U, 187U, UI_COLOR_RED, UI_COLOR_BLACK);
+}
+
+static uint16_t GameUI_GetCharacterAvatarX(uint8_t character)
+{
+  uint8_t column = (uint8_t)(character % 3U);
+
+  return (uint16_t)(CHARACTER_GRID_X0 + ((CHOOSE_AVATAR_WIDTH + CHARACTER_GRID_GAP_X) * column));
+}
+
+static uint16_t GameUI_GetCharacterAvatarY(uint8_t character)
+{
+  uint8_t row = (uint8_t)((character % CHOOSE_CHARACTER_COUNT) / 3U);
+
+  return (uint16_t)(CHARACTER_GRID_Y0 + ((CHOOSE_AVATAR_HEIGHT + CHARACTER_GRID_GAP_Y) * row));
 }

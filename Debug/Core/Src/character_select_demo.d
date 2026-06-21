@@ -1,6 +1,6 @@
-Core/Src/game_ui.o: ../Core/Src/game_ui.c ../Core/Inc/game_ui.h \
- ../Core/Inc/bleach_vs_naruto_splash.h ../Core/Inc/choose_char.h \
- ../Core/Inc/choose_ui_assets.h ../Core/Inc/ILI9341_GFX.h \
+Core/Src/character_select_demo.o: ../Core/Src/character_select_demo.c \
+ ../Core/Inc/character_select_demo.h ../Core/Inc/choose_ui_assets.h \
+ ../Core/Inc/game_ui.h ../Core/Inc/lcd_port.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -25,13 +25,11 @@ Core/Src/game_ui.o: ../Core/Src/game_ui.c ../Core/Inc/game_ui.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- ../Core/Inc/fonts.h ../Core/Inc/lcd_port.h ../Core/Inc/mainmenu.h
-../Core/Inc/game_ui.h:
-../Core/Inc/bleach_vs_naruto_splash.h:
-../Core/Inc/choose_char.h:
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+../Core/Inc/character_select_demo.h:
 ../Core/Inc/choose_ui_assets.h:
-../Core/Inc/ILI9341_GFX.h:
+../Core/Inc/game_ui.h:
+../Core/Inc/lcd_port.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -57,6 +55,3 @@ Core/Src/game_ui.o: ../Core/Src/game_ui.c ../Core/Inc/game_ui.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
-../Core/Inc/fonts.h:
-../Core/Inc/lcd_port.h:
-../Core/Inc/mainmenu.h:

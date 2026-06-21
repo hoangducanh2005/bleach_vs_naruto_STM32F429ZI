@@ -20,6 +20,10 @@ void GameUI_DrawSplash(void);
 void GameUI_DrawMainMenuBackground(void);
 void GameUI_DrawMainMenu(void);
 void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty);
+void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter);
+void GameUI_UpdateCharacterSelect(uint8_t previousCharacter,
+                                  uint8_t selectedCharacter,
+                                  uint8_t cpuCharacter);
 
 #ifdef __cplusplus
 }

@@ -169,52 +169,53 @@ NARUTO vs BLEACH
 
 ### 7.1. Mục đích
 
-Cho người chơi chọn nhân vật. Vì đề tài ưu tiên hai nhân vật cố định, UI này có thể rất đơn giản.
+Cho người chơi chọn nhân vật từ danh sách 6 nhân vật có sẵn. Giao diện được thiết kế giống với game gốc: người chơi di chuyển ô chọn (cursor) qua các avatar hình vuông của các nhân vật để lựa chọn.
 
 ### 7.2. Thành phần
 
-```text
-SELECT CHARACTER
+- **Avatar Grid**: Lưới 6 ô vuông chứa avatar của 6 nhân vật. Bố trí dạng 3 cột x 2 hàng.
+- **Cursor (Ô chọn)**: Một khung viền sáng (highlight) bao quanh avatar đang được trỏ tới.
+- **Player 1 (P1) Selection**: Hiển thị ảnh chân dung (portrait) dạng banner ngang của nhân vật P1 ở góc dưới cùng bên trái.
+- **CPU / Player 2 (P2) Selection**: Hiển thị ảnh chân dung dạng banner ngang của nhân vật đối thủ ở góc dưới cùng bên phải.
 
-> Naruto
-  Ichigo
-```
+### 7.3. Điều khiển
 
-Nếu người chơi chọn Naruto:
+| Input | Hành động |
+|---|---|
+| Up/Down/Left/Right | Di chuyển ô chọn qua lại giữa các avatar |
+| Confirm | Khóa lựa chọn nhân vật (Chọn xong P1 thì chuyển sang chọn CPU) |
+| Back | Quay lại Main Menu |
 
-```text
-Player: Naruto
-CPU   : Ichigo
-```
+### 7.4. Layout đề xuất
 
-Nếu người chơi chọn Ichigo:
-
-```text
-Player: Ichigo
-CPU   : Naruto
-```
-
-### 7.3. Layout đề xuất
+Mô phỏng màn hình chọn nhân vật (320x240):
 
 ```text
-+--------------------------------+
-|       SELECT CHARACTER         |
-|                                |
-|    [Naruto Sprite] [Ichigo]    |
-|       > Naruto     Ichigo      |
-|                                |
-| CPU will use the other fighter |
-+--------------------------------+
++------------------------------------------------+
+|              > SELECT CHARACTER <              |
+|                                                |
+|              [ 1 ][ 2 ][ 3 ]                   |
+|                                                |
+|              [ 4 ][ 5 ][ 6 ]                   |
+|                                                |
+|                                                |
+| +-------------------+      +-------------------+
+| | Ảnh NV P1         |      | Ảnh NV CPU        |
+| | (Banner ngang)    |      | (Banner ngang)    |
+| +-------------------+      +-------------------+
++------------------------------------------------+
 ```
 
-### 7.4. Bản tối thiểu
+*Ghi chú layout & Kích thước ảnh (dành cho LCD 320x240):*
+- **Ảnh Avatar `[ 1 ]` đến `[ 6 ]`**: Kích thước **40x40 pixel**. Lưới 3x2 sẽ chiếm khoảng không gian khoảng 140x90 pixel ở giữa màn hình (tính cả khoảng cách giữa các ô).
+- **Ảnh Banner NV P1 / CPU**: Kích thước **150x50 pixel**. Đặt ở 2 góc dưới cùng (P1 bên trái, CPU bên phải), tổng chiều rộng 300px, để lại khoảng trống 20px ở giữa.
+- Khi người chơi dùng joystick, một khung viền (cursor) kích thước **44x44 pixel** sẽ di chuyển và bao quanh ô avatar đang được chọn.
+- **Ảnh NV P1 / CPU**: Sẽ tự động cập nhật hiển thị banner ngang của nhân vật tương ứng với ô avatar đang được viền sáng.
 
-Nếu thiếu thời gian, bỏ màn hình này và cố định:
+### 7.5. Ghi chú tối ưu
 
-```text
-Player: Ichigo
-CPU   : Naruto
-```
+- Cần chuẩn bị 6 ảnh avatar vuông (`40x40` px) và 6 ảnh banner ngang (`150x50` px) cho các nhân vật.
+- Chỉ vẽ lại khung viền (cursor) và ảnh banner khi người chơi đổi lựa chọn để tránh giật lag màn hình (flicker). Không được xoá toàn bộ màn hình mỗi lần di chuyển cursor.
 
 ## 8. Màn hình Difficulty Select
 
