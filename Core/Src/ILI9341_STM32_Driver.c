@@ -99,7 +99,7 @@ static void ILI9341_SPI_Tx(uint8_t data)
 	ILI9341_SPI_WaitReady();
 }
 
-static void ILI9341_SPI_TxBuffer(uint8_t *buffer, uint16_t len)
+static void ILI9341_SPI_TxBuffer(const uint8_t *buffer, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++)
 	{
@@ -129,7 +129,7 @@ void ILI9341_WriteData(uint8_t data)
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_SET);	//deselect
 }
 
-void ILI9341_WriteBuffer(uint8_t *buffer, uint16_t len)
+void ILI9341_WriteBuffer(const uint8_t *buffer, uint16_t len)
 {
 	HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);	//data
 	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_RESET);	//select
@@ -455,6 +455,46 @@ void ILI9341_DrawRGB565Buffer(uint16_t x, uint16_t y, uint16_t width, uint16_t h
 			uint16_t color = colors[index + i];
 			txBuffer[(i * 2U)] = (uint8_t)(color >> 8);
 			txBuffer[(i * 2U) + 1U] = (uint8_t)color;
+		}
+
+		ILI9341_SPI_TxBuffer(txBuffer, (uint16_t)(pixelsThisBlock * 2U));
+		index += pixelsThisBlock;
+	}
+
+	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_SET);
+}
+
+void ILI9341_DrawRGB565Bytes(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *bytes)
+{
+	if ((bytes == 0) || (width == 0U) || (height == 0U)) return;
+	if ((x >= LCD_WIDTH) || (y >= LCD_HEIGHT)) return;
+	if ((x + width - 1U) >= LCD_WIDTH) return;
+	if ((y + height - 1U) >= LCD_HEIGHT) return;
+
+	static uint8_t txBuffer[BURST_MAX_SIZE];
+	uint32_t pixelCount = (uint32_t)width * height;
+	uint32_t index = 0U;
+
+	ILI9341_SetAddress(x, y, x + width - 1U, y + height - 1U);
+
+	HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LCD_CS_PORT, LCD_CS_PIN, GPIO_PIN_RESET);
+
+	while (index < pixelCount)
+	{
+		uint32_t pixelsThisBlock = pixelCount - index;
+		uint32_t maxPixels = BURST_MAX_SIZE / 2U;
+
+		if (pixelsThisBlock > maxPixels)
+		{
+			pixelsThisBlock = maxPixels;
+		}
+
+		for (uint32_t i = 0U; i < pixelsThisBlock; i++)
+		{
+			uint32_t src = (index + i) * 2U;
+			txBuffer[(i * 2U)] = bytes[src + 1U];
+			txBuffer[(i * 2U) + 1U] = bytes[src];
 		}
 
 		ILI9341_SPI_TxBuffer(txBuffer, (uint16_t)(pixelsThisBlock * 2U));

@@ -13,8 +13,9 @@
 ../Core/Src/ILI9341_STM32_Driver.c:403:6:ILI9341_FillScreen	1
 ../Core/Src/ILI9341_STM32_Driver.c:409:6:ILI9341_DrawPixel	3
 ../Core/Src/ILI9341_STM32_Driver.c:427:6:ILI9341_DrawRGB565Buffer	11
-../Core/Src/ILI9341_STM32_Driver.c:467:6:ILI9341_DrawRectangle	5
-../Core/Src/ILI9341_STM32_Driver.c:485:6:ILI9341_DrawHLine	4
-../Core/Src/ILI9341_STM32_Driver.c:498:6:ILI9341_DrawVLine	4
-../Core/Src/ILI9341_STM32_Driver.c:511:13:ILI9341_BusInit	1
-../Core/Src/ILI9341_STM32_Driver.c:546:13:ILI9341_SPI_WaitReady	5
+../Core/Src/ILI9341_STM32_Driver.c:467:6:ILI9341_DrawRGB565Bytes	11
+../Core/Src/ILI9341_STM32_Driver.c:507:6:ILI9341_DrawRectangle	5
+../Core/Src/ILI9341_STM32_Driver.c:525:6:ILI9341_DrawHLine	4
+../Core/Src/ILI9341_STM32_Driver.c:538:6:ILI9341_DrawVLine	4
+../Core/Src/ILI9341_STM32_Driver.c:551:13:ILI9341_BusInit	1
+../Core/Src/ILI9341_STM32_Driver.c:586:13:ILI9341_SPI_WaitReady	5

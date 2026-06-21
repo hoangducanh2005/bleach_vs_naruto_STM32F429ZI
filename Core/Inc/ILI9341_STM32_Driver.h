@@ -131,7 +131,7 @@
 
 void ILI9341_WriteCommand(uint8_t cmd);
 void ILI9341_WriteData(uint8_t data);
-void ILI9341_WriteBuffer(uint8_t *buffer, uint16_t len);
+void ILI9341_WriteBuffer(const uint8_t *buffer, uint16_t len);
 void ILI9341_Reset(void);
 void ILI9341_Enable(void);
 void ILI9341_Init(void);
@@ -142,6 +142,7 @@ void ILI9341_DrawColorBurst(uint16_t color, uint32_t size);
 void ILI9341_FillScreen(uint16_t color);
 void ILI9341_DrawPixel(uint16_t x,uint16_t y,uint16_t color);
 void ILI9341_DrawRGB565Buffer(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint16_t *colors);
+void ILI9341_DrawRGB565Bytes(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *bytes);
 void ILI9341_DrawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 void ILI9341_DrawHLine(uint16_t x, uint16_t y, uint16_t width, uint16_t color);
 void ILI9341_DrawVLine(uint16_t x, uint16_t y, uint16_t height, uint16_t color);

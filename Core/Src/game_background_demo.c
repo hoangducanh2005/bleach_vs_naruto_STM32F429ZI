@@ -9,6 +9,7 @@
 
 #include "game_background_demo.h"
 
+#include "game_ui.h"
 #include "lcd_port.h"
 #include "sprite_data.h"
 #include "sprite_render.h"
@@ -17,6 +18,7 @@
 #define GAME_FPS               30U
 #define FRAME_TIME_MS          (1000U / GAME_FPS)
 #define BACKGROUND_ANIMATION_ENABLED  0U
+#define SPLASH_HOLD_MS         2000U
 
 #define DEMO_GROUND_Y          190
 #define ICHIGO_SKILL_X         50
@@ -79,6 +81,10 @@ static void Demo_FillSafe(int16_t x, int16_t y, int16_t width, int16_t height, u
 void GameBackgroundDemo_Init(void)
 {
   LCD_Port_Init();
+  GameUI_DrawSplash();
+  LCD_Port_Flush();
+  HAL_Delay(SPLASH_HOLD_MS);
+
   s_lastFrameMs = HAL_GetTick();
   s_frameCounter = 0U;
   s_ichigoSkillFrameIndex = 0U;
