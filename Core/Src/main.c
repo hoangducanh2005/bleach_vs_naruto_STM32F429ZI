@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ichigo_animation_demo.h"
-#include "sasuke_animation_demo.h"
 
 /* USER CODE END Includes */
 
@@ -88,7 +87,6 @@ int main(void) {
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
   IchigoAnimationDemo_Init();
-  SasukeAnimationDemo_Init();
 
   /* USER CODE END 2 */
 
@@ -99,7 +97,6 @@ int main(void) {
 
     /* USER CODE BEGIN 3 */
     IchigoAnimationDemo_Update();
-    SasukeAnimationDemo_Update();
   }
   /* USER CODE END 3 */
 }

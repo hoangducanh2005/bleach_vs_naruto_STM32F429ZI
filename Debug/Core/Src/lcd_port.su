@@ -1,6 +1,0 @@
-../Core/Src/lcd_port.c:19:6:LCD_Port_Init	8	static
-../Core/Src/lcd_port.c:26:6:LCD_Port_DrawPixel	16	static
-../Core/Src/lcd_port.c:31:6:LCD_Port_DrawPixels	32	static
-../Core/Src/lcd_port.c:41:6:LCD_Port_DrawRGB565Bytes	32	static
-../Core/Src/lcd_port.c:51:6:LCD_Port_FillRect	32	static
-../Core/Src/lcd_port.c:61:6:LCD_Port_Flush	4	static

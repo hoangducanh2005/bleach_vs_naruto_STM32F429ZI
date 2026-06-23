@@ -1,4 +1,0 @@
-../Core/Src/gameover_demo.c:20:6:GameOverDemo_Init	1
-../Core/Src/gameover_demo.c:30:6:GameOverDemo_Update	2
-../Core/Src/gameover_demo.c:44:13:GameOverDemo_DrawFrame	1
-../Core/Src/gameover_demo.c:54:13:GameOverDemo_DrawPrompt	2

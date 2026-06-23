@@ -8310,7 +8310,7 @@ static const uint16_t sasuke_move_jump_startup_0_pixels[40U * 44U] = {
 };
 
 static const SasukeMoveFrame sasuke_move_jump_startup_frames[] = {
-  { sasuke_move_jump_startup_0_pixels, 40U, 44U, 20, 44, 60U }
+  { sasuke_move_jump_startup_0_pixels, 40U, 44U, 20, 44, 80U }
 };
 
 static const uint16_t sasuke_move_jump_air_0_pixels[33U * 54U] = {
@@ -8618,8 +8618,8 @@ static const uint16_t sasuke_move_jump_air_1_pixels[33U * 54U] = {
 };
 
 static const SasukeMoveFrame sasuke_move_jump_air_frames[] = {
-  { sasuke_move_jump_air_0_pixels, 33U, 54U, 16, 54, 90U },
-  { sasuke_move_jump_air_1_pixels, 33U, 54U, 16, 54, 90U }
+  { sasuke_move_jump_air_0_pixels, 33U, 54U, 16, 54, 110U },
+  { sasuke_move_jump_air_1_pixels, 33U, 54U, 16, 54, 110U }
 };
 
 static const uint16_t sasuke_move_fall_0_pixels[34U * 46U] = {
@@ -8891,8 +8891,8 @@ static const uint16_t sasuke_move_fall_1_pixels[34U * 46U] = {
 };
 
 static const SasukeMoveFrame sasuke_move_fall_frames[] = {
-  { sasuke_move_fall_0_pixels, 34U, 46U, 17, 46, 90U },
-  { sasuke_move_fall_1_pixels, 34U, 46U, 17, 46, 90U }
+  { sasuke_move_fall_0_pixels, 34U, 46U, 17, 46, 110U },
+  { sasuke_move_fall_1_pixels, 34U, 46U, 17, 46, 110U }
 };
 
 static const uint16_t sasuke_move_jump_land_0_pixels[36U * 44U] = {
@@ -9164,8 +9164,8 @@ static const uint16_t sasuke_move_jump_land_1_pixels[41U * 38U] = {
 };
 
 static const SasukeMoveFrame sasuke_move_jump_land_frames[] = {
-  { sasuke_move_jump_land_0_pixels, 36U, 44U, 18, 44, 80U },
-  { sasuke_move_jump_land_1_pixels, 41U, 38U, 20, 38, 80U }
+  { sasuke_move_jump_land_0_pixels, 36U, 44U, 18, 44, 100U },
+  { sasuke_move_jump_land_1_pixels, 41U, 38U, 20, 38, 100U }
 };
 
 static const uint16_t sasuke_move_hit_0_pixels[33U * 54U] = {

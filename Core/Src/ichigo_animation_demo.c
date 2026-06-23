@@ -23,7 +23,10 @@
 #define DEMO_PROJECTILE_SPEED_X     18
 #define DEMO_PROJECTILE_START_DX    34
 #define DEMO_PROJECTILE_START_DY   -84
-#define DEMO_SKILL_SPAWN_FRAME      5U
+#define DEMO_SKILL_FIRST_SOURCE_FRAME       164U
+#define DEMO_SKILL_PROJECTILE_SOURCE_FRAME  169U
+#define DEMO_SKILL_SPAWN_FRAME \
+  (DEMO_SKILL_PROJECTILE_SOURCE_FRAME - DEMO_SKILL_FIRST_SOURCE_FRAME)
 
 #define RGB565_BLACK                0x0000U
 #define RGB565_WHITE                0xFFFFU
@@ -84,10 +87,15 @@ static void Demo_SetState(uint8_t sequenceIndex);
 static void Demo_DrawCurrentFrame(void);
 static void Demo_ErasePreviousFrame(void);
 static void Demo_DrawFrameTransition(uint8_t nextFrameIndex);
+static uint16_t Demo_GetStateHoldMs(IchigoMoveState state);
 static int16_t Demo_GetFrameOffsetY(IchigoMoveState state, uint8_t frameIndex);
 static void Demo_UpdateProjectile(void);
 static void Demo_SpawnProjectile(void);
 static void Demo_EraseProjectile(void);
+static uint8_t Demo_RectIntersectsCurrentFrame(int16_t x,
+                                               int16_t y,
+                                               uint16_t width,
+                                               uint16_t height);
 static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Demo_DrawStaticSky(void);
 static void Demo_DrawSun(uint16_t x, uint16_t y);
@@ -127,7 +135,9 @@ void IchigoAnimationDemo_Update(void)
   const IchigoMoveAnimation *animation = &ichigo_move_animations[s_sequence[s_sequenceIndex].state];
   uint16_t frameDuration = animation->frames[s_frameIndex].durationMs;
 
-  if ((now - s_stateStartedMs) >= (((uint32_t)animation->frameCount * frameDuration) + DEMO_STATE_HOLD_MS))
+  if ((now - s_stateStartedMs) >=
+      (((uint32_t)animation->frameCount * frameDuration) +
+       Demo_GetStateHoldMs(s_sequence[s_sequenceIndex].state)))
   {
     uint8_t nextSequence = (uint8_t)(s_sequenceIndex + 1U);
     if (nextSequence >= (uint8_t)(sizeof(s_sequence) / sizeof(s_sequence[0])))
@@ -159,6 +169,8 @@ void IchigoAnimationDemo_Update(void)
     nextFrame = (uint8_t)rawFrame;
   }
 
+  uint8_t projectileSpawned = 0U;
+
   if (nextFrame != s_frameIndex)
   {
     Demo_DrawFrameTransition(nextFrame);
@@ -167,10 +179,14 @@ void IchigoAnimationDemo_Update(void)
         (s_frameIndex == DEMO_SKILL_SPAWN_FRAME))
     {
       Demo_SpawnProjectile();
+      projectileSpawned = 1U;
     }
   }
 
-  Demo_UpdateProjectile();
+  if (projectileSpawned == 0U)
+  {
+    Demo_UpdateProjectile();
+  }
   LCD_Port_Flush();
 }
 
@@ -305,6 +321,16 @@ static int16_t Demo_GetFrameOffsetY(IchigoMoveState state, uint8_t frameIndex)
   return s_jumpOffsetsY[frameIndex];
 }
 
+static uint16_t Demo_GetStateHoldMs(IchigoMoveState state)
+{
+  if (state == ICHIGO_MOVE_JUMP)
+  {
+    return 0U;
+  }
+
+  return DEMO_STATE_HOLD_MS;
+}
+
 static void Demo_SpawnProjectile(void)
 {
   if (s_projectileActive != 0U)
@@ -332,7 +358,18 @@ static void Demo_UpdateProjectile(void)
     return;
   }
 
+  uint8_t restoreCharacter =
+      Demo_RectIntersectsCurrentFrame(s_projectileX,
+                                      s_projectileY,
+                                      GETSUGA_PROJECTILE_WIDTH,
+                                      GETSUGA_PROJECTILE_HEIGHT);
+
   Demo_EraseProjectile();
+
+  if (restoreCharacter != 0U)
+  {
+    Demo_DrawCurrentFrame();
+  }
 
   s_projectileX = (int16_t)(s_projectileX + DEMO_PROJECTILE_SPEED_X);
   if (s_projectileX > (int16_t)LCD_PORT_WIDTH)
@@ -348,7 +385,6 @@ static void Demo_UpdateProjectile(void)
                     GETSUGA_PROJECTILE_WIDTH,
                     GETSUGA_PROJECTILE_HEIGHT,
                     0U);
-  Demo_DrawCurrentFrame();
 }
 
 static void Demo_EraseProjectile(void)
@@ -366,6 +402,32 @@ static void Demo_EraseProjectile(void)
                      0U,
                      Demo_GetBackgroundPixel);
   s_projectileActive = 0U;
+}
+
+static uint8_t Demo_RectIntersectsCurrentFrame(int16_t x,
+                                               int16_t y,
+                                               uint16_t width,
+                                               uint16_t height)
+{
+  if (s_previousFrameValid == 0U)
+  {
+    return 0U;
+  }
+
+  int16_t rectRight = (int16_t)(x + (int16_t)width);
+  int16_t rectBottom = (int16_t)(y + (int16_t)height);
+  int16_t frameRight = (int16_t)(s_previousX + (int16_t)s_previousFrame->width);
+  int16_t frameBottom = (int16_t)(s_previousY + (int16_t)s_previousFrame->height);
+
+  if ((rectRight <= s_previousX) ||
+      (x >= frameRight) ||
+      (rectBottom <= s_previousY) ||
+      (y >= frameBottom))
+  {
+    return 0U;
+  }
+
+  return 1U;
 }
 
 static void Demo_DrawBackground(void)
