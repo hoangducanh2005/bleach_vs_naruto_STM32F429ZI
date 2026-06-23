@@ -6,9 +6,9 @@ from pathlib import Path
 from PIL import Image, ImageFilter
 
 
-SOURCE = Path(r"D:/HUST/2025_2/Nhúng/PROJECT/Sasuke.png")
+SOURCE = Path(r"../Sasuke/DS _ DSi - Jump Ultimate Stars - Fighters - Sasuke Uchiha.png")
 OUTPUT_DIR = Path("assets/sasuke_frames")
-BACKGROUND = (0, 128, 0)
+BACKGROUND = (128, 128, 255)
 DILATE_SIZE = 11
 MIN_PIXELS = 18
 MIN_BBOX_AREA = 120
@@ -155,12 +155,12 @@ def main():
     frames.sort(key=lambda item: (item["y"] // 24, item["x"]))
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    for old_file in OUTPUT_DIR.glob("ichigo_*.png"):
+    for old_file in OUTPUT_DIR.glob("sasuke_*.png"):
         old_file.unlink()
 
     for index, item in enumerate(frames):
         frame = make_transparent_frame(image, item["bbox"])
-        filename = f"ichigo_{index:03d}.png"
+        filename = f"sasuke_{index:03d}.png"
         frame.save(OUTPUT_DIR / filename)
         item["file"] = filename
 
