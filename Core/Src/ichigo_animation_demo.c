@@ -60,6 +60,10 @@ static const DemoStateStep s_sequence[] = {
   { ICHIGO_MOVE_DEAD,         "DEAD" }
 };
 
+static const int16_t s_jumpOffsetsY[] = {
+  0, -10, -22, -34, -34, -22, -10, 0
+};
+
 static uint32_t s_lastFrameMs;
 static uint32_t s_stateStartedMs;
 static uint8_t s_sequenceIndex;
@@ -72,12 +76,15 @@ static uint8_t s_projectileActive;
 static uint8_t s_projectileFrameIndex;
 static int16_t s_projectileX;
 static int16_t s_projectileY;
+static uint16_t s_compositeLineBuffer[LCD_PORT_WIDTH];
 
 static void Demo_DrawBackground(void);
 static void Demo_DrawStateLabel(const char *label);
 static void Demo_SetState(uint8_t sequenceIndex);
 static void Demo_DrawCurrentFrame(void);
 static void Demo_ErasePreviousFrame(void);
+static void Demo_DrawFrameTransition(uint8_t nextFrameIndex);
+static int16_t Demo_GetFrameOffsetY(IchigoMoveState state, uint8_t frameIndex);
 static void Demo_UpdateProjectile(void);
 static void Demo_SpawnProjectile(void);
 static void Demo_EraseProjectile(void);
@@ -154,9 +161,7 @@ void IchigoAnimationDemo_Update(void)
 
   if (nextFrame != s_frameIndex)
   {
-    Demo_ErasePreviousFrame();
-    s_frameIndex = nextFrame;
-    Demo_DrawCurrentFrame();
+    Demo_DrawFrameTransition(nextFrame);
 
     if ((s_sequence[s_sequenceIndex].state == ICHIGO_MOVE_SKILL) &&
         (s_frameIndex == DEMO_SKILL_SPAWN_FRAME))
@@ -183,7 +188,8 @@ static void Demo_DrawCurrentFrame(void)
   const IchigoMoveAnimation *animation = &ichigo_move_animations[s_sequence[s_sequenceIndex].state];
   const IchigoMoveFrame *frame = &animation->frames[s_frameIndex];
   int16_t x = (int16_t)(DEMO_ANCHOR_X - frame->pivotX);
-  int16_t y = (int16_t)(DEMO_GROUND_Y - frame->pivotY);
+  int16_t y = (int16_t)(DEMO_GROUND_Y - frame->pivotY +
+                        Demo_GetFrameOffsetY(s_sequence[s_sequenceIndex].state, s_frameIndex));
 
   SpriteRender_Draw(x, y, frame->pixels, frame->width, frame->height, 0U);
 
@@ -208,6 +214,95 @@ static void Demo_ErasePreviousFrame(void)
                      0U,
                      Demo_GetBackgroundPixel);
   s_previousFrameValid = 0U;
+}
+
+static void Demo_DrawFrameTransition(uint8_t nextFrameIndex)
+{
+  const IchigoMoveAnimation *animation = &ichigo_move_animations[s_sequence[s_sequenceIndex].state];
+  const IchigoMoveFrame *newFrame = &animation->frames[nextFrameIndex];
+  int16_t newX = (int16_t)(DEMO_ANCHOR_X - newFrame->pivotX);
+  int16_t newY = (int16_t)(DEMO_GROUND_Y - newFrame->pivotY +
+                           Demo_GetFrameOffsetY(s_sequence[s_sequenceIndex].state, nextFrameIndex));
+
+  if (s_previousFrameValid == 0U)
+  {
+    s_frameIndex = nextFrameIndex;
+    Demo_DrawCurrentFrame();
+    return;
+  }
+
+  int16_t left = (s_previousX < newX) ? s_previousX : newX;
+  int16_t top = (s_previousY < newY) ? s_previousY : newY;
+  int16_t oldRight = (int16_t)(s_previousX + (int16_t)s_previousFrame->width);
+  int16_t newRight = (int16_t)(newX + (int16_t)newFrame->width);
+  int16_t oldBottom = (int16_t)(s_previousY + (int16_t)s_previousFrame->height);
+  int16_t newBottom = (int16_t)(newY + (int16_t)newFrame->height);
+  int16_t right = (oldRight > newRight) ? oldRight : newRight;
+  int16_t bottom = (oldBottom > newBottom) ? oldBottom : newBottom;
+
+  if (left < 0)
+  {
+    left = 0;
+  }
+  if (top < 0)
+  {
+    top = 0;
+  }
+  if (right > (int16_t)LCD_PORT_WIDTH)
+  {
+    right = (int16_t)LCD_PORT_WIDTH;
+  }
+  if (bottom > (int16_t)LCD_PORT_HEIGHT)
+  {
+    bottom = (int16_t)LCD_PORT_HEIGHT;
+  }
+
+  for (int16_t y = top; y < bottom; y++)
+  {
+    uint16_t width = 0U;
+
+    for (int16_t x = left; x < right; x++)
+    {
+      uint16_t color = Demo_GetBackgroundPixel((uint16_t)x, (uint16_t)y);
+
+      if ((x >= newX) &&
+          (x < (int16_t)(newX + (int16_t)newFrame->width)) &&
+          (y >= newY) &&
+          (y < (int16_t)(newY + (int16_t)newFrame->height)))
+      {
+        uint16_t srcX = (uint16_t)(x - newX);
+        uint16_t srcY = (uint16_t)(y - newY);
+        uint16_t spriteColor = newFrame->pixels[((uint32_t)srcY * newFrame->width) + srcX];
+
+        if (spriteColor != SPRITE_COLOR_KEY_RGB565)
+        {
+          color = spriteColor;
+        }
+      }
+
+      s_compositeLineBuffer[width] = color;
+      width++;
+    }
+
+    LCD_Port_DrawPixels((uint16_t)left, (uint16_t)y, width, s_compositeLineBuffer);
+  }
+
+  s_frameIndex = nextFrameIndex;
+  s_previousFrame = newFrame;
+  s_previousX = newX;
+  s_previousY = newY;
+  s_previousFrameValid = 1U;
+}
+
+static int16_t Demo_GetFrameOffsetY(IchigoMoveState state, uint8_t frameIndex)
+{
+  if ((state != ICHIGO_MOVE_JUMP) ||
+      (frameIndex >= (uint8_t)(sizeof(s_jumpOffsetsY) / sizeof(s_jumpOffsetsY[0]))))
+  {
+    return 0;
+  }
+
+  return s_jumpOffsetsY[frameIndex];
 }
 
 static void Demo_SpawnProjectile(void)
