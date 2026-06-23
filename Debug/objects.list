@@ -15,6 +15,8 @@
 "./Core/Src/lcd_port.o"
 "./Core/Src/main.o"
 "./Core/Src/mainmenu.o"
+"./Core/Src/naruto_animation_demo.o"
+"./Core/Src/naruto_moveset.o"
 "./Core/Src/sasuke_animation_demo.o"
 "./Core/Src/sasuke_moveset.o"
 "./Core/Src/sprite_data.o"
