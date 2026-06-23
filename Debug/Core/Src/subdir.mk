@@ -17,6 +17,8 @@ C_SRCS += \
 ../Core/Src/game_ui.c \
 ../Core/Src/gameover.c \
 ../Core/Src/gameover_demo.c \
+../Core/Src/ichigo_animation_demo.c \
+../Core/Src/ichigo_moveset.c \
 ../Core/Src/lcd_port.c \
 ../Core/Src/main.c \
 ../Core/Src/mainmenu.c \
@@ -41,6 +43,8 @@ OBJS += \
 ./Core/Src/game_ui.o \
 ./Core/Src/gameover.o \
 ./Core/Src/gameover_demo.o \
+./Core/Src/ichigo_animation_demo.o \
+./Core/Src/ichigo_moveset.o \
 ./Core/Src/lcd_port.o \
 ./Core/Src/main.o \
 ./Core/Src/mainmenu.o \
@@ -65,6 +69,8 @@ C_DEPS += \
 ./Core/Src/game_ui.d \
 ./Core/Src/gameover.d \
 ./Core/Src/gameover_demo.d \
+./Core/Src/ichigo_animation_demo.d \
+./Core/Src/ichigo_moveset.d \
 ./Core/Src/lcd_port.d \
 ./Core/Src/main.d \
 ./Core/Src/mainmenu.d \

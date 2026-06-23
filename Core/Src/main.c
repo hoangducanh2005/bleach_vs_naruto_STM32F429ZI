@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "character_select_demo.h"
+#include "ichigo_animation_demo.h"
 
 /* USER CODE END Includes */
 
@@ -86,7 +86,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  CharacterSelectDemo_Init();
+  IchigoAnimationDemo_Init();
 
   /* USER CODE END 2 */
 
@@ -97,7 +97,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    CharacterSelectDemo_Update();
+    IchigoAnimationDemo_Update();
   }
   /* USER CODE END 3 */
 }

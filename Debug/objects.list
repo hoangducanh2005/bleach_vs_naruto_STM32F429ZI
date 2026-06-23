@@ -10,6 +10,8 @@
 "./Core/Src/game_ui.o"
 "./Core/Src/gameover.o"
 "./Core/Src/gameover_demo.o"
+"./Core/Src/ichigo_animation_demo.o"
+"./Core/Src/ichigo_moveset.o"
 "./Core/Src/lcd_port.o"
 "./Core/Src/main.o"
 "./Core/Src/mainmenu.o"
