@@ -7,7 +7,7 @@ from PIL import Image, ImageFilter
 
 
 SOURCE = Path(r"../Sasuke/DS _ DSi - Jump Ultimate Stars - Fighters - Sasuke Uchiha.png")
-OUTPUT_DIR = Path("assets/sasuke_frames")
+OUTPUT_DIR = Path("assets/raw/sasuke_frames")
 BACKGROUND = (128, 128, 255)
 DILATE_SIZE = 11
 MIN_PIXELS = 18
