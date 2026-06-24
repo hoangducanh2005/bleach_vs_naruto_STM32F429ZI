@@ -75,6 +75,7 @@ Khi chọn độ khó ở menu chính, các chỉ số của máy (CPU/AI) sẽ 
 // Định nghĩa các hằng số chỉ số
 #define MAX_HP              100
 #define MAX_MANA            90
+#define MAX_STABILITY       100     // Điểm kiên định tối đa (phục vụ ngã sàn)
 #define MANA_REGEN_PASSIVE  0       // Mana không tự động tăng
 #define INVINCIBLE_TIME_MS  500     // 500 ms bất tử sau khi trúng đòn
 #define HIT_STUN_TIME_MS    300     // 300 ms đơ người
@@ -95,13 +96,15 @@ typedef struct {
   uint8_t facing;           // Hướng nhìn: 0 = Phải, 1 = Trái
   
   int16_t hp;               // Máu hiện tại (0 -> 100)
-  int16_t mana;             // Năng lượng hiện tại (0 -> 100)
+  int16_t mana;             // Năng lượng hiện tại (0 -> 90)
+  int16_t stability;        // Điểm kiên định hiện tại (0 -> 100)
   
   uint8_t state;            // Trạng thái (IDLE, RUN, ATTACK, BLOCK, HIT, DEAD...)
   uint32_t stateTimer;      // Bộ đếm thời gian cho trạng thái hiện tại (ms)
   uint32_t invincibleTimer; // Bộ đếm thời gian bất tử còn lại (ms)
   uint32_t cooldownTimer;   // Bộ đếm thời gian hồi đòn đánh thường (ms)
 } CharacterStats;
+```
 
 ---
 
