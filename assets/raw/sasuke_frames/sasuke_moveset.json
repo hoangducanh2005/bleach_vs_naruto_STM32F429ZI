@@ -112,7 +112,7 @@
     "jump_startup": {
       "label_vi": "nhun lay da",
       "loop": false,
-      "frame_duration_ms": 60,
+      "frame_duration_ms": 80,
       "frames": [
         26
       ]
@@ -120,7 +120,7 @@
     "jump_air": {
       "label_vi": "tren khong",
       "loop": true,
-      "frame_duration_ms": 90,
+      "frame_duration_ms": 110,
       "frames": [
         17,
         18
@@ -129,7 +129,7 @@
     "fall": {
       "label_vi": "roi tu do",
       "loop": true,
-      "frame_duration_ms": 90,
+      "frame_duration_ms": 110,
       "frames": [
         19,
         20
@@ -138,7 +138,7 @@
     "jump_land": {
       "label_vi": "tiep dat",
       "loop": false,
-      "frame_duration_ms": 80,
+      "frame_duration_ms": 100,
       "frames": [
         24,
         25

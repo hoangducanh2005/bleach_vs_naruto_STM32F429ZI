@@ -77,6 +77,8 @@ static void Demo_SetState(uint8_t sequenceIndex);
 static void Demo_DrawCurrentFrame(void);
 static void Demo_ErasePreviousFrame(void);
 static void Demo_DrawFrameTransition(uint8_t nextFrameIndex);
+static uint16_t Demo_GetStateHoldMs(SasukeMoveState state);
+static uint8_t Demo_IsJumpState(SasukeMoveState state);
 static int16_t Demo_GetFrameOffsetY(SasukeMoveState state, uint8_t frameIndex);
 static uint8_t Demo_GetChidoriFrame(uint8_t frameIndex, const uint16_t **pixels, uint16_t *width, uint16_t *height, int16_t *offsetX, int16_t *offsetY);
 static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y);
@@ -117,7 +119,7 @@ void SasukeAnimationDemo_Update(void) {
 
   if ((now - s_stateStartedMs) >=
       (((uint32_t)animation->frameCount * frameDuration) +
-       DEMO_STATE_HOLD_MS)) {
+       Demo_GetStateHoldMs(s_sequence[s_sequenceIndex].state))) {
     uint8_t nextSequence = (uint8_t)(s_sequenceIndex + 1U);
     if (nextSequence >= (uint8_t)(sizeof(s_sequence) / sizeof(s_sequence[0]))) {
       nextSequence = 0U;
@@ -390,6 +392,23 @@ static int16_t Demo_GetFrameOffsetY(SasukeMoveState state, uint8_t frameIndex) {
     return -15;
   }
   return 0;
+}
+
+static uint16_t Demo_GetStateHoldMs(SasukeMoveState state) {
+  if (Demo_IsJumpState(state) != 0U) {
+    return 0U;
+  }
+
+  return DEMO_STATE_HOLD_MS;
+}
+
+static uint8_t Demo_IsJumpState(SasukeMoveState state) {
+  return ((state == SASUKE_MOVE_JUMP_STARTUP) ||
+          (state == SASUKE_MOVE_JUMP_AIR) ||
+          (state == SASUKE_MOVE_FALL) ||
+          (state == SASUKE_MOVE_JUMP_LAND))
+             ? 1U
+             : 0U;
 }
 
 static void Demo_DrawBackground(void) {
