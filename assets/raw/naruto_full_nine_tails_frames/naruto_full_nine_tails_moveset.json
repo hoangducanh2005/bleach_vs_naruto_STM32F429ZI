@@ -1,0 +1,281 @@
+{
+  "source_dir": "assets/raw/naruto_full_nine_tails_frames",
+  "character": "naruto_full_nine_tails",
+  "notes": "Each frame references a strip subfolder (naruto_full_nine_tails_<strip>) and a frame index within that strip.",
+  "transparent": true,
+  "states": {
+    "idle": {
+      "label_vi": "đứng yên",
+      "loop": true,
+      "frame_duration_ms": 140,
+      "frames": [
+        {"strip": 1, "frame": 0},
+        {"strip": 1, "frame": 1},
+        {"strip": 1, "frame": 4},
+        {"strip": 1, "frame": 3},
+        {"strip": 1, "frame": 4},
+        {"strip": 1, "frame": 2}
+      ]
+    },
+    "run": {
+      "label_vi": "chạy",
+      "loop": true,
+      "frame_duration_ms": 80,
+      "frames": [
+        {"strip": 2, "frame": 0},
+        {"strip": 2, "frame": 1},
+        {"strip": 2, "frame": 2},
+        {"strip": 2, "frame": 3},
+        {"strip": 2, "frame": 4},
+        {"strip": 2, "frame": 5},
+        {"strip": 2, "frame": 6},
+        {"strip": 2, "frame": 7}
+      ]
+    },
+    "slide": {
+      "label_vi": "lướt",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {"strip": 3, "frame": 0},
+        {"strip": 3, "frame": 1}
+      ]
+    },
+    "jump": {
+      "label_vi": "nhảy",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {"strip": 4, "frame": 0},
+        {"strip": 4, "frame": 1},
+        {"strip": 4, "frame": 2},
+        {"strip": 4, "frame": 3},
+        {"strip": 4, "frame": 4},
+        {"strip": 4, "frame": 5},
+        {"strip": 4, "frame": 6},
+        {"strip": 4, "frame": 7}
+      ]
+    },
+    "block": {
+      "label_vi": "đỡ đòn",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 120,
+      "frames": [
+        {"strip": 6, "frame": 0},
+        {"strip": 6, "frame": 1},
+        {"strip": 6, "frame": 2},
+        {"strip": 6, "frame": 3}
+      ]
+    },
+    "hit": {
+      "label_vi": "trúng đòn",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {"strip": 7, "frame": 0},
+        {"strip": 7, "frame": 1},
+        {"strip": 7, "frame": 2},
+        {"strip": 7, "frame": 3}
+      ]
+    },
+    "attack1": {
+      "label_vi": "tấn công 1",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {"strip": 9, "frame": 0},
+        {"strip": 9, "frame": 1},
+        {"strip": 9, "frame": 2},
+        {"strip": 9, "frame": 3},
+        {"strip": 9, "frame": 4},
+        {"strip": 9, "frame": 5}
+      ]
+    },
+    "attack2": {
+      "label_vi": "tấn công 2",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {"strip": 14, "frame": 0},
+        {"strip": 14, "frame": 2},
+        {"strip": 14, "frame": 3}
+      ]
+    },
+    "attack3": {
+      "label_vi": "tấn công 3",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        {"strip": 10, "frame": 0},
+        {"strip": 10, "frame": 1},
+        {"strip": 10, "frame": 2},
+        {"strip": 10, "frame": 3},
+        {"strip": 10, "frame": 4},
+        {"strip": 10, "frame": 5},
+        {"strip": 10, "frame": 6}
+      ]
+    },
+    "attack4": {
+      "label_vi": "tấn công 4",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        {"strip": 14, "frame": 0},
+        {"strip": 14, "frame": 3},
+        {"strip": 14, "frame": 4},
+        {"strip": 14, "frame": 5},
+        {"strip": 14, "frame": 6}
+      ]
+    },
+    "skill1": {
+      "label_vi": "kỹ năng 1",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {"strip": 16, "frame": 0},
+        {"strip": 16, "frame": 1},
+        {"strip": 16, "frame": 3},
+        {"strip": 16, "frame": 5},
+        {"strip": 16, "frame": 6},
+        {"strip": 16, "frame": 7},
+        {"strip": 16, "frame": 8},
+        {"strip": 16, "frame": 9},
+        {"strip": 16, "frame": 10},
+        {"strip": 16, "frame": 11},
+        {"strip": 16, "frame": 12},
+        {"strip": 16, "frame": 13},
+        {"strip": 16, "frame": 14},
+        {"strip": 17, "frame": 0},
+        {"strip": 17, "frame": 1},
+        {"strip": 17, "frame": 2},
+        {"strip": 17, "frame": 4},
+        {"strip": 17, "frame": 5},
+        {"strip": 17, "frame": 6},
+        {"strip": 17, "frame": 7},
+        {"strip": 17, "frame": 8},
+        {"strip": 17, "frame": 10},
+        {"strip": 17, "frame": 11},
+        {"strip": 17, "frame": 12},
+        {"strip": 18, "frame": 0},
+        {"strip": 18, "frame": 1},
+        {"strip": 18, "frame": 2},
+        {"strip": 18, "frame": 3},
+        {"strip": 18, "frame": 4},
+        {"strip": 18, "frame": 5}
+      ],
+      "caster_effect": {
+        "note": "Quả cầu xuất hiện khi nhân vật ở frame 23 (strip17 frame12)",
+        "start_frame_idx": 23,
+        "loop": true,
+        "frames": [
+          {"strip": 18, "frame": 6},
+          {"strip": 18, "frame": 7}
+        ]
+      },
+      "projectile": {
+        "note": "Quả cầu bay đi sau khi xuất hiện",
+        "loop": true,
+        "frames": [
+          {"strip": 18, "frame": 6},
+          {"strip": 18, "frame": 7}
+        ]
+      }
+    },
+    "skill2": {
+      "label_vi": "kỹ năng 2",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {"strip": 19, "frame": 0},
+        {"strip": 19, "frame": 1},
+        {"strip": 19, "frame": 2},
+        {"strip": 19, "frame": 3},
+        {"strip": 19, "frame": 4},
+        {"strip": 19, "frame": 5},
+        {"strip": 19, "frame": 6},
+        {"strip": 19, "frame": 7},
+        {"strip": 19, "frame": 8},
+        {"strip": 19, "frame": 9},
+        {"strip": 20, "frame": 0},
+        {"strip": 20, "frame": 1},
+        {"strip": 20, "frame": 2},
+        {"strip": 20, "frame": 3},
+        {"strip": 20, "frame": 4},
+        {"strip": 20, "frame": 5},
+        {"strip": 20, "frame": 4},
+        {"strip": 20, "frame": 5},
+        {"strip": 20, "frame": 4},
+        {"strip": 20, "frame": 5},
+        {"strip": 20, "frame": 6},
+        {"strip": 20, "frame": 7}
+      ],
+      "caster_effect": {
+        "note": "Cánh tay xuất hiện ứng với 6 frame strip20 4,5,4,5,4,5 (bắt đầu từ frame 14)",
+        "start_frame_idx": 14,
+        "loop": false,
+        "frames": [
+          {"strip": 21, "frame": 0},
+          {"strip": 21, "frame": 1},
+          {"strip": 21, "frame": 2},
+          {"strip": 21, "frame": 3},
+          {"strip": 21, "frame": 4},
+          {"strip": 21, "frame": 5}
+        ]
+      }
+    },
+    "skill3": {
+      "label_vi": "kỹ năng 3",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        {"strip": 22, "frame": 1},
+        {"strip": 22, "frame": 2},
+        {"strip": 22, "frame": 4},
+        {"strip": 22, "frame": 6},
+        {"strip": 22, "frame": 9},
+        {"strip": 22, "frame": 10},
+        {"strip": 22, "frame": 11},
+        {"strip": 22, "frame": 12},
+        {"strip": 22, "frame": 14},
+        {"strip": 22, "frame": 16},
+        {"strip": 22, "frame": 14},
+        {"strip": 22, "frame": 12},
+        {"strip": 22, "frame": 5},
+        {"strip": 22, "frame": 7}
+      ],
+      "caster_effect": {
+        "note": "Quả cầu xuất hiện khi nhân vật ở frame 9 (strip22 frame16)",
+        "start_frame_idx": 9,
+        "loop": true,
+        "frames": [
+          {"strip": 22, "frame": 13},
+          {"strip": 22, "frame": 15}
+        ]
+      },
+      "projectile": {
+        "note": "Quả cầu bay đi sau khi xuất hiện",
+        "loop": true,
+        "frames": [
+          {"strip": 22, "frame": 13},
+          {"strip": 22, "frame": 15}
+        ]
+      }
+    },
+    "dead": {
+      "label_vi": "bị hạ gục",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 110,
+      "frames": [
+        {"strip": 8, "frame": 0},
+        {"strip": 8, "frame": 1},
+        {"strip": 8, "frame": 2},
+        {"strip": 8, "frame": 3},
+        {"strip": 8, "frame": 4},
+        {"strip": 8, "frame": 5},
+        {"strip": 8, "frame": 6}
+      ]
+    }
+  }
+}

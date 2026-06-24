@@ -1,0 +1,145 @@
+[
+  {
+    "bbox": [
+      26,
+      24,
+      109,
+      74
+    ],
+    "x": 26,
+    "y": 24,
+    "w": 83,
+    "h": 50,
+    "file": "naruto_full_nine_tails_8_000.png"
+  },
+  {
+    "bbox": [
+      144,
+      25,
+      235,
+      72
+    ],
+    "x": 144,
+    "y": 25,
+    "w": 91,
+    "h": 47,
+    "file": "naruto_full_nine_tails_8_001.png"
+  },
+  {
+    "bbox": [
+      257,
+      13,
+      339,
+      72
+    ],
+    "x": 257,
+    "y": 13,
+    "w": 82,
+    "h": 59,
+    "file": "naruto_full_nine_tails_8_002.png"
+  },
+  {
+    "bbox": [
+      374,
+      21,
+      464,
+      75
+    ],
+    "x": 374,
+    "y": 21,
+    "w": 90,
+    "h": 54,
+    "file": "naruto_full_nine_tails_8_003.png"
+  },
+  {
+    "bbox": [
+      471,
+      36,
+      552,
+      87
+    ],
+    "x": 471,
+    "y": 36,
+    "w": 81,
+    "h": 51,
+    "file": "naruto_full_nine_tails_8_004.png"
+  },
+  {
+    "bbox": [
+      575,
+      53,
+      661,
+      113
+    ],
+    "x": 575,
+    "y": 53,
+    "w": 86,
+    "h": 60,
+    "file": "naruto_full_nine_tails_8_005.png"
+  },
+  {
+    "bbox": [
+      679,
+      59,
+      773,
+      86
+    ],
+    "x": 679,
+    "y": 59,
+    "w": 94,
+    "h": 27,
+    "file": "naruto_full_nine_tails_8_006.png"
+  },
+  {
+    "bbox": [
+      788,
+      10,
+      861,
+      86
+    ],
+    "x": 788,
+    "y": 10,
+    "w": 73,
+    "h": 76,
+    "file": "naruto_full_nine_tails_8_007.png"
+  },
+  {
+    "bbox": [
+      867,
+      37,
+      938,
+      106
+    ],
+    "x": 867,
+    "y": 37,
+    "w": 71,
+    "h": 69,
+    "file": "naruto_full_nine_tails_8_008.png"
+  },
+  {
+    "bbox": [
+      950,
+      38,
+      1016,
+      99
+    ],
+    "x": 950,
+    "y": 38,
+    "w": 66,
+    "h": 61,
+    "file": "naruto_full_nine_tails_8_009.png"
+  },
+  {
+    "bbox": [
+      1011,
+      23,
+      1088,
+      87
+    ],
+    "x": 1011,
+    "y": 23,
+    "w": 77,
+    "h": 64,
+    "file": "naruto_full_nine_tails_8_010.png"
+  }
+]

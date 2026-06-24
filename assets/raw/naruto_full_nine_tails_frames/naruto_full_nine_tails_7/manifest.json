@@ -1,0 +1,54 @@
+[
+  {
+    "bbox": [
+      5,
+      8,
+      68,
+      74
+    ],
+    "x": 5,
+    "y": 8,
+    "w": 63,
+    "h": 66,
+    "file": "naruto_full_nine_tails_7_000.png"
+  },
+  {
+    "bbox": [
+      74,
+      10,
+      133,
+      74
+    ],
+    "x": 74,
+    "y": 10,
+    "w": 59,
+    "h": 64,
+    "file": "naruto_full_nine_tails_7_001.png"
+  },
+  {
+    "bbox": [
+      137,
+      8,
+      213,
+      74
+    ],
+    "x": 137,
+    "y": 8,
+    "w": 76,
+    "h": 66,
+    "file": "naruto_full_nine_tails_7_002.png"
+  },
+  {
+    "bbox": [
+      227,
+      1,
+      302,
+      73
+    ],
+    "x": 227,
+    "y": 1,
+    "w": 75,
+    "h": 72,
+    "file": "naruto_full_nine_tails_7_003.png"
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "bbox": [
+      0,
+      9,
+      67,
+      78
+    ],
+    "x": 0,
+    "y": 9,
+    "w": 67,
+    "h": 69,
+    "file": "naruto_full_nine_tails_15_000.png"
+  },
+  {
+    "bbox": [
+      91,
+      12,
+      141,
+      75
+    ],
+    "x": 91,
+    "y": 12,
+    "w": 50,
+    "h": 63,
+    "file": "naruto_full_nine_tails_15_001.png"
+  },
+  {
+    "bbox": [
+      143,
+      17,
+      213,
+      74
+    ],
+    "x": 143,
+    "y": 17,
+    "w": 70,
+    "h": 57,
+    "file": "naruto_full_nine_tails_15_002.png"
+  },
+  {
+    "bbox": [
+      225,
+      1,
+      294,
+      83
+    ],
+    "x": 225,
+    "y": 1,
+    "w": 69,
+    "h": 82,
+    "file": "naruto_full_nine_tails_15_003.png"
+  },
+  {
+    "bbox": [
+      308,
+      1,
+      376,
+      84
+    ],
+    "x": 308,
+    "y": 1,
+    "w": 68,
+    "h": 83,
+    "file": "naruto_full_nine_tails_15_004.png"
+  },
+  {
+    "bbox": [
+      389,
+      20,
+      456,
+      89
+    ],
+    "x": 389,
+    "y": 20,
+    "w": 67,
+    "h": 69,
+    "file": "naruto_full_nine_tails_15_005.png"
+  },
+  {
+    "bbox": [
+      466,
+      29,
+      539,
+      93
+    ],
+    "x": 466,
+    "y": 29,
+    "w": 73,
+    "h": 64,
+    "file": "naruto_full_nine_tails_15_006.png"
+  },
+  {
+    "bbox": [
+      539,
+      32,
+      615,
+      93
+    ],
+    "x": 539,
+    "y": 32,
+    "w": 76,
+    "h": 61,
+    "file": "naruto_full_nine_tails_15_007.png"
+  },
+  {
+    "bbox": [
+      617,
+      37,
+      689,
+      93
+    ],
+    "x": 617,
+    "y": 37,
+    "w": 72,
+    "h": 56,
+    "file": "naruto_full_nine_tails_15_008.png"
+  }
+]
