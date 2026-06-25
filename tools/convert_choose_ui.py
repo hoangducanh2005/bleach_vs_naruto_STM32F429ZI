@@ -14,7 +14,7 @@ CHARACTERS = [
     ("SASUKE", "sasuke", "avatar/sasuke.jpg", "banner/sasuke.jpg"),
     ("ICHIGO", "ichigo", "avatar/ichigo.png", "banner/ichigo.jpg"),
     ("HOLLOW", "hollow", "avatar/ichigo_hollowmask.png", "banner/ichigo_hollow.jpg"),
-    ("GIN", "gin", "avatar/gin.png", "banner/gin.jpg"),
+    ("RUKIA", "rukia", "avatar/rukia.jpg", "banner/rukia.jpg"),
 ]
 
 AVATAR_SIZE = (40, 40)

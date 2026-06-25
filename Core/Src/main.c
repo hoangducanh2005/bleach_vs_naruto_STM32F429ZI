@@ -21,7 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "naruto_animation_demo.h"
+#include "rukia_animation_demo.h"
+// #include "naruto_animation_demo.h"
+// #include "sasuke_animation_demo.h"
+// #include "ichigo_animation_demo.h"
 
 /* USER CODE END Includes */
 
@@ -86,7 +89,7 @@ int main(void) {
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  NarutoAnimationDemo_Init();
+  RukiaAnimationDemo_Init();
 
   /* USER CODE END 2 */
 
@@ -96,7 +99,7 @@ int main(void) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    NarutoAnimationDemo_Update();
+    RukiaAnimationDemo_Update();
   }
   /* USER CODE END 3 */
 }

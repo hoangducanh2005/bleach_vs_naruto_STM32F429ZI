@@ -22,7 +22,7 @@ typedef enum
   CHOOSE_CHARACTER_SASUKE = 2U,
   CHOOSE_CHARACTER_ICHIGO = 3U,
   CHOOSE_CHARACTER_HOLLOW = 4U,
-  CHOOSE_CHARACTER_GIN = 5U
+  CHOOSE_CHARACTER_RUKIA = 5U
 } ChooseCharacterId;
 
 extern const uint8_t choose_avatar_naruto_map[CHOOSE_AVATAR_SIZE];
@@ -35,8 +35,8 @@ extern const uint8_t choose_avatar_ichigo_map[CHOOSE_AVATAR_SIZE];
 extern const uint8_t choose_banner_ichigo_map[CHOOSE_BANNER_SIZE];
 extern const uint8_t choose_avatar_hollow_map[CHOOSE_AVATAR_SIZE];
 extern const uint8_t choose_banner_hollow_map[CHOOSE_BANNER_SIZE];
-extern const uint8_t choose_avatar_gin_map[CHOOSE_AVATAR_SIZE];
-extern const uint8_t choose_banner_gin_map[CHOOSE_BANNER_SIZE];
+extern const uint8_t choose_avatar_rukia_map[CHOOSE_AVATAR_SIZE];
+extern const uint8_t choose_banner_rukia_map[CHOOSE_BANNER_SIZE];
 
 extern const uint8_t * const choose_avatar_maps[CHOOSE_CHARACTER_COUNT];
 extern const uint8_t * const choose_banner_maps[CHOOSE_CHARACTER_COUNT];

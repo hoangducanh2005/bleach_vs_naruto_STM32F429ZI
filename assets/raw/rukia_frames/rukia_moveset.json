@@ -1,0 +1,143 @@
+{
+  "source_dir": "assets/rukia_frames",
+  "character": "rukia",
+  "notes": "Rukia Kuchiki JUS moveset frame mapping from user index.",
+  "transparent": true,
+  "states": {
+    "idle": {
+      "label_vi": "dung",
+      "loop": true,
+      "frame_duration_ms": 140,
+      "frames": [
+        44
+      ]
+    },
+    "run": {
+      "label_vi": "chay",
+      "loop": true,
+      "frame_duration_ms": 120,
+      "frames": [
+        0,
+        1
+      ]
+    },
+    "attack1": {
+      "label_vi": "tan cong thuong 1 (da)",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        60,
+        61,
+        62,
+        63,
+        64
+      ]
+    },
+    "attack2": {
+      "label_vi": "tan cong thuong 2 (dam)",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+      ]
+    },
+    "attack3": {
+      "label_vi": "tan cong thuong 3 (da nhay)",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89
+      ]
+    },
+    "block": {
+      "label_vi": "do don",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 120,
+      "frames": [
+        4,
+        5,
+        6
+      ]
+    },
+    "skill": {
+      "label_vi": "shoukatsui (kido lua/bang)",
+      "loop": false,
+      "frame_duration_ms": 85,
+      "frames": [
+        140,
+        141,
+        142,
+        143,
+        144
+      ]
+    },
+    "jump_startup": {
+      "label_vi": "nhun lay da",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        7,
+        8
+      ]
+    },
+    "jump_air": {
+      "label_vi": "tren khong",
+      "loop": true,
+      "frame_duration_ms": 110,
+      "frames": [
+        9,
+        10
+      ]
+    },
+    "fall": {
+      "label_vi": "roi tu do",
+      "loop": true,
+      "frame_duration_ms": 110,
+      "frames": [
+        120
+      ]
+    },
+    "jump_land": {
+      "label_vi": "tiep dat",
+      "loop": false,
+      "frame_duration_ms": 100,
+      "frames": [
+        11,
+        12
+      ]
+    },
+    "hit": {
+      "label_vi": "trung don",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        14,
+        15,
+        16
+      ]
+    },
+    "dead": {
+      "label_vi": "chet / nga san",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 120,
+      "frames": [
+        18,
+        19,
+        20,
+        25
+      ]
+    }
+  }
+}
