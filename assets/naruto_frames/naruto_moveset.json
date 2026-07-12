@@ -15,6 +15,14 @@
       "frames": [75, 76, 77, 78, 79],
       "frame_duration_ms": 70
     },
+    "attack2": {
+      "frames": [82, 83, 84, 85],
+      "frame_duration_ms": 70
+    },
+    "attack3": {
+      "frames": [86, 87, 88, 89],
+      "frame_duration_ms": 70
+    },
     "block": {
       "frames": [15],
       "frame_duration_ms": 120,

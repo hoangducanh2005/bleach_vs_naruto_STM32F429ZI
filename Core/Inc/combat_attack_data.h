@@ -24,6 +24,7 @@ CombatBox CombatAttackData_GetHurtbox(CombatCharacterId character,
                                       CombatAnimState state);
 const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
                                                   CombatAnimState state,
+                                                  uint8_t attackStep,
                                                   uint8_t frameIndex);
 CombatBox CombatAttackData_GetGuardBox(void);
 

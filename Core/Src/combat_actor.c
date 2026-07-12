@@ -11,11 +11,15 @@
 #define COMBAT_JUMP_FORCE -11
 #define COMBAT_GRAVITY 1
 #define COMBAT_MAX_FALL_SPEED 9
+#define COMBAT_MAX_ATTACK_STEP 2U
 
 static void CombatActor_SetState(CombatActor *actor,
                                  CombatAnimState state,
                                  uint32_t nowMs);
 static void CombatActor_ApplyPhysics(CombatActor *actor);
+static void CombatActor_BeginAttack(CombatActor *actor,
+                                    uint8_t attackStep,
+                                    uint32_t nowMs);
 static void CombatActor_StartJump(CombatActor *actor, uint32_t nowMs);
 static uint8_t CombatActor_GetFrameCount(const CombatActor *actor);
 static uint8_t CombatActor_GetLoop(const CombatActor *actor);
@@ -26,11 +30,11 @@ static uint8_t CombatActor_UseNativeDuration(CombatAnimState state);
 static uint8_t CombatActor_IsTerminalState(CombatAnimState state);
 static uint8_t CombatActor_StateFinished(const CombatActor *actor,
                                          uint32_t nowMs);
-static void CombatActor_MapNaruto(CombatAnimState state,
+static void CombatActor_MapNaruto(const CombatActor *actor,
                                   NarutoMoveState *move);
-static void CombatActor_MapSasuke(CombatAnimState state,
+static void CombatActor_MapSasuke(const CombatActor *actor,
                                   SasukeMoveState *move);
-static void CombatActor_MapIchigo(CombatAnimState state,
+static void CombatActor_MapIchigo(const CombatActor *actor,
                                   IchigoMoveState *move);
 
 void CombatActor_Init(CombatActor *actor,
@@ -56,6 +60,8 @@ void CombatActor_Init(CombatActor *actor,
   actor->onGround = 1U;
   actor->state = COMBAT_ANIM_IDLE;
   actor->frameIndex = 0U;
+  actor->attackStep = 0U;
+  actor->queuedAttack = 0U;
   actor->hitConnected = 0U;
   actor->stateStartedMs = nowMs;
   actor->stunUntilMs = 0U;
@@ -89,13 +95,36 @@ void CombatActor_Update(CombatActor *actor,
   else if ((actor->state == COMBAT_ANIM_ATTACK) ||
            (actor->state == COMBAT_ANIM_SKILL))
   {
+    if ((actor->state == COMBAT_ANIM_ATTACK) &&
+        (allowInput != 0U) &&
+        ((inputFlags & COMBAT_INPUT_ATTACK) != 0U) &&
+        ((actor->attackStep + actor->queuedAttack) < COMBAT_MAX_ATTACK_STEP))
+    {
+      actor->queuedAttack++;
+    }
+
     CombatActor_ApplyPhysics(actor);
     if (CombatActor_StateFinished(actor, nowMs) != 0U)
     {
-      CombatActor_SetState(actor,
-                           (actor->onGround != 0U) ? COMBAT_ANIM_IDLE
-                                                   : COMBAT_ANIM_JUMP,
-                           nowMs);
+      if ((actor->state == COMBAT_ANIM_ATTACK) &&
+          (actor->queuedAttack != 0U) &&
+          (actor->attackStep < COMBAT_MAX_ATTACK_STEP))
+      {
+        uint8_t queuedAfterNext = (uint8_t)(actor->queuedAttack - 1U);
+        CombatActor_BeginAttack(actor,
+                                (uint8_t)(actor->attackStep + 1U),
+                                nowMs);
+        actor->queuedAttack = queuedAfterNext;
+      }
+      else
+      {
+        actor->queuedAttack = 0U;
+        actor->attackStep = 0U;
+        CombatActor_SetState(actor,
+                             (actor->onGround != 0U) ? COMBAT_ANIM_IDLE
+                                                     : COMBAT_ANIM_JUMP,
+                             nowMs);
+      }
     }
   }
   else if (actor->state == COMBAT_ANIM_JUMP)
@@ -133,7 +162,7 @@ void CombatActor_Update(CombatActor *actor,
 
     if ((inputFlags & COMBAT_INPUT_ATTACK) != 0U)
     {
-      CombatActor_SetState(actor, COMBAT_ANIM_ATTACK, nowMs);
+      CombatActor_BeginAttack(actor, 0U, nowMs);
     }
     else if ((inputFlags & COMBAT_INPUT_SKILL) != 0U)
     {
@@ -299,6 +328,25 @@ void CombatActor_ApplyHit(CombatActor *target,
   }
 }
 
+static void CombatActor_BeginAttack(CombatActor *actor,
+                                    uint8_t attackStep,
+                                    uint32_t nowMs)
+{
+  if (actor == 0)
+  {
+    return;
+  }
+
+  actor->state = COMBAT_ANIM_ATTACK;
+  actor->frameIndex = 0U;
+  actor->attackStep = (attackStep > COMBAT_MAX_ATTACK_STEP)
+                          ? COMBAT_MAX_ATTACK_STEP
+                          : attackStep;
+  actor->queuedAttack = 0U;
+  actor->hitConnected = 0U;
+  actor->stateStartedMs = nowMs;
+}
+
 static void CombatActor_ApplyPhysics(CombatActor *actor)
 {
   if (actor == 0)
@@ -369,6 +417,7 @@ CombatBox CombatActor_GetHitboxWorld(const CombatActor *actor,
   const CombatHitboxDef *hitbox = CombatAttackData_GetHitbox(
       actor->character,
       actor->state,
+      actor->attackStep,
       actor->frameIndex);
 
   if (hitboxOut != 0)
@@ -416,7 +465,7 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
   if (actor->character == COMBAT_CHARACTER_SASUKE)
   {
     SasukeMoveState move;
-    CombatActor_MapSasuke(actor->state, &move);
+    CombatActor_MapSasuke(actor, &move);
     const SasukeMoveAnimation *anim = &sasuke_move_animations[move];
     const SasukeMoveFrame *frame = &anim->frames[actor->frameIndex];
     outFrame->pixels = frame->pixels;
@@ -431,7 +480,7 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
   if (actor->character == COMBAT_CHARACTER_ICHIGO)
   {
     IchigoMoveState move;
-    CombatActor_MapIchigo(actor->state, &move);
+    CombatActor_MapIchigo(actor, &move);
     const IchigoMoveAnimation *anim = &ichigo_move_animations[move];
     const IchigoMoveFrame *frame = &anim->frames[actor->frameIndex];
     outFrame->pixels = frame->pixels;
@@ -444,7 +493,7 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
   }
 
   NarutoMoveState move;
-  CombatActor_MapNaruto(actor->state, &move);
+  CombatActor_MapNaruto(actor, &move);
   const NarutoMoveAnimation *anim = &naruto_move_animations[move];
   const NarutoMoveFrame *frame = &anim->frames[actor->frameIndex];
   outFrame->pixels = frame->pixels;
@@ -483,6 +532,11 @@ static void CombatActor_SetState(CombatActor *actor,
 
   actor->state = state;
   actor->frameIndex = 0U;
+  if (state != COMBAT_ANIM_ATTACK)
+  {
+    actor->attackStep = 0U;
+    actor->queuedAttack = 0U;
+  }
   actor->hitConnected = 0U;
   actor->stateStartedMs = nowMs;
 }
@@ -492,19 +546,19 @@ static uint8_t CombatActor_GetFrameCount(const CombatActor *actor)
   if (actor->character == COMBAT_CHARACTER_SASUKE)
   {
     SasukeMoveState move;
-    CombatActor_MapSasuke(actor->state, &move);
+    CombatActor_MapSasuke(actor, &move);
     return sasuke_move_animations[move].frameCount;
   }
 
   if (actor->character == COMBAT_CHARACTER_ICHIGO)
   {
     IchigoMoveState move;
-    CombatActor_MapIchigo(actor->state, &move);
+    CombatActor_MapIchigo(actor, &move);
     return ichigo_move_animations[move].frameCount;
   }
 
   NarutoMoveState move;
-  CombatActor_MapNaruto(actor->state, &move);
+  CombatActor_MapNaruto(actor, &move);
   return naruto_move_animations[move].frameCount;
 }
 
@@ -513,19 +567,19 @@ static uint8_t CombatActor_GetLoop(const CombatActor *actor)
   if (actor->character == COMBAT_CHARACTER_SASUKE)
   {
     SasukeMoveState move;
-    CombatActor_MapSasuke(actor->state, &move);
+    CombatActor_MapSasuke(actor, &move);
     return sasuke_move_animations[move].loop;
   }
 
   if (actor->character == COMBAT_CHARACTER_ICHIGO)
   {
     IchigoMoveState move;
-    CombatActor_MapIchigo(actor->state, &move);
+    CombatActor_MapIchigo(actor, &move);
     return ichigo_move_animations[move].loop;
   }
 
   NarutoMoveState move;
-  CombatActor_MapNaruto(actor->state, &move);
+  CombatActor_MapNaruto(actor, &move);
   return naruto_move_animations[move].loop;
 }
 
@@ -597,10 +651,10 @@ static uint8_t CombatActor_StateFinished(const CombatActor *actor,
   return ((nowMs - actor->stateStartedMs) >= totalMs) ? 1U : 0U;
 }
 
-static void CombatActor_MapNaruto(CombatAnimState state,
+static void CombatActor_MapNaruto(const CombatActor *actor,
                                   NarutoMoveState *move)
 {
-  switch (state)
+  switch (actor->state)
   {
     case COMBAT_ANIM_RUN:
       *move = NARUTO_MOVE_RUN;
@@ -612,7 +666,18 @@ static void CombatActor_MapNaruto(CombatAnimState state,
       *move = NARUTO_MOVE_JUMP;
       break;
     case COMBAT_ANIM_ATTACK:
-      *move = NARUTO_MOVE_ATTACK_LIGHT;
+      if (actor->attackStep == 1U)
+      {
+        *move = NARUTO_MOVE_ATTACK2;
+      }
+      else if (actor->attackStep >= 2U)
+      {
+        *move = NARUTO_MOVE_ATTACK3;
+      }
+      else
+      {
+        *move = NARUTO_MOVE_ATTACK_LIGHT;
+      }
       break;
     case COMBAT_ANIM_SKILL:
       *move = NARUTO_MOVE_SKILL;
@@ -629,10 +694,10 @@ static void CombatActor_MapNaruto(CombatAnimState state,
   }
 }
 
-static void CombatActor_MapSasuke(CombatAnimState state,
+static void CombatActor_MapSasuke(const CombatActor *actor,
                                   SasukeMoveState *move)
 {
-  switch (state)
+  switch (actor->state)
   {
     case COMBAT_ANIM_RUN:
       *move = SASUKE_MOVE_RUN;
@@ -644,7 +709,18 @@ static void CombatActor_MapSasuke(CombatAnimState state,
       *move = SASUKE_MOVE_JUMP_AIR;
       break;
     case COMBAT_ANIM_ATTACK:
-      *move = SASUKE_MOVE_ATTACK1;
+      if (actor->attackStep == 1U)
+      {
+        *move = SASUKE_MOVE_ATTACK2;
+      }
+      else if (actor->attackStep >= 2U)
+      {
+        *move = SASUKE_MOVE_ATTACK3;
+      }
+      else
+      {
+        *move = SASUKE_MOVE_ATTACK1;
+      }
       break;
     case COMBAT_ANIM_SKILL:
       *move = SASUKE_MOVE_SKILL;
@@ -661,10 +737,10 @@ static void CombatActor_MapSasuke(CombatAnimState state,
   }
 }
 
-static void CombatActor_MapIchigo(CombatAnimState state,
+static void CombatActor_MapIchigo(const CombatActor *actor,
                                   IchigoMoveState *move)
 {
-  switch (state)
+  switch (actor->state)
   {
     case COMBAT_ANIM_RUN:
       *move = ICHIGO_MOVE_RUN;

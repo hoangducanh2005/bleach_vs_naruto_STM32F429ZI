@@ -24,6 +24,34 @@ static const CombatHitboxDef s_basicAttack = {
     1U,
 };
 
+static const CombatHitboxDef s_basicAttack2 = {
+    1U,
+    2U,
+    {10, -46, 38, 26},
+    9U,
+    0U,
+    230U,
+    130U,
+    16,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
+static const CombatHitboxDef s_basicAttack3 = {
+    2U,
+    3U,
+    {14, -48, 44, 30},
+    12U,
+    0U,
+    300U,
+    160U,
+    24,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
 static const CombatHitboxDef s_sasukeAttack = {
     2U,
     3U,
@@ -33,6 +61,34 @@ static const CombatHitboxDef s_sasukeAttack = {
     180U,
     100U,
     10,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
+static const CombatHitboxDef s_sasukeAttack2 = {
+    2U,
+    6U,
+    {10, -46, 38, 26},
+    9U,
+    0U,
+    230U,
+    130U,
+    16,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
+static const CombatHitboxDef s_sasukeAttack3 = {
+    3U,
+    5U,
+    {14, -48, 44, 30},
+    12U,
+    0U,
+    300U,
+    160U,
+    24,
     0,
     COMBAT_HIT_LEVEL_MID,
     1U,
@@ -116,14 +172,40 @@ CombatBox CombatAttackData_GetHurtbox(CombatCharacterId character,
 
 const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
                                                   CombatAnimState state,
+                                                  uint8_t attackStep,
                                                   uint8_t frameIndex)
 {
   const CombatHitboxDef *hitbox = 0;
 
   if (state == COMBAT_ANIM_ATTACK)
   {
-    hitbox = (character == COMBAT_CHARACTER_SASUKE) ? &s_sasukeAttack
-                                                    : &s_basicAttack;
+    if (character == COMBAT_CHARACTER_SASUKE)
+    {
+      if (attackStep == 1U)
+      {
+        hitbox = &s_sasukeAttack2;
+      }
+      else if (attackStep >= 2U)
+      {
+        hitbox = &s_sasukeAttack3;
+      }
+      else
+      {
+        hitbox = &s_sasukeAttack;
+      }
+    }
+    else if (attackStep == 1U)
+    {
+      hitbox = &s_basicAttack2;
+    }
+    else if (attackStep >= 2U)
+    {
+      hitbox = &s_basicAttack3;
+    }
+    else
+    {
+      hitbox = &s_basicAttack;
+    }
   }
   else if (state == COMBAT_ANIM_SKILL)
   {
