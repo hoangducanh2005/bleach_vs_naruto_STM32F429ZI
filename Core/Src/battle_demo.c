@@ -3,6 +3,7 @@
 #include "combat_actor.h"
 #include "combat_box.h"
 #include "combat_input.h"
+#include "chidori_data.h"
 #include "ILI9341_GFX.h"
 #include "lcd_port.h"
 #include "sprite_data.h"
@@ -78,6 +79,7 @@ static BattleProjectile s_getsuga;
 static BattleActorSnapshot s_playerSnapshot;
 static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
+static BattleActorSnapshot s_chidoriSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
@@ -124,15 +126,24 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
                                    BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
                                      BattleActorSnapshot *snapshot);
+static uint8_t Battle_CaptureChidori(const CombatActor *actor,
+                                     BattleActorSnapshot *snapshot);
 static void Battle_DrawActorSnapshot(const BattleActorSnapshot *snapshot);
 static uint8_t Battle_ActorSnapshotEqual(const BattleActorSnapshot *a,
                                          const BattleActorSnapshot *b);
 static void Battle_DirtyRectAddSnapshot(BattleDirtyRect *rect,
                                         const BattleActorSnapshot *snapshot);
+static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
+                                      const BattleActorSnapshot *next,
+                                      const BattleActorSnapshot *player,
+                                      const BattleActorSnapshot *cpu,
+                                      const BattleActorSnapshot *projectile,
+                                      const BattleActorSnapshot *chidori);
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
                                  const BattleActorSnapshot *cpu,
-                                 const BattleActorSnapshot *projectile);
+                                 const BattleActorSnapshot *projectile,
+                                 const BattleActorSnapshot *chidori);
 static void Battle_ComposeActorRow(BattleDirtyRect rect,
                                    const BattleActorSnapshot *snapshot,
                                    uint16_t screenY);
@@ -143,6 +154,9 @@ static void Battle_DrawBox(CombatBox box, uint16_t color);
 static void Battle_ResolveHit(CombatActor *attacker, CombatActor *target,
                               uint32_t nowMs);
 static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y);
+static uint8_t Battle_RectContains(uint16_t x, uint16_t y, int16_t rectX,
+                                   int16_t rectY, int16_t rectW,
+                                   int16_t rectH);
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,
                             int16_t height, uint16_t color);
 
@@ -170,6 +184,7 @@ void BattleDemo_Init(void)
   s_playerSnapshot.valid = 0U;
   s_cpuSnapshot.valid = 0U;
   s_getsugaSnapshot.valid = 0U;
+  s_chidoriSnapshot.valid = 0U;
   s_getsuga.active = 0U;
   s_lastGetsugaSkillStartMs = 0U;
 
@@ -260,47 +275,72 @@ static void Battle_UpdateActors(void)
   BattleActorSnapshot nextPlayer;
   BattleActorSnapshot nextCpu;
   BattleActorSnapshot nextGetsuga;
-  BattleDirtyRect dirty = {0, 0, 0, 0, 0U};
+  BattleActorSnapshot nextChidori;
   uint8_t playerDirty;
   uint8_t cpuDirty;
   uint8_t getsugaDirty;
+  uint8_t chidoriDirty;
 
   Battle_CaptureActor(&s_player, &nextPlayer);
   Battle_CaptureActor(&s_cpu, &nextCpu);
   Battle_CaptureGetsuga(&s_getsuga, &nextGetsuga);
+  Battle_CaptureChidori(&s_player, &nextChidori);
 
   playerDirty = (Battle_ActorSnapshotEqual(&s_playerSnapshot, &nextPlayer) == 0U);
   cpuDirty = (Battle_ActorSnapshotEqual(&s_cpuSnapshot, &nextCpu) == 0U);
   getsugaDirty = (Battle_ActorSnapshotEqual(&s_getsugaSnapshot, &nextGetsuga) == 0U);
+  chidoriDirty = (Battle_ActorSnapshotEqual(&s_chidoriSnapshot, &nextChidori) == 0U);
 
-  if ((playerDirty == 0U) && (cpuDirty == 0U) && (getsugaDirty == 0U))
+  if ((playerDirty == 0U) && (cpuDirty == 0U) &&
+      (getsugaDirty == 0U) && (chidoriDirty == 0U))
   {
     return;
   }
 
   if (playerDirty != 0U)
   {
-    Battle_DirtyRectAddSnapshot(&dirty, &s_playerSnapshot);
-    Battle_DirtyRectAddSnapshot(&dirty, &nextPlayer);
+    Battle_DrawSnapshotChange(&s_playerSnapshot,
+                              &nextPlayer,
+                              &nextPlayer,
+                              &nextCpu,
+                              &nextGetsuga,
+                              &nextChidori);
   }
 
   if (cpuDirty != 0U)
   {
-    Battle_DirtyRectAddSnapshot(&dirty, &s_cpuSnapshot);
-    Battle_DirtyRectAddSnapshot(&dirty, &nextCpu);
+    Battle_DrawSnapshotChange(&s_cpuSnapshot,
+                              &nextCpu,
+                              &nextPlayer,
+                              &nextCpu,
+                              &nextGetsuga,
+                              &nextChidori);
   }
 
   if (getsugaDirty != 0U)
   {
-    Battle_DirtyRectAddSnapshot(&dirty, &s_getsugaSnapshot);
-    Battle_DirtyRectAddSnapshot(&dirty, &nextGetsuga);
+    Battle_DrawSnapshotChange(&s_getsugaSnapshot,
+                              &nextGetsuga,
+                              &nextPlayer,
+                              &nextCpu,
+                              &nextGetsuga,
+                              &nextChidori);
   }
 
-  Battle_DrawDirtyRect(dirty, &nextPlayer, &nextCpu, &nextGetsuga);
+  if (chidoriDirty != 0U)
+  {
+    Battle_DrawSnapshotChange(&s_chidoriSnapshot,
+                              &nextChidori,
+                              &nextPlayer,
+                              &nextCpu,
+                              &nextGetsuga,
+                              &nextChidori);
+  }
 
   s_playerSnapshot = nextPlayer;
   s_cpuSnapshot = nextCpu;
   s_getsugaSnapshot = nextGetsuga;
+  s_chidoriSnapshot = nextChidori;
 }
 
 static void Battle_DrawActor(const CombatActor *actor,
@@ -451,6 +491,76 @@ static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
   return 1U;
 }
 
+static uint8_t Battle_CaptureChidori(const CombatActor *actor,
+                                     BattleActorSnapshot *snapshot)
+{
+  const ChidoriFrame *frames = 0;
+  uint8_t frameCount = 0U;
+  uint8_t frameIndex = 0U;
+
+  if (snapshot != 0)
+  {
+    snapshot->valid = 0U;
+  }
+
+  if ((actor == 0) || (snapshot == 0) ||
+      (actor->character != COMBAT_CHARACTER_SASUKE) ||
+      (actor->state != COMBAT_ANIM_SKILL))
+  {
+    return 0U;
+  }
+
+  if (actor->frameIndex < 3U)
+  {
+    frames = chidori_1_frames;
+    frameCount = 4U;
+    frameIndex = actor->frameIndex;
+  }
+  else if (actor->frameIndex < 6U)
+  {
+    frames = chidori_2_frames;
+    frameCount = 3U;
+    frameIndex = (uint8_t)(actor->frameIndex - 3U);
+  }
+  else if (actor->frameIndex < 9U)
+  {
+    frames = chidori_3_frames;
+    frameCount = 3U;
+    frameIndex = (uint8_t)(actor->frameIndex - 6U);
+  }
+  else
+  {
+    frames = chidori_4_frames;
+    frameCount = 2U;
+    frameIndex = (uint8_t)(actor->frameIndex - 9U);
+  }
+
+  if (frameIndex >= frameCount)
+  {
+    frameIndex = (uint8_t)(frameCount - 1U);
+  }
+
+  const ChidoriFrame *frame = &frames[frameIndex];
+  snapshot->pixels = frame->pixels;
+  snapshot->width = frame->width;
+  snapshot->height = frame->height;
+  snapshot->y = (int16_t)(actor->y - 54 - (int16_t)(frame->height / 2U));
+
+  if (actor->facing < 0)
+  {
+    snapshot->x = (int16_t)(actor->x - 18 - (int16_t)frame->width);
+    snapshot->flipX = 1U;
+  }
+  else
+  {
+    snapshot->x = (int16_t)(actor->x + 18);
+    snapshot->flipX = 0U;
+  }
+
+  snapshot->valid = 1U;
+  return 1U;
+}
+
 static void Battle_DrawActorSnapshot(const BattleActorSnapshot *snapshot)
 {
   if ((snapshot == 0) || (snapshot->valid == 0U))
@@ -555,10 +665,25 @@ static void Battle_DirtyRectAddSnapshot(BattleDirtyRect *rect,
   rect->h = (int16_t)(ry1 - rect->y);
 }
 
+static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
+                                      const BattleActorSnapshot *next,
+                                      const BattleActorSnapshot *player,
+                                      const BattleActorSnapshot *cpu,
+                                      const BattleActorSnapshot *projectile,
+                                      const BattleActorSnapshot *chidori)
+{
+  BattleDirtyRect dirty = {0, 0, 0, 0, 0U};
+
+  Battle_DirtyRectAddSnapshot(&dirty, previous);
+  Battle_DirtyRectAddSnapshot(&dirty, next);
+  Battle_DrawDirtyRect(dirty, player, cpu, projectile, chidori);
+}
+
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
                                  const BattleActorSnapshot *cpu,
-                                 const BattleActorSnapshot *projectile)
+                                 const BattleActorSnapshot *projectile,
+                                 const BattleActorSnapshot *chidori)
 {
   if ((rect.valid == 0U) || (rect.w <= 0) || (rect.h <= 0))
   {
@@ -578,6 +703,7 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
     Battle_ComposeActorRow(rect, player, y);
     Battle_ComposeActorRow(rect, cpu, y);
     Battle_ComposeActorRow(rect, projectile, y);
+    Battle_ComposeActorRow(rect, chidori, y);
 
     LCD_Port_DrawPixels((uint16_t)rect.x,
                         y,
@@ -801,10 +927,12 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y)
   }
   else if (y < 148U)
   {
-    uint16_t h1 = (uint16_t)(22U + ((x * 17U) % 39U));
-    uint16_t h2 = (uint16_t)(14U + ((x * 11U) % 31U));
+    uint16_t mountainX = (uint16_t)((x / 8U) * 8U);
+    uint16_t localX = (uint16_t)(x - mountainX);
+    uint16_t h1 = (uint16_t)(22U + ((mountainX * 17U) % 39U));
+    uint16_t h2 = (uint16_t)(14U + ((mountainX * 11U) % 31U));
 
-    if (y >= (uint16_t)(148U - h2))
+    if ((localX < 4U) && (y >= (uint16_t)(148U - h2)))
     {
       color = RGB565_MOUNTAIN_LIGHT;
     }
@@ -824,7 +952,7 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y)
 
     if ((y < 150U) || (y >= 180U))
     {
-      color = RGB565_BLACK;
+      color = (y < 150U) ? RGB565_WALL_LIGHT : RGB565_BLACK;
     }
   }
   else
@@ -861,7 +989,74 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y)
     }
   }
 
+  if (Battle_RectContains(x, y, 258, 24, 20, 20) != 0U)
+  {
+    color = RGB565_ACCENT_ORANGE;
+  }
+  if (Battle_RectContains(x, y, 254, 30, 28, 8) != 0U)
+  {
+    color = RGB565_ACCENT_ORANGE;
+  }
+  if (Battle_RectContains(x, y, 264, 20, 8, 28) != 0U)
+  {
+    color = RGB565_ACCENT_ORANGE;
+  }
+
+  if (Battle_RectContains(x, y, 38, 43, 45, 9) != 0U)
+  {
+    color = RGB565_CLOUD_SHADOW;
+  }
+  if (Battle_RectContains(x, y, 30, 44, 24, 9) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 43, 38, 27, 15) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 64, 43, 27, 10) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 37, 51, 48, 5) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+
+  if (Battle_RectContains(x, y, 186, 65, 45, 9) != 0U)
+  {
+    color = RGB565_CLOUD_SHADOW;
+  }
+  if (Battle_RectContains(x, y, 178, 66, 24, 9) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 191, 60, 27, 15) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 212, 65, 27, 10) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+  if (Battle_RectContains(x, y, 185, 73, 48, 5) != 0U)
+  {
+    color = RGB565_CLOUD;
+  }
+
   return color;
+}
+
+static uint8_t Battle_RectContains(uint16_t x, uint16_t y, int16_t rectX,
+                                   int16_t rectY, int16_t rectW,
+                                   int16_t rectH)
+{
+  return (((int16_t)x >= rectX) &&
+          ((int16_t)x < (int16_t)(rectX + rectW)) &&
+          ((int16_t)y >= rectY) &&
+          ((int16_t)y < (int16_t)(rectY + rectH)))
+             ? 1U
+             : 0U;
 }
 
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,

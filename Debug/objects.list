@@ -1,6 +1,7 @@
 "./Core/Src/ILI9341_GFX.o"
 "./Core/Src/ILI9341_STM32_Driver.o"
 "./Core/Src/battle_demo.o"
+"./Core/Src/chidori_data.o"
 "./Core/Src/combat_actor.o"
 "./Core/Src/combat_attack_data.o"
 "./Core/Src/combat_box.o"
