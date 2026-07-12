@@ -81,6 +81,7 @@ static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
 static BattleActorSnapshot s_chidoriSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
+static uint16_t s_backgroundPixels[LCD_PORT_WIDTH * LCD_PORT_HEIGHT];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
@@ -110,6 +111,7 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
                                         CombatActor *target,
                                         uint32_t nowMs);
 static void Battle_DrawBackground(void);
+static void Battle_BuildBackgroundCache(void);
 static void Battle_DrawStaticSky(void);
 static void Battle_DrawSun(uint16_t x, uint16_t y);
 static void Battle_DrawCloud(int16_t x, uint16_t y);
@@ -167,13 +169,13 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_SASUKE,
+                   COMBAT_CHARACTER_NARUTO,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
                    now);
   CombatActor_Init(&s_cpu,
-                   COMBAT_CHARACTER_ICHIGO,
+                   COMBAT_CHARACTER_SASUKE,
                    BATTLE_CPU_START_X,
                    BATTLE_GROUND_Y,
                    -1,
@@ -188,6 +190,7 @@ void BattleDemo_Init(void)
   s_getsuga.active = 0U;
   s_lastGetsugaSkillStartMs = 0U;
 
+  Battle_BuildBackgroundCache();
   Battle_DrawFrame();
   LCD_Port_Flush();
 }
@@ -697,7 +700,8 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
     for (int16_t col = 0; col < rect.w; col++)
     {
       uint16_t x = (uint16_t)(rect.x + col);
-      s_compositeRun[col] = Battle_GetBackgroundPixel(x, y);
+      s_compositeRun[col] =
+          s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x];
     }
 
     Battle_ComposeActorRow(rect, player, y);
@@ -809,8 +813,8 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 static void Battle_DrawHud(void)
 {
   ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 35U, RGB565_BLACK);
-  ILI9341_DrawText("P1 SASUKE", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("CPU ICHIGO", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
+  ILI9341_DrawText("P1 NARUTO", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
+  ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
   ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
                    RGB565_BLACK);
   Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
@@ -844,6 +848,18 @@ static void Battle_DrawBackground(void)
   Battle_DrawDojoWall();
   Battle_DrawGround();
   Battle_DrawArenaMarks();
+}
+
+static void Battle_BuildBackgroundCache(void)
+{
+  for (uint16_t y = 0U; y < LCD_PORT_HEIGHT; y++)
+  {
+    for (uint16_t x = 0U; x < LCD_PORT_WIDTH; x++)
+    {
+      s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x] =
+          Battle_GetBackgroundPixel(x, y);
+    }
+  }
 }
 
 static void Battle_DrawStaticSky(void)
