@@ -27,7 +27,9 @@ static void CombatActor_ApplyPhysics(CombatActor *actor);
 static void CombatActor_BeginAttack(CombatActor *actor,
                                     uint8_t attackStep,
                                     uint32_t nowMs);
-static void CombatActor_StartDash(CombatActor *actor, uint32_t nowMs);
+static void CombatActor_StartDash(CombatActor *actor,
+                                  uint8_t inputFlags,
+                                  uint32_t nowMs);
 static void CombatActor_StartJump(CombatActor *actor, uint32_t nowMs);
 static uint8_t CombatActor_GetFrameCount(const CombatActor *actor);
 static uint8_t CombatActor_GetLoop(const CombatActor *actor);
@@ -207,7 +209,7 @@ void CombatActor_Update(CombatActor *actor,
     }
     else if ((inputFlags & COMBAT_INPUT_DASH) != 0U)
     {
-      CombatActor_StartDash(actor, nowMs);
+      CombatActor_StartDash(actor, inputFlags, nowMs);
     }
     else if ((inputFlags & COMBAT_INPUT_SKILL) != 0U)
     {
@@ -403,11 +405,22 @@ static void CombatActor_StartJump(CombatActor *actor, uint32_t nowMs)
   CombatActor_SetState(actor, COMBAT_ANIM_JUMP, nowMs);
 }
 
-static void CombatActor_StartDash(CombatActor *actor, uint32_t nowMs)
+static void CombatActor_StartDash(CombatActor *actor,
+                                  uint8_t inputFlags,
+                                  uint32_t nowMs)
 {
   if (actor == 0)
   {
     return;
+  }
+
+  if ((inputFlags & COMBAT_INPUT_LEFT) != 0U)
+  {
+    actor->facing = -1;
+  }
+  else if ((inputFlags & COMBAT_INPUT_RIGHT) != 0U)
+  {
+    actor->facing = 1;
   }
 
   actor->vx = (actor->facing < 0) ? -COMBAT_DASH_SPEED : COMBAT_DASH_SPEED;
