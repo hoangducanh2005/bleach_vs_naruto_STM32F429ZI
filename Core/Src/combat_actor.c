@@ -7,11 +7,13 @@
 
 #define COMBAT_ARENA_MIN_X 32
 #define COMBAT_ARENA_MAX_X 288
-#define COMBAT_RUN_SPEED 3
+#define COMBAT_RUN_SPEED 4
+#define COMBAT_DASH_SPEED 11
 #define COMBAT_JUMP_FORCE -11
 #define COMBAT_GRAVITY 1
 #define COMBAT_MAX_FALL_SPEED 9
 #define COMBAT_MAX_ATTACK_STEP 2U
+#define COMBAT_COMBO_WINDOW_MS 520U
 
 static void CombatActor_SetState(CombatActor *actor,
                                  CombatAnimState state,
@@ -20,13 +22,12 @@ static void CombatActor_ApplyPhysics(CombatActor *actor);
 static void CombatActor_BeginAttack(CombatActor *actor,
                                     uint8_t attackStep,
                                     uint32_t nowMs);
+static void CombatActor_StartDash(CombatActor *actor, uint32_t nowMs);
 static void CombatActor_StartJump(CombatActor *actor, uint32_t nowMs);
 static uint8_t CombatActor_GetFrameCount(const CombatActor *actor);
 static uint8_t CombatActor_GetLoop(const CombatActor *actor);
 static uint16_t CombatActor_GetFrameDuration(const CombatActor *actor,
                                              uint8_t frameIndex);
-static uint16_t CombatActor_GetStateDurationMs(CombatAnimState state);
-static uint8_t CombatActor_UseNativeDuration(CombatAnimState state);
 static uint8_t CombatActor_IsTerminalState(CombatAnimState state);
 static uint8_t CombatActor_StateFinished(const CombatActor *actor,
                                          uint32_t nowMs);
@@ -62,9 +63,11 @@ void CombatActor_Init(CombatActor *actor,
   actor->frameIndex = 0U;
   actor->attackStep = 0U;
   actor->queuedAttack = 0U;
+  actor->comboNextStep = 0U;
   actor->hitConnected = 0U;
   actor->stateStartedMs = nowMs;
   actor->stunUntilMs = 0U;
+  actor->comboExpiresMs = 0U;
 }
 
 void CombatActor_Update(CombatActor *actor,
@@ -118,6 +121,17 @@ void CombatActor_Update(CombatActor *actor,
       }
       else
       {
+        if (actor->attackStep < COMBAT_MAX_ATTACK_STEP)
+        {
+          actor->comboNextStep = (uint8_t)(actor->attackStep + 1U);
+          actor->comboExpiresMs = nowMs + COMBAT_COMBO_WINDOW_MS;
+        }
+        else
+        {
+          actor->comboNextStep = 0U;
+          actor->comboExpiresMs = 0U;
+        }
+
         actor->queuedAttack = 0U;
         actor->attackStep = 0U;
         CombatActor_SetState(actor,
@@ -125,6 +139,18 @@ void CombatActor_Update(CombatActor *actor,
                                                      : COMBAT_ANIM_JUMP,
                              nowMs);
       }
+    }
+  }
+  else if (actor->state == COMBAT_ANIM_DASH)
+  {
+    CombatActor_ApplyPhysics(actor);
+    if (CombatActor_StateFinished(actor, nowMs) != 0U)
+    {
+      actor->vx = 0;
+      CombatActor_SetState(actor,
+                           (actor->onGround != 0U) ? COMBAT_ANIM_IDLE
+                                                   : COMBAT_ANIM_JUMP,
+                           nowMs);
     }
   }
   else if (actor->state == COMBAT_ANIM_JUMP)
@@ -162,7 +188,19 @@ void CombatActor_Update(CombatActor *actor,
 
     if ((inputFlags & COMBAT_INPUT_ATTACK) != 0U)
     {
-      CombatActor_BeginAttack(actor, 0U, nowMs);
+      uint8_t attackStep = 0U;
+
+      if ((actor->comboNextStep != 0U) &&
+          (nowMs <= actor->comboExpiresMs))
+      {
+        attackStep = actor->comboNextStep;
+      }
+
+      CombatActor_BeginAttack(actor, attackStep, nowMs);
+    }
+    else if ((inputFlags & COMBAT_INPUT_DASH) != 0U)
+    {
+      CombatActor_StartDash(actor, nowMs);
     }
     else if ((inputFlags & COMBAT_INPUT_SKILL) != 0U)
     {
@@ -215,52 +253,20 @@ void CombatActor_Update(CombatActor *actor,
 
   uint32_t elapsedMs = nowMs - actor->stateStartedMs;
   uint8_t nextFrame = 0U;
+  uint16_t frameDuration = CombatActor_GetFrameDuration(actor, actor->frameIndex);
+  uint32_t rawFrame = (frameDuration == 0U) ? 0U : (elapsedMs / frameDuration);
 
-  if (CombatActor_UseNativeDuration(actor->state) != 0U)
+  if (CombatActor_GetLoop(actor) != 0U)
   {
-    uint16_t frameDuration = CombatActor_GetFrameDuration(actor, actor->frameIndex);
-    uint32_t rawFrame = (frameDuration == 0U) ? 0U : (elapsedMs / frameDuration);
-
-    if (CombatActor_GetLoop(actor) != 0U)
-    {
-      nextFrame = (uint8_t)(rawFrame % frameCount);
-    }
-    else if (rawFrame >= frameCount)
-    {
-      nextFrame = (uint8_t)(frameCount - 1U);
-    }
-    else
-    {
-      nextFrame = (uint8_t)rawFrame;
-    }
+    nextFrame = (uint8_t)(rawFrame % frameCount);
+  }
+  else if (rawFrame >= frameCount)
+  {
+    nextFrame = (uint8_t)(frameCount - 1U);
   }
   else
   {
-    uint16_t durationMs = CombatActor_GetStateDurationMs(actor->state);
-    uint32_t timelineMs = elapsedMs;
-
-    if (durationMs == 0U)
-    {
-      nextFrame = 0U;
-    }
-    else if (CombatActor_GetLoop(actor) != 0U)
-    {
-      timelineMs = elapsedMs % durationMs;
-      nextFrame = (uint8_t)(((uint32_t)frameCount * timelineMs) / durationMs);
-    }
-    else if (timelineMs >= durationMs)
-    {
-      nextFrame = (uint8_t)(frameCount - 1U);
-    }
-    else
-    {
-      nextFrame = (uint8_t)(((uint32_t)frameCount * timelineMs) / durationMs);
-    }
-
-    if (nextFrame >= frameCount)
-    {
-      nextFrame = (uint8_t)(frameCount - 1U);
-    }
+    nextFrame = (uint8_t)rawFrame;
   }
 
   actor->frameIndex = nextFrame;
@@ -275,6 +281,7 @@ void CombatActor_FaceToward(CombatActor *actor, const CombatActor *target)
 
   if ((actor->state == COMBAT_ANIM_ATTACK) ||
       (actor->state == COMBAT_ANIM_SKILL) ||
+      (actor->state == COMBAT_ANIM_DASH) ||
       (actor->state == COMBAT_ANIM_HIT) ||
       (actor->state == COMBAT_ANIM_DEAD))
   {
@@ -343,6 +350,8 @@ static void CombatActor_BeginAttack(CombatActor *actor,
                           ? COMBAT_MAX_ATTACK_STEP
                           : attackStep;
   actor->queuedAttack = 0U;
+  actor->comboNextStep = 0U;
+  actor->comboExpiresMs = 0U;
   actor->hitConnected = 0U;
   actor->stateStartedMs = nowMs;
 }
@@ -385,6 +394,18 @@ static void CombatActor_StartJump(CombatActor *actor, uint32_t nowMs)
   actor->onGround = 0U;
   actor->vy = COMBAT_JUMP_FORCE;
   CombatActor_SetState(actor, COMBAT_ANIM_JUMP, nowMs);
+}
+
+static void CombatActor_StartDash(CombatActor *actor, uint32_t nowMs)
+{
+  if (actor == 0)
+  {
+    return;
+  }
+
+  actor->vx = (actor->facing < 0) ? -COMBAT_DASH_SPEED : COMBAT_DASH_SPEED;
+  actor->vy = 0;
+  CombatActor_SetState(actor, COMBAT_ANIM_DASH, nowMs);
 }
 
 CombatBox CombatActor_GetHurtboxWorld(const CombatActor *actor)
@@ -515,6 +536,7 @@ uint8_t CombatActor_IsActionLocked(const CombatActor *actor, uint32_t nowMs)
   return ((nowMs < actor->stunUntilMs) ||
           (actor->state == COMBAT_ANIM_ATTACK) ||
           (actor->state == COMBAT_ANIM_SKILL) ||
+          (actor->state == COMBAT_ANIM_DASH) ||
           (actor->state == COMBAT_ANIM_HIT) ||
           (actor->state == COMBAT_ANIM_DEAD))
              ? 1U
@@ -530,12 +552,21 @@ static void CombatActor_SetState(CombatActor *actor,
     return;
   }
 
-  actor->state = state;
+    actor->state = state;
   actor->frameIndex = 0U;
   if (state != COMBAT_ANIM_ATTACK)
   {
     actor->attackStep = 0U;
     actor->queuedAttack = 0U;
+    if ((state == COMBAT_ANIM_SKILL) ||
+        (state == COMBAT_ANIM_DASH) ||
+        (state == COMBAT_ANIM_JUMP) ||
+        (state == COMBAT_ANIM_HIT) ||
+        (state == COMBAT_ANIM_DEAD))
+    {
+      actor->comboNextStep = 0U;
+      actor->comboExpiresMs = 0U;
+    }
   }
   actor->hitConnected = 0U;
   actor->stateStartedMs = nowMs;
@@ -598,32 +629,6 @@ static uint16_t CombatActor_GetFrameDuration(const CombatActor *actor,
   return frame.durationMs;
 }
 
-static uint16_t CombatActor_GetStateDurationMs(CombatAnimState state)
-{
-  switch (state)
-  {
-    case COMBAT_ANIM_RUN:
-      return 480U;
-    case COMBAT_ANIM_BLOCK:
-      return 360U;
-    case COMBAT_ANIM_JUMP:
-      return 720U;
-    case COMBAT_ANIM_ATTACK:
-      return 350U;
-    case COMBAT_ANIM_HIT:
-      return 360U;
-    case COMBAT_ANIM_DEAD:
-      return 960U;
-    default:
-      return 480U;
-  }
-}
-
-static uint8_t CombatActor_UseNativeDuration(CombatAnimState state)
-{
-  return (state == COMBAT_ANIM_SKILL) ? 1U : 0U;
-}
-
 static uint8_t CombatActor_IsTerminalState(CombatAnimState state)
 {
   return (state == COMBAT_ANIM_DEAD) ? 1U : 0U;
@@ -632,14 +637,6 @@ static uint8_t CombatActor_IsTerminalState(CombatAnimState state)
 static uint8_t CombatActor_StateFinished(const CombatActor *actor,
                                          uint32_t nowMs)
 {
-  if (CombatActor_UseNativeDuration(actor->state) == 0U)
-  {
-    return ((nowMs - actor->stateStartedMs) >=
-            CombatActor_GetStateDurationMs(actor->state))
-               ? 1U
-               : 0U;
-  }
-
   uint8_t frameCount = CombatActor_GetFrameCount(actor);
   uint32_t totalMs = 0U;
 
@@ -658,6 +655,9 @@ static void CombatActor_MapNaruto(const CombatActor *actor,
   {
     case COMBAT_ANIM_RUN:
       *move = NARUTO_MOVE_RUN;
+      break;
+    case COMBAT_ANIM_DASH:
+      *move = NARUTO_MOVE_DASH;
       break;
     case COMBAT_ANIM_BLOCK:
       *move = NARUTO_MOVE_BLOCK;
@@ -702,6 +702,9 @@ static void CombatActor_MapSasuke(const CombatActor *actor,
     case COMBAT_ANIM_RUN:
       *move = SASUKE_MOVE_RUN;
       break;
+    case COMBAT_ANIM_DASH:
+      *move = SASUKE_MOVE_DASH;
+      break;
     case COMBAT_ANIM_BLOCK:
       *move = SASUKE_MOVE_BLOCK;
       break;
@@ -745,6 +748,9 @@ static void CombatActor_MapIchigo(const CombatActor *actor,
     case COMBAT_ANIM_RUN:
       *move = ICHIGO_MOVE_RUN;
       break;
+    case COMBAT_ANIM_DASH:
+      *move = ICHIGO_MOVE_DASH;
+      break;
     case COMBAT_ANIM_BLOCK:
       *move = ICHIGO_MOVE_BLOCK;
       break;
@@ -752,7 +758,18 @@ static void CombatActor_MapIchigo(const CombatActor *actor,
       *move = ICHIGO_MOVE_JUMP;
       break;
     case COMBAT_ANIM_ATTACK:
-      *move = ICHIGO_MOVE_ATTACK_LIGHT;
+      if (actor->attackStep == 1U)
+      {
+        *move = ICHIGO_MOVE_ATTACK2;
+      }
+      else if (actor->attackStep >= 2U)
+      {
+        *move = ICHIGO_MOVE_ATTACK3;
+      }
+      else
+      {
+        *move = ICHIGO_MOVE_ATTACK_LIGHT;
+      }
       break;
     case COMBAT_ANIM_SKILL:
       *move = ICHIGO_MOVE_SKILL;

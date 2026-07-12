@@ -11,6 +11,10 @@
       "frame_duration_ms": 80,
       "loop": true
     },
+    "dash": {
+      "frames": [12, 13],
+      "frame_duration_ms": 45
+    },
     "attack_light": {
       "frames": [75, 76, 77, 78, 79],
       "frame_duration_ms": 70

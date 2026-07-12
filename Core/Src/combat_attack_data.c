@@ -3,6 +3,7 @@
 static const CombatHurtboxProfile s_basicHurtbox = {
     {-14, -52, 28, 52},
     {-15, -50, 30, 50},
+    {-16, -48, 32, 48},
     {-16, -52, 32, 52},
     {-14, -50, 28, 50},
     {-15, -52, 30, 52},
@@ -122,20 +123,6 @@ static const CombatHitboxDef s_narutoSkill = {
     1U,
 };
 
-static const CombatHitboxDef s_ichigoProjectilePlaceholder = {
-    4U,
-    7U,
-    {24, -48, 54, 28},
-    12U,
-    3U,
-    260U,
-    160U,
-    18,
-    0,
-    COMBAT_HIT_LEVEL_PROJECTILE,
-    1U,
-};
-
 const CombatHurtboxProfile *CombatAttackData_GetHurtboxProfile(
     CombatCharacterId character)
 {
@@ -153,6 +140,8 @@ CombatBox CombatAttackData_GetHurtbox(CombatCharacterId character,
   {
     case COMBAT_ANIM_RUN:
       return profile->run;
+    case COMBAT_ANIM_DASH:
+      return profile->dash;
     case COMBAT_ANIM_BLOCK:
       return profile->block;
     case COMBAT_ANIM_JUMP:
@@ -215,7 +204,7 @@ const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
     }
     else if (character == COMBAT_CHARACTER_ICHIGO)
     {
-      hitbox = &s_ichigoProjectilePlaceholder;
+      hitbox = 0;
     }
     else
     {

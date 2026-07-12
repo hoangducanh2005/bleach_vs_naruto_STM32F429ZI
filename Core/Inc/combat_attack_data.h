@@ -11,6 +11,7 @@ typedef struct
 {
   CombatBox idle;
   CombatBox run;
+  CombatBox dash;
   CombatBox block;
   CombatBox jump;
   CombatBox attack;

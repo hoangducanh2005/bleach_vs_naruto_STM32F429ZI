@@ -14,9 +14,12 @@
 #define COMBAT_INPUT_JUMP_BUTTON_PIN GPIO_IDR_ID1
 #define COMBAT_INPUT_SKILL_BUTTON_PORT GPIOB
 #define COMBAT_INPUT_SKILL_BUTTON_PIN GPIO_IDR_ID2
+#define COMBAT_INPUT_DASH_BUTTON_PORT GPIOB
+#define COMBAT_INPUT_DASH_BUTTON_PIN GPIO_IDR_ID3
 #define COMBAT_BUTTON_ATTACK_MASK 1U
 #define COMBAT_BUTTON_JUMP_MASK 2U
 #define COMBAT_BUTTON_SKILL_MASK 4U
+#define COMBAT_BUTTON_DASH_MASK 8U
 
 static uint16_t s_centerX = 2048U;
 static uint16_t s_centerY = 2048U;
@@ -106,6 +109,11 @@ uint8_t CombatInput_Read(void)
     input |= COMBAT_INPUT_SKILL;
   }
 
+  if ((pressedEdges & COMBAT_BUTTON_DASH_MASK) != 0U)
+  {
+    input |= COMBAT_INPUT_DASH;
+  }
+
   return input;
 }
 
@@ -135,9 +143,12 @@ static void CombatInput_InitButtonGpio(void)
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
   (void)RCC->AHB1ENR;
 
-  GPIOB->MODER &= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1 | GPIO_MODER_MODE2);
-  GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1 | GPIO_PUPDR_PUPD2);
-  GPIOB->PUPDR |= GPIO_PUPDR_PUPD0_0 | GPIO_PUPDR_PUPD1_0 | GPIO_PUPDR_PUPD2_0;
+  GPIOB->MODER &= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1 |
+                    GPIO_MODER_MODE2 | GPIO_MODER_MODE3);
+  GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1 |
+                    GPIO_PUPDR_PUPD2 | GPIO_PUPDR_PUPD3);
+  GPIOB->PUPDR |= GPIO_PUPDR_PUPD0_0 | GPIO_PUPDR_PUPD1_0 |
+                  GPIO_PUPDR_PUPD2_0 | GPIO_PUPDR_PUPD3_0;
 }
 
 static uint8_t CombatInput_ReadButtonsRaw(void)
@@ -160,6 +171,12 @@ static uint8_t CombatInput_ReadButtonsRaw(void)
                                   COMBAT_INPUT_SKILL_BUTTON_PIN) != 0U)
   {
     buttons |= COMBAT_BUTTON_SKILL_MASK;
+  }
+
+  if (CombatInput_IsButtonPressed(COMBAT_INPUT_DASH_BUTTON_PORT,
+                                  COMBAT_INPUT_DASH_BUTTON_PIN) != 0U)
+  {
+    buttons |= COMBAT_BUTTON_DASH_MASK;
   }
 
   return buttons;
