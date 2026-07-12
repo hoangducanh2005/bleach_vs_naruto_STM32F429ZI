@@ -1,11 +1,12 @@
 import json
+import argparse
 from pathlib import Path
 
 from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "assets" / "ichigo_frames" / "ichigo_moveset.json"
+DEFAULT_CONFIG = ROOT / "assets" / "ichigo_new" / "ichigo_moveset.json"
 OUT_H = ROOT / "Core" / "Inc" / "ichigo_moveset.h"
 OUT_C = ROOT / "Core" / "Src" / "ichigo_moveset.c"
 
@@ -42,8 +43,14 @@ def load_frame(source_dir, frame_number):
     return path.stem, width, height, pixels
 
 
-def load_moveset():
-    config = json.loads(CONFIG.read_text(encoding="utf-8"))
+def parse_args():
+    parser = argparse.ArgumentParser(description="Convert Ichigo moveset frames to C arrays.")
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    return parser.parse_args()
+
+
+def load_moveset(config_path):
+    config = json.loads(config_path.read_text(encoding="utf-8"))
     source_dir = ROOT / config["source_dir"]
     states = []
 
@@ -233,7 +240,8 @@ def write_source(states):
 
 
 def main():
-    states = load_moveset()
+    args = parse_args()
+    states = load_moveset(args.config)
     write_header(states)
     write_source(states)
 

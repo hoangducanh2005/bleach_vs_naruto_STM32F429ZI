@@ -20,9 +20,13 @@ typedef struct
   uint8_t onGround;
   CombatAnimState state;
   uint8_t frameIndex;
+  uint8_t attackStep;
+  uint8_t queuedAttack;
+  uint8_t comboNextStep;
   uint8_t hitConnected;
   uint32_t stateStartedMs;
   uint32_t stunUntilMs;
+  uint32_t comboExpiresMs;
 } CombatActor;
 
 void CombatActor_Init(CombatActor *actor,

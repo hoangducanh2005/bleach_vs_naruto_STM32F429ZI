@@ -1,0 +1,4 @@
+../Core/Src/sprite_render.c:17:13:SpriteRender_FlushRun	2
+../Core/Src/sprite_render.c:27:6:SpriteRender_Draw	11
+../Core/Src/sprite_render.c:79:6:SpriteRender_DrawDiff	15
+../Core/Src/sprite_render.c:152:6:SpriteRender_Erase	12

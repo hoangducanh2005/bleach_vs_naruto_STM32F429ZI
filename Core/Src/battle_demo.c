@@ -14,6 +14,9 @@
 #define BATTLE_P1_START_X 92
 #define BATTLE_CPU_START_X 228
 #define BATTLE_DEBUG_BOXES 0
+#define BATTLE_GETSUGA_SPEED 10
+#define BATTLE_GETSUGA_FRAME_MS 40U
+#define BATTLE_GETSUGA_SPAWN_FRAME 4U
 
 #define RGB565_BLACK 0x0000U
 #define RGB565_WHITE 0xFFFFU
@@ -58,18 +61,52 @@ typedef struct
   uint8_t valid;
 } BattleDirtyRect;
 
+typedef struct
+{
+  int16_t x;
+  int16_t y;
+  int16_t vx;
+  uint8_t active;
+  uint8_t frameIndex;
+  uint8_t hitConnected;
+  uint32_t startedMs;
+} BattleProjectile;
+
 static CombatActor s_player;
 static CombatActor s_cpu;
+static BattleProjectile s_getsuga;
 static BattleActorSnapshot s_playerSnapshot;
 static BattleActorSnapshot s_cpuSnapshot;
+static BattleActorSnapshot s_getsugaSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
+static uint32_t s_lastGetsugaSkillStartMs;
+
+static const CombatHitboxDef s_getsugaHitbox = {
+    0U,
+    0U,
+    {8, 18, 38, 36},
+    15U,
+    3U,
+    300U,
+    160U,
+    22,
+    0,
+    COMBAT_HIT_LEVEL_PROJECTILE,
+    1U,
+};
 
 static void Battle_DrawFrame(void);
 static void Battle_DrawActorsInitial(void);
 static void Battle_UpdateActors(void);
+static void Battle_TrySpawnGetsuga(uint32_t nowMs);
+static void Battle_UpdateGetsuga(uint32_t nowMs);
+static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
+                                        CombatActor *owner,
+                                        CombatActor *target,
+                                        uint32_t nowMs);
 static void Battle_DrawBackground(void);
 static void Battle_DrawStaticSky(void);
 static void Battle_DrawSun(uint16_t x, uint16_t y);
@@ -85,6 +122,8 @@ static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureActor(const CombatActor *actor,
                                    BattleActorSnapshot *snapshot);
+static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
+                                     BattleActorSnapshot *snapshot);
 static void Battle_DrawActorSnapshot(const BattleActorSnapshot *snapshot);
 static uint8_t Battle_ActorSnapshotEqual(const BattleActorSnapshot *a,
                                          const BattleActorSnapshot *b);
@@ -92,7 +131,8 @@ static void Battle_DirtyRectAddSnapshot(BattleDirtyRect *rect,
                                         const BattleActorSnapshot *snapshot);
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
-                                 const BattleActorSnapshot *cpu);
+                                 const BattleActorSnapshot *cpu,
+                                 const BattleActorSnapshot *projectile);
 static void Battle_ComposeActorRow(BattleDirtyRect rect,
                                    const BattleActorSnapshot *snapshot,
                                    uint16_t screenY);
@@ -113,13 +153,13 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_NARUTO,
+                   COMBAT_CHARACTER_SASUKE,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
                    now);
   CombatActor_Init(&s_cpu,
-                   COMBAT_CHARACTER_SASUKE,
+                   COMBAT_CHARACTER_ICHIGO,
                    BATTLE_CPU_START_X,
                    BATTLE_GROUND_Y,
                    -1,
@@ -129,6 +169,9 @@ void BattleDemo_Init(void)
   s_lastCpuHp = s_cpu.hp;
   s_playerSnapshot.valid = 0U;
   s_cpuSnapshot.valid = 0U;
+  s_getsugaSnapshot.valid = 0U;
+  s_getsuga.active = 0U;
+  s_lastGetsugaSkillStartMs = 0U;
 
   Battle_DrawFrame();
   LCD_Port_Flush();
@@ -152,6 +195,9 @@ void BattleDemo_Update(void)
   CombatActor_Update(&s_player, input, now, 1U);
   CombatActor_Update(&s_cpu, COMBAT_INPUT_NONE, now, 0U);
   Battle_ResolveHit(&s_player, &s_cpu, now);
+  Battle_TrySpawnGetsuga(now);
+  Battle_UpdateGetsuga(now);
+  Battle_ResolveProjectileHit(&s_getsuga, &s_player, &s_cpu, now);
 
   if (s_player.hp != s_lastPlayerHp)
   {
@@ -213,17 +259,21 @@ static void Battle_UpdateActors(void)
 {
   BattleActorSnapshot nextPlayer;
   BattleActorSnapshot nextCpu;
+  BattleActorSnapshot nextGetsuga;
   BattleDirtyRect dirty = {0, 0, 0, 0, 0U};
   uint8_t playerDirty;
   uint8_t cpuDirty;
+  uint8_t getsugaDirty;
 
   Battle_CaptureActor(&s_player, &nextPlayer);
   Battle_CaptureActor(&s_cpu, &nextCpu);
+  Battle_CaptureGetsuga(&s_getsuga, &nextGetsuga);
 
   playerDirty = (Battle_ActorSnapshotEqual(&s_playerSnapshot, &nextPlayer) == 0U);
   cpuDirty = (Battle_ActorSnapshotEqual(&s_cpuSnapshot, &nextCpu) == 0U);
+  getsugaDirty = (Battle_ActorSnapshotEqual(&s_getsugaSnapshot, &nextGetsuga) == 0U);
 
-  if ((playerDirty == 0U) && (cpuDirty == 0U))
+  if ((playerDirty == 0U) && (cpuDirty == 0U) && (getsugaDirty == 0U))
   {
     return;
   }
@@ -240,10 +290,17 @@ static void Battle_UpdateActors(void)
     Battle_DirtyRectAddSnapshot(&dirty, &nextCpu);
   }
 
-  Battle_DrawDirtyRect(dirty, &nextPlayer, &nextCpu);
+  if (getsugaDirty != 0U)
+  {
+    Battle_DirtyRectAddSnapshot(&dirty, &s_getsugaSnapshot);
+    Battle_DirtyRectAddSnapshot(&dirty, &nextGetsuga);
+  }
+
+  Battle_DrawDirtyRect(dirty, &nextPlayer, &nextCpu, &nextGetsuga);
 
   s_playerSnapshot = nextPlayer;
   s_cpuSnapshot = nextCpu;
+  s_getsugaSnapshot = nextGetsuga;
 }
 
 static void Battle_DrawActor(const CombatActor *actor,
@@ -275,11 +332,6 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
 
   viewActor = *actor;
 
-  if (viewActor.state == COMBAT_ANIM_IDLE)
-  {
-    viewActor.frameIndex = 0U;
-  }
-
   if (CombatActor_GetFrame(&viewActor, &frame) == 0U)
   {
     return 0U;
@@ -291,6 +343,109 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
   snapshot->x = (int16_t)(actor->x - frame.pivotX);
   snapshot->y = (int16_t)(actor->y - frame.pivotY);
   snapshot->flipX = (actor->facing < 0) ? 1U : 0U;
+  snapshot->valid = 1U;
+
+  return 1U;
+}
+
+static void Battle_TrySpawnGetsuga(uint32_t nowMs)
+{
+  if ((s_player.character != COMBAT_CHARACTER_ICHIGO) ||
+      (s_player.state != COMBAT_ANIM_SKILL) ||
+      (s_player.frameIndex < BATTLE_GETSUGA_SPAWN_FRAME) ||
+      (s_lastGetsugaSkillStartMs == s_player.stateStartedMs))
+  {
+    return;
+  }
+
+  s_lastGetsugaSkillStartMs = s_player.stateStartedMs;
+  s_getsuga.active = 1U;
+  s_getsuga.frameIndex = 0U;
+  s_getsuga.hitConnected = 0U;
+  s_getsuga.startedMs = nowMs;
+  s_getsuga.vx = (s_player.facing < 0) ? -BATTLE_GETSUGA_SPEED
+                                       : BATTLE_GETSUGA_SPEED;
+  s_getsuga.y = (int16_t)(s_player.y - 92);
+
+  if (s_player.facing < 0)
+  {
+    s_getsuga.x = (int16_t)(s_player.x - 18 - (int16_t)GETSUGA_PROJECTILE_WIDTH);
+  }
+  else
+  {
+    s_getsuga.x = (int16_t)(s_player.x + 18);
+  }
+}
+
+static void Battle_UpdateGetsuga(uint32_t nowMs)
+{
+  if (s_getsuga.active == 0U)
+  {
+    return;
+  }
+
+  s_getsuga.x = (int16_t)(s_getsuga.x + s_getsuga.vx);
+  s_getsuga.frameIndex = (uint8_t)(((nowMs - s_getsuga.startedMs) /
+                                    BATTLE_GETSUGA_FRAME_MS) %
+                                   GETSUGA_PROJECTILE_FRAME_COUNT);
+
+  if ((s_getsuga.x > (int16_t)LCD_PORT_WIDTH) ||
+      ((s_getsuga.x + (int16_t)GETSUGA_PROJECTILE_WIDTH) < 0))
+  {
+    s_getsuga.active = 0U;
+  }
+}
+
+static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
+                                        CombatActor *owner,
+                                        CombatActor *target,
+                                        uint32_t nowMs)
+{
+  if ((projectile == 0) || (owner == 0) || (target == 0) ||
+      (projectile->active == 0U) ||
+      (projectile->hitConnected != 0U))
+  {
+    return;
+  }
+
+  CombatBox projectileBox = {
+      (int16_t)(projectile->x + s_getsugaHitbox.box.x),
+      (int16_t)(projectile->y + s_getsugaHitbox.box.y),
+      s_getsugaHitbox.box.w,
+      s_getsugaHitbox.box.h,
+  };
+  CombatBox hurtboxWorld = CombatActor_GetHurtboxWorld(target);
+
+  if (CombatBox_Overlap(projectileBox, hurtboxWorld) == 0U)
+  {
+    return;
+  }
+
+  CombatActor_ApplyHit(target, owner, &s_getsugaHitbox, nowMs, 0U);
+  projectile->hitConnected = 1U;
+  projectile->active = 0U;
+}
+
+static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
+                                     BattleActorSnapshot *snapshot)
+{
+  if (snapshot != 0)
+  {
+    snapshot->valid = 0U;
+  }
+
+  if ((projectile == 0) || (snapshot == 0) ||
+      (projectile->active == 0U))
+  {
+    return 0U;
+  }
+
+  snapshot->pixels = getsuga_projectile_frames[projectile->frameIndex];
+  snapshot->width = GETSUGA_PROJECTILE_WIDTH;
+  snapshot->height = GETSUGA_PROJECTILE_HEIGHT;
+  snapshot->x = projectile->x;
+  snapshot->y = projectile->y;
+  snapshot->flipX = (projectile->vx < 0) ? 1U : 0U;
   snapshot->valid = 1U;
 
   return 1U;
@@ -402,7 +557,8 @@ static void Battle_DirtyRectAddSnapshot(BattleDirtyRect *rect,
 
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
-                                 const BattleActorSnapshot *cpu)
+                                 const BattleActorSnapshot *cpu,
+                                 const BattleActorSnapshot *projectile)
 {
   if ((rect.valid == 0U) || (rect.w <= 0) || (rect.h <= 0))
   {
@@ -421,6 +577,7 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
 
     Battle_ComposeActorRow(rect, player, y);
     Battle_ComposeActorRow(rect, cpu, y);
+    Battle_ComposeActorRow(rect, projectile, y);
 
     LCD_Port_DrawPixels((uint16_t)rect.x,
                         y,
@@ -526,9 +683,9 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 static void Battle_DrawHud(void)
 {
   ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 35U, RGB565_BLACK);
-  ILI9341_DrawText("P1 NARUTO", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("BTN:ATK JMP SKL", FONT2, 105U, 24U, RGB565_LINE,
+  ILI9341_DrawText("P1 SASUKE", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
+  ILI9341_DrawText("CPU ICHIGO", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
+  ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
                    RGB565_BLACK);
   Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
   Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);

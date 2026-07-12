@@ -30,6 +30,16 @@
         11
       ]
     },
+    "dash": {
+      "label_vi": "luot",
+      "source_dir": "assets/sasuke_new",
+      "loop": false,
+      "frame_duration_ms": 45,
+      "frames": [
+        12,
+        13
+      ]
+    },
     "attack1": {
       "label_vi": "tan cong thuong bac 1",
       "loop": false,
