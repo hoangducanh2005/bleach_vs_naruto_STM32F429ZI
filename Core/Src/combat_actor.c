@@ -5,6 +5,7 @@
 #endif
 
 #include "combat_box.h"
+#include "combat_rules.h"
 #include "ichigo_moveset.h"
 #include "naruto_moveset.h"
 #include "sasuke_moveset.h"
@@ -20,9 +21,6 @@
 #define COMBAT_MAX_ATTACK_STEP 2U
 #define COMBAT_COMBO_WINDOW_MS 520U
 
-static void CombatActor_SetState(CombatActor *actor,
-                                 CombatAnimState state,
-                                 uint32_t nowMs);
 static void CombatActor_ApplyPhysics(CombatActor *actor);
 static void CombatActor_BeginAttack(CombatActor *actor,
                                     uint8_t attackStep,
@@ -72,8 +70,13 @@ void CombatActor_Init(CombatActor *actor,
   actor->queuedAttack = 0U;
   actor->comboNextStep = 0U;
   actor->hitConnected = 0U;
-  actor->stateStartedMs = nowMs;
   actor->stunUntilMs = 0U;
+  actor->mana = 0U;
+  actor->stability = 100;
+  actor->invincibleUntilMs = 0U;
+  actor->knockdownUntilMs = 0U;
+  actor->lastHitTimeMs = 0U;
+  actor->stateStartedMs = nowMs;
   actor->comboExpiresMs = 0U;
 }
 
@@ -91,6 +94,8 @@ void CombatActor_Update(CombatActor *actor,
   {
     CombatActor_SetState(actor, COMBAT_ANIM_DEAD, nowMs);
   }
+
+  CombatRules_UpdateKnockdown(actor, nowMs);
 
   if (nowMs < actor->stunUntilMs)
   {
@@ -209,8 +214,9 @@ void CombatActor_Update(CombatActor *actor,
     {
       CombatActor_StartDash(actor, nowMs);
     }
-    else if ((inputFlags & COMBAT_INPUT_SKILL) != 0U)
+    else if (((inputFlags & COMBAT_INPUT_SKILL) != 0U) && (CombatRules_CanUseSkill(actor) != 0U))
     {
+      CombatRules_ConsumeSkillMana(actor);
       CombatActor_SetState(actor, COMBAT_ANIM_SKILL, nowMs);
     }
     else if (((inputFlags & COMBAT_INPUT_JUMP) != 0U) &&
@@ -298,49 +304,6 @@ void CombatActor_FaceToward(CombatActor *actor, const CombatActor *target)
   actor->facing = (target->x < actor->x) ? -1 : 1;
 }
 
-void CombatActor_ApplyHit(CombatActor *target,
-                          const CombatActor *attacker,
-                          const CombatHitboxDef *hitbox,
-                          uint32_t nowMs,
-                          uint8_t blocked)
-{
-  if ((target == 0) || (attacker == 0) || (hitbox == 0) ||
-      (target->state == COMBAT_ANIM_DEAD))
-  {
-    return;
-  }
-
-  uint8_t damage = blocked ? hitbox->blockDamage : hitbox->damage;
-  if (target->hp > damage)
-  {
-    target->hp = (uint16_t)(target->hp - damage);
-  }
-  else
-  {
-    target->hp = 0U;
-  }
-
-  if (target->hp == 0U)
-  {
-    CombatActor_SetState(target, COMBAT_ANIM_DEAD, nowMs);
-    return;
-  }
-
-  if (blocked != 0U)
-  {
-    CombatActor_SetState(target, COMBAT_ANIM_BLOCK, nowMs);
-    target->stunUntilMs = nowMs + hitbox->blockStunMs;
-    target->vx = (attacker->x < target->x) ? (int16_t)(hitbox->knockbackX / 2)
-                                           : (int16_t)(-hitbox->knockbackX / 2);
-  }
-  else
-  {
-    CombatActor_SetState(target, COMBAT_ANIM_HIT, nowMs);
-    target->stunUntilMs = nowMs + hitbox->hitStunMs;
-    target->vx = (attacker->x < target->x) ? hitbox->knockbackX
-                                           : (int16_t)(-hitbox->knockbackX);
-  }
-}
 
 static void CombatActor_BeginAttack(CombatActor *actor,
                                     uint8_t attackStep,
@@ -572,6 +535,7 @@ uint8_t CombatActor_IsActionLocked(const CombatActor *actor, uint32_t nowMs)
   }
 
   return ((nowMs < actor->stunUntilMs) ||
+          (nowMs < actor->knockdownUntilMs) ||
           (actor->state == COMBAT_ANIM_ATTACK) ||
           (actor->state == COMBAT_ANIM_SKILL) ||
           (actor->state == COMBAT_ANIM_DASH) ||
@@ -581,9 +545,9 @@ uint8_t CombatActor_IsActionLocked(const CombatActor *actor, uint32_t nowMs)
              : 0U;
 }
 
-static void CombatActor_SetState(CombatActor *actor,
-                                 CombatAnimState state,
-                                 uint32_t nowMs)
+void CombatActor_SetState(CombatActor *actor,
+                          CombatAnimState state,
+                          uint32_t nowMs)
 {
   if ((actor == 0) || (actor->state == state))
   {

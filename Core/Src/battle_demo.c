@@ -6,6 +6,7 @@
 
 #include "combat_actor.h"
 #include "combat_box.h"
+#include "combat_rules.h"
 #include "combat_input.h"
 #include "chidori_data.h"
 #include "ILI9341_GFX.h"
@@ -144,6 +145,8 @@ static uint16_t s_backgroundPixels[LCD_PORT_WIDTH * LCD_PORT_HEIGHT];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
+static uint16_t s_lastPlayerMana;
+static uint16_t s_lastCpuMana;
 static uint32_t s_lastGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
@@ -214,6 +217,8 @@ static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
                                  uint16_t borderColor);
+static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana,
+                               uint16_t borderColor);
 static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureActor(const CombatActor *actor,
@@ -275,6 +280,8 @@ void BattleDemo_Init(void)
   s_lastTickMs = now;
   s_lastPlayerHp = s_player.hp;
   s_lastCpuHp = s_cpu.hp;
+  s_lastPlayerMana = s_player.mana;
+  s_lastCpuMana = s_cpu.mana;
   s_playerSnapshot.valid = 0U;
   s_cpuSnapshot.valid = 0U;
   s_getsugaSnapshot.valid = 0U;
@@ -329,6 +336,18 @@ void BattleDemo_Update(void)
     s_lastCpuHp = s_cpu.hp;
   }
 
+  if (s_player.mana != s_lastPlayerMana)
+  {
+    Battle_DrawManaBar(12U, 32U, s_player.mana, RGB565_ACCENT_CYAN);
+    s_lastPlayerMana = s_player.mana;
+  }
+
+  if (s_cpu.mana != s_lastCpuMana)
+  {
+    Battle_DrawManaBar(202U, 32U, s_cpu.mana, RGB565_ACCENT_ORANGE);
+    s_lastCpuMana = s_cpu.mana;
+  }
+
   Battle_UpdateActors();
   LCD_Port_Flush();
 }
@@ -350,8 +369,7 @@ static void Battle_ResolveHit(CombatActor *attacker, CombatActor *target,
     return;
   }
 
-  uint8_t blocked = CombatActor_IsBlockingFront(target, attacker);
-  CombatActor_ApplyHit(target, attacker, hitbox, nowMs, blocked);
+  CombatRules_ProcessHit(attacker, target, hitbox, nowMs);
 
   if (hitbox->oneHitOnly != 0U)
   {
@@ -912,7 +930,7 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
     return;
   }
 
-  CombatActor_ApplyHit(target, owner, hitbox, nowMs, 0U);
+  CombatRules_ProcessHit(owner, target, hitbox, nowMs);
   projectile->hitConnected = 1U;
   projectile->active = 0U;
 }
@@ -1315,13 +1333,15 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 
 static void Battle_DrawHud(void)
 {
-  ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 35U, RGB565_BLACK);
+  ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 42U, RGB565_BLACK);
   ILI9341_DrawText("P1 VIZARD", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
   ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
   ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
                    RGB565_BLACK);
   Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
   Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);
+  Battle_DrawManaBar(12U, 32U, s_player.mana, RGB565_ACCENT_CYAN);
+  Battle_DrawManaBar(202U, 32U, s_cpu.mana, RGB565_ACCENT_ORANGE);
 }
 
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
@@ -1339,6 +1359,25 @@ static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
     LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), width, 6U,
                       fill);
   }
+}
+
+static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana,
+                               uint16_t borderColor)
+{
+  uint16_t width = (uint16_t)((mana > 100U) ? 100U : mana);
+
+  ILI9341_DrawHollowRectangleCoord(x, y, (uint16_t)(x + 102U),
+                                   (uint16_t)(y + 6U), borderColor);
+  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), 100U, 4U,
+                    RGB565_HP_BACK);
+  if (width != 0U)
+  {
+    LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), width, 4U,
+                      0x24FFU); // Vibrant Blue
+  }
+  // Vạch dọc phân đôi 50x2 ở chính giữa (x + 51)
+  LCD_Port_FillRect((uint16_t)(x + 51U), (uint16_t)(y + 1U), 1U, 4U,
+                    RGB565_BLACK);
 }
 
 static void Battle_DrawBackground(void)
