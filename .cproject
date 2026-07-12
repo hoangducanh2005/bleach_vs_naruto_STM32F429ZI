@@ -74,7 +74,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+						<entry excluding="Src/bleach_vs_naruto_splash.c|Src/character_select_demo.c|Src/chidori_data.c|Src/choose_char.c|Src/choose_ui_assets.c|Src/difficulty_select_demo.c|Src/game_background_demo.c|Src/game_ui.c|Src/gameover.c|Src/gameover_demo.c|Src/ichigo_animation_demo.c|Src/mainmenu.c|Src/menu_joystick.c|Src/naruto_animation_demo.c|Src/naruto_full_nine_tails_animation_demo.c|Src/phase4_demo.c|Src/sasuke_animation_demo.c|Src/user_button.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
 				</configuration>
@@ -150,7 +150,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+						<entry excluding="Src/bleach_vs_naruto_splash.c|Src/character_select_demo.c|Src/chidori_data.c|Src/choose_char.c|Src/choose_ui_assets.c|Src/difficulty_select_demo.c|Src/game_background_demo.c|Src/game_ui.c|Src/gameover.c|Src/gameover_demo.c|Src/ichigo_animation_demo.c|Src/mainmenu.c|Src/menu_joystick.c|Src/naruto_animation_demo.c|Src/naruto_full_nine_tails_animation_demo.c|Src/phase4_demo.c|Src/sasuke_animation_demo.c|Src/user_button.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
 				</configuration>

@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "naruto_animation_demo.h"
+#include "battle_demo.h"
 
 /* USER CODE END Includes */
 
@@ -86,7 +86,7 @@ int main(void) {
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  NarutoAnimationDemo_Init();
+  BattleDemo_Init();
 
   /* USER CODE END 2 */
 
@@ -96,7 +96,7 @@ int main(void) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    NarutoAnimationDemo_Update();
+    BattleDemo_Update();
   }
   /* USER CODE END 3 */
 }
