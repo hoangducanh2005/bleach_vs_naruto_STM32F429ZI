@@ -7,16 +7,22 @@
 C_SRCS += \
 ../Core/Src/ILI9341_GFX.c \
 ../Core/Src/ILI9341_STM32_Driver.c \
+../Core/Src/app_flow.c \
 ../Core/Src/battle_demo.c \
+../Core/Src/bleach_vs_naruto_splash.c \
 ../Core/Src/chidori_data.c \
+../Core/Src/choose_char.c \
+../Core/Src/choose_ui_assets.c \
 ../Core/Src/combat_actor.c \
 ../Core/Src/combat_attack_data.c \
 ../Core/Src/combat_box.c \
 ../Core/Src/combat_input.c \
 ../Core/Src/fonts.c \
+../Core/Src/game_ui.c \
 ../Core/Src/ichigo_moveset.c \
 ../Core/Src/lcd_port.c \
 ../Core/Src/main.c \
+../Core/Src/mainmenu.c \
 ../Core/Src/naruto_moveset.c \
 ../Core/Src/sasuke_moveset.c \
 ../Core/Src/sprite_data.c \
@@ -31,16 +37,22 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/ILI9341_GFX.o \
 ./Core/Src/ILI9341_STM32_Driver.o \
+./Core/Src/app_flow.o \
 ./Core/Src/battle_demo.o \
+./Core/Src/bleach_vs_naruto_splash.o \
 ./Core/Src/chidori_data.o \
+./Core/Src/choose_char.o \
+./Core/Src/choose_ui_assets.o \
 ./Core/Src/combat_actor.o \
 ./Core/Src/combat_attack_data.o \
 ./Core/Src/combat_box.o \
 ./Core/Src/combat_input.o \
 ./Core/Src/fonts.o \
+./Core/Src/game_ui.o \
 ./Core/Src/ichigo_moveset.o \
 ./Core/Src/lcd_port.o \
 ./Core/Src/main.o \
+./Core/Src/mainmenu.o \
 ./Core/Src/naruto_moveset.o \
 ./Core/Src/sasuke_moveset.o \
 ./Core/Src/sprite_data.o \
@@ -55,16 +67,22 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/ILI9341_GFX.d \
 ./Core/Src/ILI9341_STM32_Driver.d \
+./Core/Src/app_flow.d \
 ./Core/Src/battle_demo.d \
+./Core/Src/bleach_vs_naruto_splash.d \
 ./Core/Src/chidori_data.d \
+./Core/Src/choose_char.d \
+./Core/Src/choose_ui_assets.d \
 ./Core/Src/combat_actor.d \
 ./Core/Src/combat_attack_data.d \
 ./Core/Src/combat_box.d \
 ./Core/Src/combat_input.d \
 ./Core/Src/fonts.d \
+./Core/Src/game_ui.d \
 ./Core/Src/ichigo_moveset.d \
 ./Core/Src/lcd_port.d \
 ./Core/Src/main.d \
+./Core/Src/mainmenu.d \
 ./Core/Src/naruto_moveset.d \
 ./Core/Src/sasuke_moveset.d \
 ./Core/Src/sprite_data.d \
@@ -84,7 +102,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/ILI9341_GFX.cyclo ./Core/Src/ILI9341_GFX.d ./Core/Src/ILI9341_GFX.o ./Core/Src/ILI9341_GFX.su ./Core/Src/ILI9341_STM32_Driver.cyclo ./Core/Src/ILI9341_STM32_Driver.d ./Core/Src/ILI9341_STM32_Driver.o ./Core/Src/ILI9341_STM32_Driver.su ./Core/Src/battle_demo.cyclo ./Core/Src/battle_demo.d ./Core/Src/battle_demo.o ./Core/Src/battle_demo.su ./Core/Src/chidori_data.cyclo ./Core/Src/chidori_data.d ./Core/Src/chidori_data.o ./Core/Src/chidori_data.su ./Core/Src/combat_actor.cyclo ./Core/Src/combat_actor.d ./Core/Src/combat_actor.o ./Core/Src/combat_actor.su ./Core/Src/combat_attack_data.cyclo ./Core/Src/combat_attack_data.d ./Core/Src/combat_attack_data.o ./Core/Src/combat_attack_data.su ./Core/Src/combat_box.cyclo ./Core/Src/combat_box.d ./Core/Src/combat_box.o ./Core/Src/combat_box.su ./Core/Src/combat_input.cyclo ./Core/Src/combat_input.d ./Core/Src/combat_input.o ./Core/Src/combat_input.su ./Core/Src/fonts.cyclo ./Core/Src/fonts.d ./Core/Src/fonts.o ./Core/Src/fonts.su ./Core/Src/ichigo_moveset.cyclo ./Core/Src/ichigo_moveset.d ./Core/Src/ichigo_moveset.o ./Core/Src/ichigo_moveset.su ./Core/Src/lcd_port.cyclo ./Core/Src/lcd_port.d ./Core/Src/lcd_port.o ./Core/Src/lcd_port.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/naruto_moveset.cyclo ./Core/Src/naruto_moveset.d ./Core/Src/naruto_moveset.o ./Core/Src/naruto_moveset.su ./Core/Src/sasuke_moveset.cyclo ./Core/Src/sasuke_moveset.d ./Core/Src/sasuke_moveset.o ./Core/Src/sasuke_moveset.su ./Core/Src/sprite_data.cyclo ./Core/Src/sprite_data.d ./Core/Src/sprite_data.o ./Core/Src/sprite_data.su ./Core/Src/sprite_render.cyclo ./Core/Src/sprite_render.d ./Core/Src/sprite_render.o ./Core/Src/sprite_render.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su ./Core/Src/vizard_moveset.cyclo ./Core/Src/vizard_moveset.d ./Core/Src/vizard_moveset.o ./Core/Src/vizard_moveset.su
+	-$(RM) ./Core/Src/ILI9341_GFX.cyclo ./Core/Src/ILI9341_GFX.d ./Core/Src/ILI9341_GFX.o ./Core/Src/ILI9341_GFX.su ./Core/Src/ILI9341_STM32_Driver.cyclo ./Core/Src/ILI9341_STM32_Driver.d ./Core/Src/ILI9341_STM32_Driver.o ./Core/Src/ILI9341_STM32_Driver.su ./Core/Src/app_flow.cyclo ./Core/Src/app_flow.d ./Core/Src/app_flow.o ./Core/Src/app_flow.su ./Core/Src/battle_demo.cyclo ./Core/Src/battle_demo.d ./Core/Src/battle_demo.o ./Core/Src/battle_demo.su ./Core/Src/bleach_vs_naruto_splash.cyclo ./Core/Src/bleach_vs_naruto_splash.d ./Core/Src/bleach_vs_naruto_splash.o ./Core/Src/bleach_vs_naruto_splash.su ./Core/Src/chidori_data.cyclo ./Core/Src/chidori_data.d ./Core/Src/chidori_data.o ./Core/Src/chidori_data.su ./Core/Src/choose_char.cyclo ./Core/Src/choose_char.d ./Core/Src/choose_char.o ./Core/Src/choose_char.su ./Core/Src/choose_ui_assets.cyclo ./Core/Src/choose_ui_assets.d ./Core/Src/choose_ui_assets.o ./Core/Src/choose_ui_assets.su ./Core/Src/combat_actor.cyclo ./Core/Src/combat_actor.d ./Core/Src/combat_actor.o ./Core/Src/combat_actor.su ./Core/Src/combat_attack_data.cyclo ./Core/Src/combat_attack_data.d ./Core/Src/combat_attack_data.o ./Core/Src/combat_attack_data.su ./Core/Src/combat_box.cyclo ./Core/Src/combat_box.d ./Core/Src/combat_box.o ./Core/Src/combat_box.su ./Core/Src/combat_input.cyclo ./Core/Src/combat_input.d ./Core/Src/combat_input.o ./Core/Src/combat_input.su ./Core/Src/fonts.cyclo ./Core/Src/fonts.d ./Core/Src/fonts.o ./Core/Src/fonts.su ./Core/Src/game_ui.cyclo ./Core/Src/game_ui.d ./Core/Src/game_ui.o ./Core/Src/game_ui.su ./Core/Src/ichigo_moveset.cyclo ./Core/Src/ichigo_moveset.d ./Core/Src/ichigo_moveset.o ./Core/Src/ichigo_moveset.su ./Core/Src/lcd_port.cyclo ./Core/Src/lcd_port.d ./Core/Src/lcd_port.o ./Core/Src/lcd_port.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/mainmenu.cyclo ./Core/Src/mainmenu.d ./Core/Src/mainmenu.o ./Core/Src/mainmenu.su ./Core/Src/naruto_moveset.cyclo ./Core/Src/naruto_moveset.d ./Core/Src/naruto_moveset.o ./Core/Src/naruto_moveset.su ./Core/Src/sasuke_moveset.cyclo ./Core/Src/sasuke_moveset.d ./Core/Src/sasuke_moveset.o ./Core/Src/sasuke_moveset.su ./Core/Src/sprite_data.cyclo ./Core/Src/sprite_data.d ./Core/Src/sprite_data.o ./Core/Src/sprite_data.su ./Core/Src/sprite_render.cyclo ./Core/Src/sprite_render.d ./Core/Src/sprite_render.o ./Core/Src/sprite_render.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su ./Core/Src/vizard_moveset.cyclo ./Core/Src/vizard_moveset.d ./Core/Src/vizard_moveset.o ./Core/Src/vizard_moveset.su
 
 .PHONY: clean-Core-2f-Src
 

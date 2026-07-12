@@ -150,10 +150,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ./Core/Src/ILI9341_STM32_Driver.o
  .text.ILI9341_DrawColor
                 0x00000000       0x18 ./Core/Src/ILI9341_STM32_Driver.o
- .text.ILI9341_DrawRGB565Bytes
-                0x00000000       0xe8 ./Core/Src/ILI9341_STM32_Driver.o
- .bss.txBuffer.0
-                0x00000000      0x1f4 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_macro   0x00000000      0x28f ./Core/Src/ILI9341_STM32_Driver.o
  .debug_macro   0x00000000       0x2e ./Core/Src/ILI9341_STM32_Driver.o
@@ -191,6 +187,87 @@ Discarded input sections
  .debug_macro   0x00000000       0x89 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_macro   0x00000000      0x134 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_macro   0x00000000       0xe5 ./Core/Src/ILI9341_STM32_Driver.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .group         0x00000000        0xc ./Core/Src/app_flow.o
+ .text          0x00000000        0x0 ./Core/Src/app_flow.o
+ .data          0x00000000        0x0 ./Core/Src/app_flow.o
+ .bss           0x00000000        0x0 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x28f ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x28 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0xfb ./Core/Src/app_flow.o
+ .debug_macro   0x00000000     0x1011 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x11f ./Core/Src/app_flow.o
+ .debug_macro   0x00000000    0x17ff1 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x6d ./Core/Src/app_flow.o
+ .debug_macro   0x00000000     0x370a ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x190 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x5c ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0xcba ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x9e9 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x115 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x156 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0xa5 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x182 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x287 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x5f ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x236 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x132 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x41d ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x127 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0xe2 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x89 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000      0x134 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/app_flow.o
+ .debug_macro   0x00000000       0x10 ./Core/Src/app_flow.o
  .group         0x00000000        0xc ./Core/Src/battle_demo.o
  .group         0x00000000        0xc ./Core/Src/battle_demo.o
  .group         0x00000000        0xc ./Core/Src/battle_demo.o
@@ -274,6 +351,24 @@ Discarded input sections
  .debug_macro   0x00000000      0x134 ./Core/Src/battle_demo.o
  .debug_macro   0x00000000       0x22 ./Core/Src/battle_demo.o
  .debug_macro   0x00000000       0x10 ./Core/Src/battle_demo.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/battle_demo.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .group         0x00000000        0xc ./Core/Src/bleach_vs_naruto_splash.o
+ .text          0x00000000        0x0 ./Core/Src/bleach_vs_naruto_splash.o
+ .data          0x00000000        0x0 ./Core/Src/bleach_vs_naruto_splash.o
+ .bss           0x00000000        0x0 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/bleach_vs_naruto_splash.o
  .group         0x00000000        0xc ./Core/Src/chidori_data.o
  .group         0x00000000        0xc ./Core/Src/chidori_data.o
  .group         0x00000000        0xc ./Core/Src/chidori_data.o
@@ -291,6 +386,42 @@ Discarded input sections
  .debug_macro   0x00000000      0x103 ./Core/Src/chidori_data.o
  .debug_macro   0x00000000       0x6a ./Core/Src/chidori_data.o
  .debug_macro   0x00000000      0x1df ./Core/Src/chidori_data.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_char.o
+ .text          0x00000000        0x0 ./Core/Src/choose_char.o
+ .data          0x00000000        0x0 ./Core/Src/choose_char.o
+ .bss           0x00000000        0x0 ./Core/Src/choose_char.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/choose_char.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/choose_char.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/choose_char.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/choose_char.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/choose_char.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/choose_char.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/choose_char.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .group         0x00000000        0xc ./Core/Src/choose_ui_assets.o
+ .text          0x00000000        0x0 ./Core/Src/choose_ui_assets.o
+ .data          0x00000000        0x0 ./Core/Src/choose_ui_assets.o
+ .bss           0x00000000        0x0 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/choose_ui_assets.o
  .group         0x00000000        0xc ./Core/Src/combat_actor.o
  .group         0x00000000        0xc ./Core/Src/combat_actor.o
  .group         0x00000000        0xc ./Core/Src/combat_actor.o
@@ -431,12 +562,6 @@ Discarded input sections
  .text          0x00000000        0x0 ./Core/Src/fonts.o
  .data          0x00000000        0x0 ./Core/Src/fonts.o
  .bss           0x00000000        0x0 ./Core/Src/fonts.o
- .rodata.Arial_Narrow8x12
-                0x00000000      0x664 ./Core/Src/fonts.o
- .rodata.Arial_Narrow12x16
-                0x00000000      0x964 ./Core/Src/fonts.o
- .rodata.Arial_Narrow15x19
-                0x00000000     0x1144 ./Core/Src/fonts.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/fonts.o
  .debug_macro   0x00000000       0x22 ./Core/Src/fonts.o
  .debug_macro   0x00000000       0x8e ./Core/Src/fonts.o
@@ -444,6 +569,94 @@ Discarded input sections
  .debug_macro   0x00000000      0x103 ./Core/Src/fonts.o
  .debug_macro   0x00000000       0x6a ./Core/Src/fonts.o
  .debug_macro   0x00000000      0x1df ./Core/Src/fonts.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .group         0x00000000        0xc ./Core/Src/game_ui.o
+ .text          0x00000000        0x0 ./Core/Src/game_ui.o
+ .data          0x00000000        0x0 ./Core/Src/game_ui.o
+ .bss           0x00000000        0x0 ./Core/Src/game_ui.o
+ .text.GameUI_DrawMainMenu
+                0x00000000       0x12 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x34 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x28f ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x28 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0xfb ./Core/Src/game_ui.o
+ .debug_macro   0x00000000     0x1011 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x11f ./Core/Src/game_ui.o
+ .debug_macro   0x00000000    0x17ff1 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x6d ./Core/Src/game_ui.o
+ .debug_macro   0x00000000     0x370a ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x190 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x5c ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0xcba ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x9e9 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x115 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x156 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0xa5 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x182 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x287 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x5f ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x236 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x132 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x41d ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x127 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0xe2 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x89 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000      0x134 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x10 ./Core/Src/game_ui.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/game_ui.o
  .group         0x00000000        0xc ./Core/Src/ichigo_moveset.o
  .group         0x00000000        0xc ./Core/Src/ichigo_moveset.o
  .group         0x00000000        0xc ./Core/Src/ichigo_moveset.o
@@ -506,8 +719,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ./Core/Src/lcd_port.o
  .text.LCD_Port_DrawPixel
                 0x00000000        0x4 ./Core/Src/lcd_port.o
- .text.LCD_Port_DrawRGB565Bytes
-                0x00000000       0x18 ./Core/Src/lcd_port.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/lcd_port.o
  .debug_macro   0x00000000       0x22 ./Core/Src/lcd_port.o
  .debug_macro   0x00000000       0x8e ./Core/Src/lcd_port.o
@@ -620,6 +831,24 @@ Discarded input sections
  .debug_macro   0x00000000       0xe2 ./Core/Src/main.o
  .debug_macro   0x00000000       0x89 ./Core/Src/main.o
  .debug_macro   0x00000000      0x134 ./Core/Src/main.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .group         0x00000000        0xc ./Core/Src/mainmenu.o
+ .text          0x00000000        0x0 ./Core/Src/mainmenu.o
+ .data          0x00000000        0x0 ./Core/Src/mainmenu.o
+ .bss           0x00000000        0x0 ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/mainmenu.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/mainmenu.o
  .group         0x00000000        0xc ./Core/Src/naruto_moveset.o
  .group         0x00000000        0xc ./Core/Src/naruto_moveset.o
  .group         0x00000000        0xc ./Core/Src/naruto_moveset.o
@@ -2852,16 +3081,22 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
 LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 LOAD ./Core/Src/ILI9341_GFX.o
 LOAD ./Core/Src/ILI9341_STM32_Driver.o
+LOAD ./Core/Src/app_flow.o
 LOAD ./Core/Src/battle_demo.o
+LOAD ./Core/Src/bleach_vs_naruto_splash.o
 LOAD ./Core/Src/chidori_data.o
+LOAD ./Core/Src/choose_char.o
+LOAD ./Core/Src/choose_ui_assets.o
 LOAD ./Core/Src/combat_actor.o
 LOAD ./Core/Src/combat_attack_data.o
 LOAD ./Core/Src/combat_box.o
 LOAD ./Core/Src/combat_input.o
 LOAD ./Core/Src/fonts.o
+LOAD ./Core/Src/game_ui.o
 LOAD ./Core/Src/ichigo_moveset.o
 LOAD ./Core/Src/lcd_port.o
 LOAD ./Core/Src/main.o
+LOAD ./Core/Src/mainmenu.o
 LOAD ./Core/Src/naruto_moveset.o
 LOAD ./Core/Src/sasuke_moveset.o
 LOAD ./Core/Src/sprite_data.o
@@ -2917,7 +3152,7 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
                 0x08000000                g_pfnVectors
                 0x080001ac                        . = ALIGN (0x4)
 
-.text           0x080001ac     0x4300
+.text           0x080001ac     0x5260
                 0x080001ac                        . = ALIGN (0x4)
  *(.text)
  .text          0x080001ac       0x40 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
@@ -2982,1158 +3217,1298 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .text.ILI9341_DrawRGB565Buffer
                 0x08000dc4       0xdc ./Core/Src/ILI9341_STM32_Driver.o
                 0x08000dc4                ILI9341_DrawRGB565Buffer
+ .text.ILI9341_DrawRGB565Bytes
+                0x08000ea0       0xe8 ./Core/Src/ILI9341_STM32_Driver.o
+                0x08000ea0                ILI9341_DrawRGB565Bytes
  .text.ILI9341_DrawRectangle
-                0x08000ea0       0x68 ./Core/Src/ILI9341_STM32_Driver.o
-                0x08000ea0                ILI9341_DrawRectangle
+                0x08000f88       0x68 ./Core/Src/ILI9341_STM32_Driver.o
+                0x08000f88                ILI9341_DrawRectangle
  .text.ILI9341_DrawHLine
-                0x08000f08       0x4c ./Core/Src/ILI9341_STM32_Driver.o
-                0x08000f08                ILI9341_DrawHLine
+                0x08000ff0       0x4c ./Core/Src/ILI9341_STM32_Driver.o
+                0x08000ff0                ILI9341_DrawHLine
  .text.ILI9341_DrawVLine
-                0x08000f54       0x58 ./Core/Src/ILI9341_STM32_Driver.o
-                0x08000f54                ILI9341_DrawVLine
+                0x0800103c       0x58 ./Core/Src/ILI9341_STM32_Driver.o
+                0x0800103c                ILI9341_DrawVLine
  .text.ILI9341_BusInit
-                0x08000fac       0xf0 ./Core/Src/ILI9341_STM32_Driver.o
+                0x08001094       0xf0 ./Core/Src/ILI9341_STM32_Driver.o
  .text.ILI9341_SPI_WaitReady
-                0x0800109c       0x34 ./Core/Src/ILI9341_STM32_Driver.o
+                0x08001184       0x34 ./Core/Src/ILI9341_STM32_Driver.o
+ .text.AppFlow_Init
+                0x080011b8       0x14 ./Core/Src/app_flow.o
+                0x080011b8                AppFlow_Init
+ .text.AppFlow_Update
+                0x080011cc      0x180 ./Core/Src/app_flow.o
+                0x080011cc                AppFlow_Update
+ .text.AppFlow_ShowSplash
+                0x0800134c       0x54 ./Core/Src/app_flow.o
+ .text.AppFlow_ShowMainMenu
+                0x080013a0       0x40 ./Core/Src/app_flow.o
+ .text.AppFlow_ShowDifficulty
+                0x080013e0       0x30 ./Core/Src/app_flow.o
+ .text.AppFlow_ShowCharacter
+                0x08001410       0x30 ./Core/Src/app_flow.o
+ .text.AppFlow_StartCombat
+                0x08001440       0x38 ./Core/Src/app_flow.o
+ .text.AppFlow_ReadNavEvent
+                0x08001478       0x7c ./Core/Src/app_flow.o
+ .text.AppFlow_WrapAdd
+                0x080014f4       0x58 ./Core/Src/app_flow.o
+ .text.AppFlow_MapChooseCharacter
+                0x0800154c       0x50 ./Core/Src/app_flow.o
+ .text.BattleDemo_SetCharacters
+                0x0800159c       0x14 ./Core/Src/battle_demo.o
+                0x0800159c                BattleDemo_SetCharacters
  .text.BattleDemo_Init
-                0x080010d0       0xcc ./Core/Src/battle_demo.o
-                0x080010d0                BattleDemo_Init
+                0x080015b0       0xd8 ./Core/Src/battle_demo.o
+                0x080015b0                BattleDemo_Init
  .text.BattleDemo_Update
-                0x0800119c       0xe8 ./Core/Src/battle_demo.o
-                0x0800119c                BattleDemo_Update
+                0x08001688       0xf4 ./Core/Src/battle_demo.o
+                0x08001688                BattleDemo_Update
  .text.Battle_ResolveHit
-                0x08001284       0x60 ./Core/Src/battle_demo.o
+                0x0800177c       0x60 ./Core/Src/battle_demo.o
  .text.Battle_DrawFrame
-                0x080012e4       0x14 ./Core/Src/battle_demo.o
+                0x080017dc       0x14 ./Core/Src/battle_demo.o
  .text.Battle_DrawActorsInitial
-                0x080012f8       0x28 ./Core/Src/battle_demo.o
+                0x080017f0       0x28 ./Core/Src/battle_demo.o
  .text.Battle_UpdateActors
-                0x08001320      0x14c ./Core/Src/battle_demo.o
+                0x08001818      0x14c ./Core/Src/battle_demo.o
  .text.Battle_AiInit
-                0x0800146c       0x2c ./Core/Src/battle_demo.o
+                0x08001964       0x2c ./Core/Src/battle_demo.o
  .text.Battle_AiUpdate
-                0x08001498       0xfc ./Core/Src/battle_demo.o
+                0x08001990       0xfc ./Core/Src/battle_demo.o
  .text.Battle_AiObserve
-                0x08001594       0x74 ./Core/Src/battle_demo.o
+                0x08001a8c       0x74 ./Core/Src/battle_demo.o
  .text.Battle_AiChooseAction
-                0x08001608       0x90 ./Core/Src/battle_demo.o
+                0x08001b00       0x90 ./Core/Src/battle_demo.o
  .text.Battle_AiActionToInput
-                0x08001698       0x4c ./Core/Src/battle_demo.o
+                0x08001b90       0x4c ./Core/Src/battle_demo.o
  .text.Battle_AiRandom
-                0x080016e4       0x34 ./Core/Src/battle_demo.o
+                0x08001bdc       0x34 ./Core/Src/battle_demo.o
  .text.Battle_AbsI16
-                0x08001718        0xc ./Core/Src/battle_demo.o
+                0x08001c10        0xc ./Core/Src/battle_demo.o
  .text.Battle_UpdateVizardSkill
-                0x08001724       0x90 ./Core/Src/battle_demo.o
+                0x08001c1c       0x90 ./Core/Src/battle_demo.o
  .text.Battle_DrawActor
-                0x080017b4       0x18 ./Core/Src/battle_demo.o
+                0x08001cac       0x18 ./Core/Src/battle_demo.o
  .text.Battle_CaptureActor
-                0x080017cc       0x70 ./Core/Src/battle_demo.o
+                0x08001cc4       0x70 ./Core/Src/battle_demo.o
  .text.Battle_TrySpawnGetsuga
-                0x0800183c       0xd4 ./Core/Src/battle_demo.o
+                0x08001d34       0xd4 ./Core/Src/battle_demo.o
  .text.Battle_UpdateGetsuga
-                0x08001910       0x74 ./Core/Src/battle_demo.o
+                0x08001e08       0x74 ./Core/Src/battle_demo.o
  .text.Battle_ResolveProjectileHit
-                0x08001984       0x94 ./Core/Src/battle_demo.o
+                0x08001e7c       0x94 ./Core/Src/battle_demo.o
  .text.Battle_CaptureGetsuga
-                0x08001a18       0x60 ./Core/Src/battle_demo.o
+                0x08001f10       0x60 ./Core/Src/battle_demo.o
  .text.Battle_CaptureChidori
-                0x08001a78       0xa0 ./Core/Src/battle_demo.o
+                0x08001f70       0xa0 ./Core/Src/battle_demo.o
  .text.Battle_DrawActorSnapshot
-                0x08001b18       0x28 ./Core/Src/battle_demo.o
+                0x08002010       0x28 ./Core/Src/battle_demo.o
  .text.Battle_ActorSnapshotEqual
-                0x08001b40       0x38 ./Core/Src/battle_demo.o
+                0x08002038       0x38 ./Core/Src/battle_demo.o
  .text.Battle_DirtyRectAddSnapshot
-                0x08001b78       0xd0 ./Core/Src/battle_demo.o
+                0x08002070       0xd0 ./Core/Src/battle_demo.o
  .text.Battle_DrawSnapshotChange
-                0x08001c48       0xac ./Core/Src/battle_demo.o
+                0x08002140       0xac ./Core/Src/battle_demo.o
  .text.Battle_DirtyRectsShouldSplit
-                0x08001cf4       0x98 ./Core/Src/battle_demo.o
+                0x080021ec       0x98 ./Core/Src/battle_demo.o
  .text.Battle_DrawDirtyRect
-                0x08001d8c       0xc8 ./Core/Src/battle_demo.o
+                0x08002284       0xc8 ./Core/Src/battle_demo.o
  .text.Battle_ComposeActorRow
-                0x08001e54       0xb8 ./Core/Src/battle_demo.o
+                0x0800234c       0xb8 ./Core/Src/battle_demo.o
  .text.Battle_DrawHud
-                0x08001f0c       0x8c ./Core/Src/battle_demo.o
+                0x08002404       0xdc ./Core/Src/battle_demo.o
  .text.Battle_DrawHealthBar
-                0x08001f98       0x80 ./Core/Src/battle_demo.o
+                0x080024e0       0x34 ./Core/Src/battle_demo.o
+ .text.Battle_DrawManaBar
+                0x08002514       0x2c ./Core/Src/battle_demo.o
+ .text.Battle_DrawMeter
+                0x08002540       0xb0 ./Core/Src/battle_demo.o
  .text.Battle_DrawBackground
-                0x08002018       0x14 ./Core/Src/battle_demo.o
+                0x080025f0       0x14 ./Core/Src/battle_demo.o
  .text.Battle_BuildBackgroundCache
-                0x0800202c       0x38 ./Core/Src/battle_demo.o
+                0x08002604       0x38 ./Core/Src/battle_demo.o
  .text.Battle_DrawStaticSky
-                0x08002064       0x44 ./Core/Src/battle_demo.o
+                0x0800263c       0x44 ./Core/Src/battle_demo.o
  .text.Battle_DrawGround
-                0x080020a8       0x44 ./Core/Src/battle_demo.o
+                0x08002680       0x44 ./Core/Src/battle_demo.o
  .text.Battle_DrawArenaMarks
-                0x080020ec       0x4c ./Core/Src/battle_demo.o
+                0x080026c4       0x4c ./Core/Src/battle_demo.o
  .text.Battle_GetBackgroundPixel
-                0x08002138       0xb0 ./Core/Src/battle_demo.o
+                0x08002710       0xb0 ./Core/Src/battle_demo.o
  .text.Battle_FillSafe
-                0x080021e8       0x88 ./Core/Src/battle_demo.o
+                0x080027c0       0x88 ./Core/Src/battle_demo.o
  .text.CombatActor_Init
-                0x08002270       0x3c ./Core/Src/combat_actor.o
-                0x08002270                CombatActor_Init
+                0x08002848       0x3c ./Core/Src/combat_actor.o
+                0x08002848                CombatActor_Init
  .text.CombatActor_Update
-                0x080022ac      0x280 ./Core/Src/combat_actor.o
-                0x080022ac                CombatActor_Update
+                0x08002884      0x280 ./Core/Src/combat_actor.o
+                0x08002884                CombatActor_Update
  .text.CombatActor_FaceToward
-                0x0800252c       0x28 ./Core/Src/combat_actor.o
-                0x0800252c                CombatActor_FaceToward
+                0x08002b04       0x28 ./Core/Src/combat_actor.o
+                0x08002b04                CombatActor_FaceToward
  .text.CombatActor_ApplyHit
-                0x08002554       0xa4 ./Core/Src/combat_actor.o
-                0x08002554                CombatActor_ApplyHit
+                0x08002b2c       0xa4 ./Core/Src/combat_actor.o
+                0x08002b2c                CombatActor_ApplyHit
  .text.CombatActor_BeginAttack
-                0x080025f8       0x20 ./Core/Src/combat_actor.o
+                0x08002bd0       0x20 ./Core/Src/combat_actor.o
  .text.CombatActor_ApplyPhysics
-                0x08002618       0x4c ./Core/Src/combat_actor.o
+                0x08002bf0       0x4c ./Core/Src/combat_actor.o
  .text.CombatActor_StartJump
-                0x08002664       0x1c ./Core/Src/combat_actor.o
+                0x08002c3c       0x1c ./Core/Src/combat_actor.o
  .text.CombatActor_StartDash
-                0x08002680       0x34 ./Core/Src/combat_actor.o
+                0x08002c58       0x34 ./Core/Src/combat_actor.o
  .text.CombatActor_GetHurtboxWorld
-                0x080026b4       0x40 ./Core/Src/combat_actor.o
-                0x080026b4                CombatActor_GetHurtboxWorld
+                0x08002c8c       0x40 ./Core/Src/combat_actor.o
+                0x08002c8c                CombatActor_GetHurtboxWorld
  .text.CombatActor_GetHitboxWorld
-                0x080026f4       0x64 ./Core/Src/combat_actor.o
-                0x080026f4                CombatActor_GetHitboxWorld
+                0x08002ccc       0x64 ./Core/Src/combat_actor.o
+                0x08002ccc                CombatActor_GetHitboxWorld
  .text.CombatActor_IsBlockingFront
-                0x08002758       0x38 ./Core/Src/combat_actor.o
-                0x08002758                CombatActor_IsBlockingFront
+                0x08002d30       0x38 ./Core/Src/combat_actor.o
+                0x08002d30                CombatActor_IsBlockingFront
  .text.CombatActor_GetFrame
-                0x08002790       0xa4 ./Core/Src/combat_actor.o
-                0x08002790                CombatActor_GetFrame
+                0x08002d68       0xa4 ./Core/Src/combat_actor.o
+                0x08002d68                CombatActor_GetFrame
  .text.CombatActor_IsActionLocked
-                0x08002834       0x20 ./Core/Src/combat_actor.o
-                0x08002834                CombatActor_IsActionLocked
+                0x08002e0c       0x20 ./Core/Src/combat_actor.o
+                0x08002e0c                CombatActor_IsActionLocked
  .text.CombatActor_SetState
-                0x08002854       0x34 ./Core/Src/combat_actor.o
+                0x08002e2c       0x34 ./Core/Src/combat_actor.o
  .text.CombatActor_GetFrameCount
-                0x08002888       0x8c ./Core/Src/combat_actor.o
+                0x08002e60       0x8c ./Core/Src/combat_actor.o
  .text.CombatActor_GetLoop
-                0x08002914       0x8c ./Core/Src/combat_actor.o
+                0x08002eec       0x8c ./Core/Src/combat_actor.o
  .text.CombatActor_GetFrameDuration
-                0x080029a0       0x40 ./Core/Src/combat_actor.o
+                0x08002f78       0x40 ./Core/Src/combat_actor.o
  .text.CombatActor_IsTerminalState
-                0x080029e0        0xc ./Core/Src/combat_actor.o
+                0x08002fb8        0xc ./Core/Src/combat_actor.o
  .text.CombatActor_StateFinished
-                0x080029ec       0x3c ./Core/Src/combat_actor.o
+                0x08002fc4       0x3c ./Core/Src/combat_actor.o
  .text.CombatActor_MapNaruto
-                0x08002a28       0x48 ./Core/Src/combat_actor.o
+                0x08003000       0x48 ./Core/Src/combat_actor.o
  .text.CombatActor_MapSasuke
-                0x08002a70       0x48 ./Core/Src/combat_actor.o
+                0x08003048       0x48 ./Core/Src/combat_actor.o
  .text.CombatActor_MapIchigo
-                0x08002ab8       0x48 ./Core/Src/combat_actor.o
+                0x08003090       0x48 ./Core/Src/combat_actor.o
  .text.CombatActor_MapVizard
-                0x08002b00       0x38 ./Core/Src/combat_actor.o
+                0x080030d8       0x38 ./Core/Src/combat_actor.o
  .text.CombatAttackData_GetHurtboxProfile
-                0x08002b38       0x1c ./Core/Src/combat_attack_data.o
-                0x08002b38                CombatAttackData_GetHurtboxProfile
+                0x08003110       0x1c ./Core/Src/combat_attack_data.o
+                0x08003110                CombatAttackData_GetHurtboxProfile
  .text.CombatAttackData_GetHurtbox
-                0x08002b54       0xd8 ./Core/Src/combat_attack_data.o
-                0x08002b54                CombatAttackData_GetHurtbox
+                0x0800312c       0xd8 ./Core/Src/combat_attack_data.o
+                0x0800312c                CombatAttackData_GetHurtbox
  .text.CombatAttackData_GetHitbox
-                0x08002c2c       0xe0 ./Core/Src/combat_attack_data.o
-                0x08002c2c                CombatAttackData_GetHitbox
+                0x08003204       0xe0 ./Core/Src/combat_attack_data.o
+                0x08003204                CombatAttackData_GetHitbox
  .text.CombatBox_ToWorld
-                0x08002d0c       0x7c ./Core/Src/combat_box.o
-                0x08002d0c                CombatBox_ToWorld
+                0x080032e4       0x7c ./Core/Src/combat_box.o
+                0x080032e4                CombatBox_ToWorld
  .text.CombatBox_Overlap
-                0x08002d88       0xb0 ./Core/Src/combat_box.o
-                0x08002d88                CombatBox_Overlap
+                0x08003360       0xb0 ./Core/Src/combat_box.o
+                0x08003360                CombatBox_Overlap
  .text.CombatBox_ClampI16
-                0x08002e38       0x46 ./Core/Src/combat_box.o
-                0x08002e38                CombatBox_ClampI16
- *fill*         0x08002e7e        0x2 
+                0x08003410       0x46 ./Core/Src/combat_box.o
+                0x08003410                CombatBox_ClampI16
+ *fill*         0x08003456        0x2 
  .text.CombatInput_Init
-                0x08002e80       0xfc ./Core/Src/combat_input.o
-                0x08002e80                CombatInput_Init
+                0x08003458       0xfc ./Core/Src/combat_input.o
+                0x08003458                CombatInput_Init
  .text.CombatInput_Read
-                0x08002f7c      0x100 ./Core/Src/combat_input.o
-                0x08002f7c                CombatInput_Read
+                0x08003554      0x100 ./Core/Src/combat_input.o
+                0x08003554                CombatInput_Read
  .text.CombatInput_ReadAdc
-                0x0800307c       0x70 ./Core/Src/combat_input.o
+                0x08003654       0x70 ./Core/Src/combat_input.o
  .text.CombatInput_InitButtonGpio
-                0x080030ec       0x4c ./Core/Src/combat_input.o
+                0x080036c4       0x4c ./Core/Src/combat_input.o
  .text.CombatInput_ReadButtonsRaw
-                0x08003138       0x70 ./Core/Src/combat_input.o
+                0x08003710       0x70 ./Core/Src/combat_input.o
  .text.CombatInput_IsButtonPressed
-                0x080031a8       0x36 ./Core/Src/combat_input.o
- *fill*         0x080031de        0x2 
+                0x08003780       0x36 ./Core/Src/combat_input.o
+ *fill*         0x080037b6        0x2 
+ .text.GameUI_DrawSplash
+                0x080037b8       0x24 ./Core/Src/game_ui.o
+                0x080037b8                GameUI_DrawSplash
+ .text.GameUI_DrawMainMenuBackground
+                0x080037dc       0x24 ./Core/Src/game_ui.o
+                0x080037dc                GameUI_DrawMainMenuBackground
+ .text.GameUI_DrawMainMenuSelection
+                0x08003800      0x148 ./Core/Src/game_ui.o
+                0x08003800                GameUI_DrawMainMenuSelection
+ .text.GameUI_DrawDifficultySelect
+                0x08003948      0x108 ./Core/Src/game_ui.o
+                0x08003948                GameUI_DrawDifficultySelect
+ .text.GameUI_DrawCharacterSelect
+                0x08003a50       0xbc ./Core/Src/game_ui.o
+                0x08003a50                GameUI_DrawCharacterSelect
+ .text.GameUI_UpdateCharacterSelect
+                0x08003b0c       0xac ./Core/Src/game_ui.o
+                0x08003b0c                GameUI_UpdateCharacterSelect
+ .text.GameUI_DrawMenuButton
+                0x08003bb8       0xd8 ./Core/Src/game_ui.o
+ .text.GameUI_GetDifficultyMenuLabel
+                0x08003c90       0x50 ./Core/Src/game_ui.o
+ .text.GameUI_GetCharacterMenuLabel
+                0x08003ce0       0x84 ./Core/Src/game_ui.o
+ .text.GameUI_DrawDifficultyOption
+                0x08003d64       0xc8 ./Core/Src/game_ui.o
+ .text.GameUI_DrawChooseBackgroundRect
+                0x08003e2c       0x80 ./Core/Src/game_ui.o
+ .text.GameUI_DrawCharacterGrid
+                0x08003eac       0x2a ./Core/Src/game_ui.o
+ *fill*         0x08003ed6        0x2 
+ .text.GameUI_DrawCharacterAvatar
+                0x08003ed8       0x5c ./Core/Src/game_ui.o
+ .text.GameUI_DrawCharacterCursor
+                0x08003f34       0x84 ./Core/Src/game_ui.o
+ .text.GameUI_DrawCharacterBanners
+                0x08003fb8       0xd8 ./Core/Src/game_ui.o
+ .text.GameUI_GetCharacterAvatarX
+                0x08004090       0x40 ./Core/Src/game_ui.o
+ .text.GameUI_GetCharacterAvatarY
+                0x080040d0       0x58 ./Core/Src/game_ui.o
  .text.LCD_Port_Init
-                0x080031e0       0x18 ./Core/Src/lcd_port.o
-                0x080031e0                LCD_Port_Init
+                0x08004128       0x18 ./Core/Src/lcd_port.o
+                0x08004128                LCD_Port_Init
  .text.LCD_Port_DrawPixels
-                0x080031f8       0x18 ./Core/Src/lcd_port.o
-                0x080031f8                LCD_Port_DrawPixels
+                0x08004140       0x18 ./Core/Src/lcd_port.o
+                0x08004140                LCD_Port_DrawPixels
+ .text.LCD_Port_DrawRGB565Bytes
+                0x08004158       0x18 ./Core/Src/lcd_port.o
+                0x08004158                LCD_Port_DrawRGB565Bytes
  .text.LCD_Port_FillRect
-                0x08003210       0x18 ./Core/Src/lcd_port.o
-                0x08003210                LCD_Port_FillRect
+                0x08004170       0x18 ./Core/Src/lcd_port.o
+                0x08004170                LCD_Port_FillRect
  .text.LCD_Port_Flush
-                0x08003228        0x4 ./Core/Src/lcd_port.o
-                0x08003228                LCD_Port_Flush
- .text.main     0x0800322c       0x16 ./Core/Src/main.o
-                0x0800322c                main
- *fill*         0x08003242        0x2 
+                0x08004188        0x4 ./Core/Src/lcd_port.o
+                0x08004188                LCD_Port_Flush
+ .text.main     0x0800418c       0x16 ./Core/Src/main.o
+                0x0800418c                main
+ *fill*         0x080041a2        0x2 
  .text.SystemClock_Config
-                0x08003244       0xc0 ./Core/Src/main.o
-                0x08003244                SystemClock_Config
+                0x080041a4       0xc0 ./Core/Src/main.o
+                0x080041a4                SystemClock_Config
  .text.Error_Handler
-                0x08003304        0xc ./Core/Src/main.o
-                0x08003304                Error_Handler
+                0x08004264        0xc ./Core/Src/main.o
+                0x08004264                Error_Handler
  .text.SpriteRender_FlushRun
-                0x08003310       0x34 ./Core/Src/sprite_render.o
+                0x08004270       0x34 ./Core/Src/sprite_render.o
  .text.SpriteRender_Draw
-                0x08003344      0x108 ./Core/Src/sprite_render.o
-                0x08003344                SpriteRender_Draw
+                0x080042a4      0x108 ./Core/Src/sprite_render.o
+                0x080042a4                SpriteRender_Draw
  .text.HAL_MspInit
-                0x0800344c       0x50 ./Core/Src/stm32f4xx_hal_msp.o
-                0x0800344c                HAL_MspInit
+                0x080043ac       0x50 ./Core/Src/stm32f4xx_hal_msp.o
+                0x080043ac                HAL_MspInit
  .text.NMI_Handler
-                0x0800349c        0x8 ./Core/Src/stm32f4xx_it.o
-                0x0800349c                NMI_Handler
+                0x080043fc        0x8 ./Core/Src/stm32f4xx_it.o
+                0x080043fc                NMI_Handler
  .text.HardFault_Handler
-                0x080034a4        0x8 ./Core/Src/stm32f4xx_it.o
-                0x080034a4                HardFault_Handler
+                0x08004404        0x8 ./Core/Src/stm32f4xx_it.o
+                0x08004404                HardFault_Handler
  .text.MemManage_Handler
-                0x080034ac        0x8 ./Core/Src/stm32f4xx_it.o
-                0x080034ac                MemManage_Handler
+                0x0800440c        0x8 ./Core/Src/stm32f4xx_it.o
+                0x0800440c                MemManage_Handler
  .text.BusFault_Handler
-                0x080034b4        0x8 ./Core/Src/stm32f4xx_it.o
-                0x080034b4                BusFault_Handler
+                0x08004414        0x8 ./Core/Src/stm32f4xx_it.o
+                0x08004414                BusFault_Handler
  .text.UsageFault_Handler
-                0x080034bc        0x8 ./Core/Src/stm32f4xx_it.o
-                0x080034bc                UsageFault_Handler
+                0x0800441c        0x8 ./Core/Src/stm32f4xx_it.o
+                0x0800441c                UsageFault_Handler
  .text.SVC_Handler
-                0x080034c4        0xe ./Core/Src/stm32f4xx_it.o
-                0x080034c4                SVC_Handler
+                0x08004424        0xe ./Core/Src/stm32f4xx_it.o
+                0x08004424                SVC_Handler
  .text.DebugMon_Handler
-                0x080034d2        0xe ./Core/Src/stm32f4xx_it.o
-                0x080034d2                DebugMon_Handler
+                0x08004432        0xe ./Core/Src/stm32f4xx_it.o
+                0x08004432                DebugMon_Handler
  .text.PendSV_Handler
-                0x080034e0        0xe ./Core/Src/stm32f4xx_it.o
-                0x080034e0                PendSV_Handler
+                0x08004440        0xe ./Core/Src/stm32f4xx_it.o
+                0x08004440                PendSV_Handler
  .text.SysTick_Handler
-                0x080034ee        0xc ./Core/Src/stm32f4xx_it.o
-                0x080034ee                SysTick_Handler
- *fill*         0x080034fa        0x2 
+                0x0800444e        0xc ./Core/Src/stm32f4xx_it.o
+                0x0800444e                SysTick_Handler
+ *fill*         0x0800445a        0x2 
  .text.SystemInit
-                0x080034fc       0x24 ./Core/Src/system_stm32f4xx.o
-                0x080034fc                SystemInit
+                0x0800445c       0x24 ./Core/Src/system_stm32f4xx.o
+                0x0800445c                SystemInit
  .text.Reset_Handler
-                0x08003520       0x50 ./Core/Startup/startup_stm32f429zitx.o
-                0x08003520                Reset_Handler
+                0x08004480       0x50 ./Core/Startup/startup_stm32f429zitx.o
+                0x08004480                Reset_Handler
  .text.Default_Handler
-                0x08003570        0x2 ./Core/Startup/startup_stm32f429zitx.o
-                0x08003570                RTC_Alarm_IRQHandler
-                0x08003570                HASH_RNG_IRQHandler
-                0x08003570                EXTI2_IRQHandler
-                0x08003570                TIM8_CC_IRQHandler
-                0x08003570                UART8_IRQHandler
-                0x08003570                SPI4_IRQHandler
-                0x08003570                TIM1_CC_IRQHandler
-                0x08003570                DMA2_Stream5_IRQHandler
-                0x08003570                DMA1_Stream5_IRQHandler
-                0x08003570                PVD_IRQHandler
-                0x08003570                SDIO_IRQHandler
-                0x08003570                TAMP_STAMP_IRQHandler
-                0x08003570                CAN2_RX1_IRQHandler
-                0x08003570                EXTI3_IRQHandler
-                0x08003570                TIM8_TRG_COM_TIM14_IRQHandler
-                0x08003570                TIM1_UP_TIM10_IRQHandler
-                0x08003570                TIM8_UP_TIM13_IRQHandler
-                0x08003570                I2C3_ER_IRQHandler
-                0x08003570                EXTI0_IRQHandler
-                0x08003570                I2C2_EV_IRQHandler
-                0x08003570                DMA1_Stream2_IRQHandler
-                0x08003570                CAN1_RX0_IRQHandler
-                0x08003570                FPU_IRQHandler
-                0x08003570                OTG_HS_WKUP_IRQHandler
-                0x08003570                LTDC_ER_IRQHandler
-                0x08003570                CAN2_SCE_IRQHandler
-                0x08003570                DMA2_Stream2_IRQHandler
-                0x08003570                SPI1_IRQHandler
-                0x08003570                TIM6_DAC_IRQHandler
-                0x08003570                TIM1_BRK_TIM9_IRQHandler
-                0x08003570                DCMI_IRQHandler
-                0x08003570                CAN2_RX0_IRQHandler
-                0x08003570                DMA2_Stream3_IRQHandler
-                0x08003570                USART6_IRQHandler
-                0x08003570                USART3_IRQHandler
-                0x08003570                CAN1_RX1_IRQHandler
-                0x08003570                UART5_IRQHandler
-                0x08003570                DMA2_Stream0_IRQHandler
-                0x08003570                TIM4_IRQHandler
-                0x08003570                I2C1_EV_IRQHandler
-                0x08003570                DMA1_Stream6_IRQHandler
-                0x08003570                DMA1_Stream1_IRQHandler
-                0x08003570                UART4_IRQHandler
-                0x08003570                TIM3_IRQHandler
-                0x08003570                RCC_IRQHandler
-                0x08003570                TIM8_BRK_TIM12_IRQHandler
-                0x08003570                Default_Handler
-                0x08003570                EXTI15_10_IRQHandler
-                0x08003570                ADC_IRQHandler
-                0x08003570                DMA1_Stream7_IRQHandler
-                0x08003570                SPI5_IRQHandler
-                0x08003570                TIM7_IRQHandler
-                0x08003570                CAN2_TX_IRQHandler
-                0x08003570                TIM5_IRQHandler
-                0x08003570                DMA2_Stream7_IRQHandler
-                0x08003570                I2C3_EV_IRQHandler
-                0x08003570                EXTI9_5_IRQHandler
-                0x08003570                RTC_WKUP_IRQHandler
-                0x08003570                LTDC_IRQHandler
-                0x08003570                ETH_WKUP_IRQHandler
-                0x08003570                SPI2_IRQHandler
-                0x08003570                OTG_HS_EP1_IN_IRQHandler
-                0x08003570                DMA1_Stream0_IRQHandler
-                0x08003570                CAN1_TX_IRQHandler
-                0x08003570                EXTI4_IRQHandler
-                0x08003570                ETH_IRQHandler
-                0x08003570                OTG_HS_EP1_OUT_IRQHandler
-                0x08003570                WWDG_IRQHandler
-                0x08003570                SPI6_IRQHandler
-                0x08003570                TIM2_IRQHandler
-                0x08003570                OTG_FS_WKUP_IRQHandler
-                0x08003570                TIM1_TRG_COM_TIM11_IRQHandler
-                0x08003570                OTG_HS_IRQHandler
-                0x08003570                DMA2D_IRQHandler
-                0x08003570                EXTI1_IRQHandler
-                0x08003570                UART7_IRQHandler
-                0x08003570                USART2_IRQHandler
-                0x08003570                I2C2_ER_IRQHandler
-                0x08003570                DMA2_Stream1_IRQHandler
-                0x08003570                CAN1_SCE_IRQHandler
-                0x08003570                FLASH_IRQHandler
-                0x08003570                DMA2_Stream4_IRQHandler
-                0x08003570                USART1_IRQHandler
-                0x08003570                OTG_FS_IRQHandler
-                0x08003570                SPI3_IRQHandler
-                0x08003570                DMA1_Stream4_IRQHandler
-                0x08003570                I2C1_ER_IRQHandler
-                0x08003570                FMC_IRQHandler
-                0x08003570                DMA2_Stream6_IRQHandler
-                0x08003570                SAI1_IRQHandler
-                0x08003570                DMA1_Stream3_IRQHandler
- *fill*         0x08003572        0x2 
+                0x080044d0        0x2 ./Core/Startup/startup_stm32f429zitx.o
+                0x080044d0                RTC_Alarm_IRQHandler
+                0x080044d0                HASH_RNG_IRQHandler
+                0x080044d0                EXTI2_IRQHandler
+                0x080044d0                TIM8_CC_IRQHandler
+                0x080044d0                UART8_IRQHandler
+                0x080044d0                SPI4_IRQHandler
+                0x080044d0                TIM1_CC_IRQHandler
+                0x080044d0                DMA2_Stream5_IRQHandler
+                0x080044d0                DMA1_Stream5_IRQHandler
+                0x080044d0                PVD_IRQHandler
+                0x080044d0                SDIO_IRQHandler
+                0x080044d0                TAMP_STAMP_IRQHandler
+                0x080044d0                CAN2_RX1_IRQHandler
+                0x080044d0                EXTI3_IRQHandler
+                0x080044d0                TIM8_TRG_COM_TIM14_IRQHandler
+                0x080044d0                TIM1_UP_TIM10_IRQHandler
+                0x080044d0                TIM8_UP_TIM13_IRQHandler
+                0x080044d0                I2C3_ER_IRQHandler
+                0x080044d0                EXTI0_IRQHandler
+                0x080044d0                I2C2_EV_IRQHandler
+                0x080044d0                DMA1_Stream2_IRQHandler
+                0x080044d0                CAN1_RX0_IRQHandler
+                0x080044d0                FPU_IRQHandler
+                0x080044d0                OTG_HS_WKUP_IRQHandler
+                0x080044d0                LTDC_ER_IRQHandler
+                0x080044d0                CAN2_SCE_IRQHandler
+                0x080044d0                DMA2_Stream2_IRQHandler
+                0x080044d0                SPI1_IRQHandler
+                0x080044d0                TIM6_DAC_IRQHandler
+                0x080044d0                TIM1_BRK_TIM9_IRQHandler
+                0x080044d0                DCMI_IRQHandler
+                0x080044d0                CAN2_RX0_IRQHandler
+                0x080044d0                DMA2_Stream3_IRQHandler
+                0x080044d0                USART6_IRQHandler
+                0x080044d0                USART3_IRQHandler
+                0x080044d0                CAN1_RX1_IRQHandler
+                0x080044d0                UART5_IRQHandler
+                0x080044d0                DMA2_Stream0_IRQHandler
+                0x080044d0                TIM4_IRQHandler
+                0x080044d0                I2C1_EV_IRQHandler
+                0x080044d0                DMA1_Stream6_IRQHandler
+                0x080044d0                DMA1_Stream1_IRQHandler
+                0x080044d0                UART4_IRQHandler
+                0x080044d0                TIM3_IRQHandler
+                0x080044d0                RCC_IRQHandler
+                0x080044d0                TIM8_BRK_TIM12_IRQHandler
+                0x080044d0                Default_Handler
+                0x080044d0                EXTI15_10_IRQHandler
+                0x080044d0                ADC_IRQHandler
+                0x080044d0                DMA1_Stream7_IRQHandler
+                0x080044d0                SPI5_IRQHandler
+                0x080044d0                TIM7_IRQHandler
+                0x080044d0                CAN2_TX_IRQHandler
+                0x080044d0                TIM5_IRQHandler
+                0x080044d0                DMA2_Stream7_IRQHandler
+                0x080044d0                I2C3_EV_IRQHandler
+                0x080044d0                EXTI9_5_IRQHandler
+                0x080044d0                RTC_WKUP_IRQHandler
+                0x080044d0                LTDC_IRQHandler
+                0x080044d0                ETH_WKUP_IRQHandler
+                0x080044d0                SPI2_IRQHandler
+                0x080044d0                OTG_HS_EP1_IN_IRQHandler
+                0x080044d0                DMA1_Stream0_IRQHandler
+                0x080044d0                CAN1_TX_IRQHandler
+                0x080044d0                EXTI4_IRQHandler
+                0x080044d0                ETH_IRQHandler
+                0x080044d0                OTG_HS_EP1_OUT_IRQHandler
+                0x080044d0                WWDG_IRQHandler
+                0x080044d0                SPI6_IRQHandler
+                0x080044d0                TIM2_IRQHandler
+                0x080044d0                OTG_FS_WKUP_IRQHandler
+                0x080044d0                TIM1_TRG_COM_TIM11_IRQHandler
+                0x080044d0                OTG_HS_IRQHandler
+                0x080044d0                DMA2D_IRQHandler
+                0x080044d0                EXTI1_IRQHandler
+                0x080044d0                UART7_IRQHandler
+                0x080044d0                USART2_IRQHandler
+                0x080044d0                I2C2_ER_IRQHandler
+                0x080044d0                DMA2_Stream1_IRQHandler
+                0x080044d0                CAN1_SCE_IRQHandler
+                0x080044d0                FLASH_IRQHandler
+                0x080044d0                DMA2_Stream4_IRQHandler
+                0x080044d0                USART1_IRQHandler
+                0x080044d0                OTG_FS_IRQHandler
+                0x080044d0                SPI3_IRQHandler
+                0x080044d0                DMA1_Stream4_IRQHandler
+                0x080044d0                I2C1_ER_IRQHandler
+                0x080044d0                FMC_IRQHandler
+                0x080044d0                DMA2_Stream6_IRQHandler
+                0x080044d0                SAI1_IRQHandler
+                0x080044d0                DMA1_Stream3_IRQHandler
+ *fill*         0x080044d2        0x2 
  .text.HAL_Init
-                0x08003574       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x08003574                HAL_Init
+                0x080044d4       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x080044d4                HAL_Init
  .text.HAL_InitTick
-                0x080035b8       0x60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x080035b8                HAL_InitTick
+                0x08004518       0x60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x08004518                HAL_InitTick
  .text.HAL_IncTick
-                0x08003618       0x28 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x08003618                HAL_IncTick
+                0x08004578       0x28 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x08004578                HAL_IncTick
  .text.HAL_GetTick
-                0x08003640       0x18 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x08003640                HAL_GetTick
+                0x080045a0       0x18 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x080045a0                HAL_GetTick
  .text.HAL_Delay
-                0x08003658       0x48 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x08003658                HAL_Delay
+                0x080045b8       0x48 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x080045b8                HAL_Delay
  .text.__NVIC_SetPriorityGrouping
-                0x080036a0       0x48 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x08004600       0x48 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.__NVIC_GetPriorityGrouping
-                0x080036e8       0x1c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x08004648       0x1c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.__NVIC_SetPriority
-                0x08003704       0x54 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x08004664       0x54 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.NVIC_EncodePriority
-                0x08003758       0x66 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- *fill*         0x080037be        0x2 
+                0x080046b8       0x66 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ *fill*         0x0800471e        0x2 
  .text.SysTick_Config
-                0x080037c0       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x08004720       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.HAL_NVIC_SetPriorityGrouping
-                0x08003804       0x16 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x08003804                HAL_NVIC_SetPriorityGrouping
+                0x08004764       0x16 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x08004764                HAL_NVIC_SetPriorityGrouping
  .text.HAL_NVIC_SetPriority
-                0x0800381a       0x38 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x0800381a                HAL_NVIC_SetPriority
+                0x0800477a       0x38 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0800477a                HAL_NVIC_SetPriority
  .text.HAL_SYSTICK_Config
-                0x08003852       0x18 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x08003852                HAL_SYSTICK_Config
- *fill*         0x0800386a        0x2 
+                0x080047b2       0x18 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x080047b2                HAL_SYSTICK_Config
+ *fill*         0x080047ca        0x2 
  .text.HAL_GPIO_Init
-                0x0800386c      0x358 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x0800386c                HAL_GPIO_Init
+                0x080047cc      0x358 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x080047cc                HAL_GPIO_Init
  .text.HAL_GPIO_WritePin
-                0x08003bc4       0x32 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x08003bc4                HAL_GPIO_WritePin
- *fill*         0x08003bf6        0x2 
+                0x08004b24       0x32 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x08004b24                HAL_GPIO_WritePin
+ *fill*         0x08004b56        0x2 
  .text.HAL_RCC_OscConfig
-                0x08003bf8      0x4f0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x08003bf8                HAL_RCC_OscConfig
+                0x08004b58      0x4f0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x08004b58                HAL_RCC_OscConfig
  .text.HAL_RCC_ClockConfig
-                0x080040e8      0x1cc ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x080040e8                HAL_RCC_ClockConfig
+                0x08005048      0x1cc ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x08005048                HAL_RCC_ClockConfig
  .text.HAL_RCC_GetSysClockFreq
-                0x080042b4      0x188 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x080042b4                HAL_RCC_GetSysClockFreq
- .text.memset   0x0800443c       0x10 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
-                0x0800443c                memset
+                0x08005214      0x188 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x08005214                HAL_RCC_GetSysClockFreq
+ .text.memset   0x0800539c       0x10 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+                0x0800539c                memset
  .text.__libc_init_array
-                0x0800444c       0x48 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
-                0x0800444c                __libc_init_array
+                0x080053ac       0x48 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+                0x080053ac                __libc_init_array
  *(.glue_7)
- .glue_7        0x08004494        0x0 linker stubs
+ .glue_7        0x080053f4        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08004494        0x0 linker stubs
+ .glue_7t       0x080053f4        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08004494        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x080053f4        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x08004494        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x08004494                _init
- .init          0x08004498        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x080053f4        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x080053f4                _init
+ .init          0x080053f8        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x080044a0        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x080044a0                _fini
- .fini          0x080044a4        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
-                0x080044ac                        . = ALIGN (0x4)
-                0x080044ac                        _etext = .
+ .fini          0x08005400        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x08005400                _fini
+ .fini          0x08005404        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x0800540c                        . = ALIGN (0x4)
+                0x0800540c                        _etext = .
 
-.vfp11_veneer   0x080044ac        0x0
- .vfp11_veneer  0x080044ac        0x0 linker stubs
+.vfp11_veneer   0x0800540c        0x0
+ .vfp11_veneer  0x0800540c        0x0 linker stubs
 
-.v4_bx          0x080044ac        0x0
- .v4_bx         0x080044ac        0x0 linker stubs
+.v4_bx          0x0800540c        0x0
+ .v4_bx         0x0800540c        0x0 linker stubs
 
-.iplt           0x080044ac        0x0
- .iplt          0x080044ac        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x0800540c        0x0
+ .iplt          0x0800540c        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x080044ac   0x1179c8
-                0x080044ac                        . = ALIGN (0x4)
+.rodata         0x0800540c   0x1a4f38
+                0x0800540c                        . = ALIGN (0x4)
  *(.rodata)
+ .rodata        0x0800540c        0xd ./Core/Src/app_flow.o
+ *fill*         0x08005419        0x3 
+ .rodata        0x0800541c      0x1ac ./Core/Src/game_ui.o
  *(.rodata*)
  .rodata.s_getsugaHitbox
-                0x080044ac       0x16 ./Core/Src/battle_demo.o
- *fill*         0x080044c2        0x2 
+                0x080055c8       0x16 ./Core/Src/battle_demo.o
+ *fill*         0x080055de        0x2 
  .rodata.s_vizardProjectileHitbox
-                0x080044c4       0x16 ./Core/Src/battle_demo.o
- *fill*         0x080044da        0x2 
+                0x080055e0       0x16 ./Core/Src/battle_demo.o
+ *fill*         0x080055f6        0x2 
  .rodata.Battle_DrawHud.str1.4
-                0x080044dc       0x2c ./Core/Src/battle_demo.o
+                0x080055f8       0x13 ./Core/Src/battle_demo.o
+ *fill*         0x0800560b        0x1 
+ .rodata.bleach_vs_naruto_splash_map
+                0x0800560c    0x25800 ./Core/Src/bleach_vs_naruto_splash.o
+                0x0800560c                bleach_vs_naruto_splash_map
  .rodata.chidori_1_0_pixels
-                0x08004508      0x948 ./Core/Src/chidori_data.o
+                0x0802ae0c      0x948 ./Core/Src/chidori_data.o
  .rodata.chidori_1_1_pixels
-                0x08004e50      0xcb0 ./Core/Src/chidori_data.o
+                0x0802b754      0xcb0 ./Core/Src/chidori_data.o
  .rodata.chidori_1_2_pixels
-                0x08005b00      0xd00 ./Core/Src/chidori_data.o
+                0x0802c404      0xd00 ./Core/Src/chidori_data.o
  .rodata.chidori_1_3_pixels
-                0x08006800      0xc30 ./Core/Src/chidori_data.o
+                0x0802d104      0xc30 ./Core/Src/chidori_data.o
  .rodata.chidori_1_frames
-                0x08007430       0x20 ./Core/Src/chidori_data.o
-                0x08007430                chidori_1_frames
+                0x0802dd34       0x20 ./Core/Src/chidori_data.o
+                0x0802dd34                chidori_1_frames
  .rodata.chidori_2_0_pixels
-                0x08007450     0x1158 ./Core/Src/chidori_data.o
+                0x0802dd54     0x1158 ./Core/Src/chidori_data.o
  .rodata.chidori_2_1_pixels
-                0x080085a8     0x1098 ./Core/Src/chidori_data.o
+                0x0802eeac     0x1098 ./Core/Src/chidori_data.o
  .rodata.chidori_2_2_pixels
-                0x08009640     0x11a0 ./Core/Src/chidori_data.o
+                0x0802ff44     0x11a0 ./Core/Src/chidori_data.o
  .rodata.chidori_2_frames
-                0x0800a7e0       0x18 ./Core/Src/chidori_data.o
-                0x0800a7e0                chidori_2_frames
+                0x080310e4       0x18 ./Core/Src/chidori_data.o
+                0x080310e4                chidori_2_frames
  .rodata.chidori_3_0_pixels
-                0x0800a7f8     0x3200 ./Core/Src/chidori_data.o
+                0x080310fc     0x3200 ./Core/Src/chidori_data.o
  .rodata.chidori_3_1_pixels
-                0x0800d9f8     0x1f00 ./Core/Src/chidori_data.o
+                0x080342fc     0x1f00 ./Core/Src/chidori_data.o
  .rodata.chidori_3_2_pixels
-                0x0800f8f8     0x1500 ./Core/Src/chidori_data.o
+                0x080361fc     0x1500 ./Core/Src/chidori_data.o
  .rodata.chidori_3_frames
-                0x08010df8       0x18 ./Core/Src/chidori_data.o
-                0x08010df8                chidori_3_frames
+                0x080376fc       0x18 ./Core/Src/chidori_data.o
+                0x080376fc                chidori_3_frames
  .rodata.chidori_4_0_pixels
-                0x08010e10      0x1e0 ./Core/Src/chidori_data.o
+                0x08037714      0x1e0 ./Core/Src/chidori_data.o
  .rodata.chidori_4_1_pixels
-                0x08010ff0       0x80 ./Core/Src/chidori_data.o
+                0x080378f4       0x80 ./Core/Src/chidori_data.o
  .rodata.chidori_4_frames
-                0x08011070       0x10 ./Core/Src/chidori_data.o
-                0x08011070                chidori_4_frames
+                0x08037974       0x10 ./Core/Src/chidori_data.o
+                0x08037974                chidori_4_frames
+ .rodata.choose_char_map
+                0x08037984    0x25800 ./Core/Src/choose_char.o
+                0x08037984                choose_char_map
+ .rodata.choose_avatar_naruto_map
+                0x0805d184      0xc80 ./Core/Src/choose_ui_assets.o
+                0x0805d184                choose_avatar_naruto_map
+ .rodata.choose_banner_naruto_map
+                0x0805de04     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x0805de04                choose_banner_naruto_map
+ .rodata.choose_avatar_nine_tail_map
+                0x0806189c      0xc80 ./Core/Src/choose_ui_assets.o
+                0x0806189c                choose_avatar_nine_tail_map
+ .rodata.choose_banner_nine_tail_map
+                0x0806251c     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x0806251c                choose_banner_nine_tail_map
+ .rodata.choose_avatar_sasuke_map
+                0x08065fb4      0xc80 ./Core/Src/choose_ui_assets.o
+                0x08065fb4                choose_avatar_sasuke_map
+ .rodata.choose_banner_sasuke_map
+                0x08066c34     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x08066c34                choose_banner_sasuke_map
+ .rodata.choose_avatar_ichigo_map
+                0x0806a6cc      0xc80 ./Core/Src/choose_ui_assets.o
+                0x0806a6cc                choose_avatar_ichigo_map
+ .rodata.choose_banner_ichigo_map
+                0x0806b34c     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x0806b34c                choose_banner_ichigo_map
+ .rodata.choose_avatar_hollow_map
+                0x0806ede4      0xc80 ./Core/Src/choose_ui_assets.o
+                0x0806ede4                choose_avatar_hollow_map
+ .rodata.choose_banner_hollow_map
+                0x0806fa64     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x0806fa64                choose_banner_hollow_map
+ .rodata.choose_avatar_gin_map
+                0x080734fc      0xc80 ./Core/Src/choose_ui_assets.o
+                0x080734fc                choose_avatar_gin_map
+ .rodata.choose_banner_gin_map
+                0x0807417c     0x3a98 ./Core/Src/choose_ui_assets.o
+                0x0807417c                choose_banner_gin_map
+ .rodata.choose_avatar_maps
+                0x08077c14       0x18 ./Core/Src/choose_ui_assets.o
+                0x08077c14                choose_avatar_maps
+ .rodata.choose_banner_maps
+                0x08077c2c       0x18 ./Core/Src/choose_ui_assets.o
+                0x08077c2c                choose_banner_maps
  .rodata.s_basicHurtbox
-                0x08011080       0x40 ./Core/Src/combat_attack_data.o
+                0x08077c44       0x40 ./Core/Src/combat_attack_data.o
  .rodata.s_basicAttack
-                0x080110c0       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x080110d6        0x2 
+                0x08077c84       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077c9a        0x2 
  .rodata.s_basicAttack2
-                0x080110d8       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x080110ee        0x2 
+                0x08077c9c       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077cb2        0x2 
  .rodata.s_basicAttack3
-                0x080110f0       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x08011106        0x2 
+                0x08077cb4       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077cca        0x2 
  .rodata.s_sasukeAttack
-                0x08011108       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x0801111e        0x2 
+                0x08077ccc       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077ce2        0x2 
  .rodata.s_sasukeAttack2
-                0x08011120       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x08011136        0x2 
+                0x08077ce4       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077cfa        0x2 
  .rodata.s_sasukeAttack3
-                0x08011138       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x0801114e        0x2 
+                0x08077cfc       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077d12        0x2 
  .rodata.s_sasukeChidori
-                0x08011150       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x08011166        0x2 
+                0x08077d14       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077d2a        0x2 
  .rodata.s_narutoSkill
-                0x08011168       0x16 ./Core/Src/combat_attack_data.o
- *fill*         0x0801117e        0x2 
+                0x08077d2c       0x16 ./Core/Src/combat_attack_data.o
+ *fill*         0x08077d42        0x2 
+ .rodata.Arial_Narrow8x12
+                0x08077d44      0x664 ./Core/Src/fonts.o
+                0x08077d44                Arial_Narrow8x12
  .rodata.Arial_Narrow10x13
-                0x08011180      0x7e4 ./Core/Src/fonts.o
-                0x08011180                Arial_Narrow10x13
+                0x080783a8      0x7e4 ./Core/Src/fonts.o
+                0x080783a8                Arial_Narrow10x13
+ .rodata.Arial_Narrow12x16
+                0x08078b8c      0x964 ./Core/Src/fonts.o
+                0x08078b8c                Arial_Narrow12x16
+ .rodata.Arial_Narrow15x19
+                0x080794f0     0x1144 ./Core/Src/fonts.o
+                0x080794f0                Arial_Narrow15x19
  .rodata.ichigo_move_idle_0_pixels
-                0x08011964     0x17e8 ./Core/Src/ichigo_moveset.o
+                0x0807a634     0x17e8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_idle_1_pixels
-                0x0801314c     0x175c ./Core/Src/ichigo_moveset.o
+                0x0807be1c     0x175c ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_idle_2_pixels
-                0x080148a8     0x18f8 ./Core/Src/ichigo_moveset.o
+                0x0807d578     0x18f8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_idle_3_pixels
-                0x080161a0     0x18cc ./Core/Src/ichigo_moveset.o
+                0x0807ee70     0x18cc ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_idle_frames
-                0x08017a6c       0x40 ./Core/Src/ichigo_moveset.o
+                0x0808073c       0x40 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_0_pixels
-                0x08017aac     0x1ad0 ./Core/Src/ichigo_moveset.o
+                0x0808077c     0x1ad0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_1_pixels
-                0x0801957c     0x1944 ./Core/Src/ichigo_moveset.o
+                0x0808224c     0x1944 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_2_pixels
-                0x0801aec0     0x1a20 ./Core/Src/ichigo_moveset.o
+                0x08083b90     0x1a20 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_3_pixels
-                0x0801c8e0     0x1a20 ./Core/Src/ichigo_moveset.o
+                0x080855b0     0x1a20 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_4_pixels
-                0x0801e300     0x1a20 ./Core/Src/ichigo_moveset.o
+                0x08086fd0     0x1a20 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_run_frames
-                0x0801fd20       0x50 ./Core/Src/ichigo_moveset.o
+                0x080889f0       0x50 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dash_0_pixels
-                0x0801fd70     0x1300 ./Core/Src/ichigo_moveset.o
+                0x08088a40     0x1300 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dash_1_pixels
-                0x08021070     0x1830 ./Core/Src/ichigo_moveset.o
+                0x08089d40     0x1830 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dash_frames
-                0x080228a0       0x20 ./Core/Src/ichigo_moveset.o
+                0x0808b570       0x20 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack_light_0_pixels
-                0x080228c0     0x13ec ./Core/Src/ichigo_moveset.o
+                0x0808b590     0x13ec ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack_light_1_pixels
-                0x08023cac     0x1220 ./Core/Src/ichigo_moveset.o
+                0x0808c97c     0x1220 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack_light_2_pixels
-                0x08024ecc     0x18dc ./Core/Src/ichigo_moveset.o
+                0x0808db9c     0x18dc ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack_light_3_pixels
-                0x080267a8     0x1360 ./Core/Src/ichigo_moveset.o
+                0x0808f478     0x1360 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack_light_frames
-                0x08027b08       0x40 ./Core/Src/ichigo_moveset.o
+                0x080907d8       0x40 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack2_0_pixels
-                0x08027b48     0x13d2 ./Core/Src/ichigo_moveset.o
- *fill*         0x08028f1a        0x2 
+                0x08090818     0x13d2 ./Core/Src/ichigo_moveset.o
+ *fill*         0x08091bea        0x2 
  .rodata.ichigo_move_attack2_1_pixels
-                0x08028f1c     0x1290 ./Core/Src/ichigo_moveset.o
+                0x08091bec     0x1290 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack2_2_pixels
-                0x0802a1ac     0x2640 ./Core/Src/ichigo_moveset.o
+                0x08092e7c     0x2640 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack2_3_pixels
-                0x0802c7ec     0x1c20 ./Core/Src/ichigo_moveset.o
+                0x080954bc     0x1c20 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack2_frames
-                0x0802e40c       0x40 ./Core/Src/ichigo_moveset.o
+                0x080970dc       0x40 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack3_0_pixels
-                0x0802e44c     0x1520 ./Core/Src/ichigo_moveset.o
+                0x0809711c     0x1520 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack3_1_pixels
-                0x0802f96c     0x151e ./Core/Src/ichigo_moveset.o
- *fill*         0x08030e8a        0x2 
+                0x0809863c     0x151e ./Core/Src/ichigo_moveset.o
+ *fill*         0x08099b5a        0x2 
  .rodata.ichigo_move_attack3_2_pixels
-                0x08030e8c     0x1b80 ./Core/Src/ichigo_moveset.o
+                0x08099b5c     0x1b80 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack3_3_pixels
-                0x08032a0c     0x1554 ./Core/Src/ichigo_moveset.o
+                0x0809b6dc     0x1554 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_attack3_frames
-                0x08033f60       0x40 ./Core/Src/ichigo_moveset.o
+                0x0809cc30       0x40 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_block_0_pixels
-                0x08033fa0     0x13b0 ./Core/Src/ichigo_moveset.o
+                0x0809cc70     0x13b0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_block_frames
-                0x08035350       0x10 ./Core/Src/ichigo_moveset.o
+                0x0809e020       0x10 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_0_pixels
-                0x08035360     0x1226 ./Core/Src/ichigo_moveset.o
- *fill*         0x08036586        0x2 
+                0x0809e030     0x1226 ./Core/Src/ichigo_moveset.o
+ *fill*         0x0809f256        0x2 
  .rodata.ichigo_move_skill_1_pixels
-                0x08036588     0x1226 ./Core/Src/ichigo_moveset.o
- *fill*         0x080377ae        0x2 
+                0x0809f258     0x1226 ./Core/Src/ichigo_moveset.o
+ *fill*         0x080a047e        0x2 
  .rodata.ichigo_move_skill_2_pixels
-                0x080377b0     0x1226 ./Core/Src/ichigo_moveset.o
- *fill*         0x080389d6        0x2 
+                0x080a0480     0x1226 ./Core/Src/ichigo_moveset.o
+ *fill*         0x080a16a6        0x2 
  .rodata.ichigo_move_skill_3_pixels
-                0x080389d8     0x1b00 ./Core/Src/ichigo_moveset.o
+                0x080a16a8     0x1b00 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_4_pixels
-                0x0803a4d8     0x25b8 ./Core/Src/ichigo_moveset.o
+                0x080a31a8     0x25b8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_5_pixels
-                0x0803ca90     0x19b4 ./Core/Src/ichigo_moveset.o
+                0x080a5760     0x19b4 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_6_pixels
-                0x0803e444     0x1980 ./Core/Src/ichigo_moveset.o
+                0x080a7114     0x1980 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_7_pixels
-                0x0803fdc4     0x1680 ./Core/Src/ichigo_moveset.o
+                0x080a8a94     0x1680 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_8_pixels
-                0x08041444     0x135c ./Core/Src/ichigo_moveset.o
+                0x080aa114     0x135c ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_skill_9_pixels
-                0x080427a0     0x1806 ./Core/Src/ichigo_moveset.o
- *fill*         0x08043fa6        0x2 
+                0x080ab470     0x1806 ./Core/Src/ichigo_moveset.o
+ *fill*         0x080acc76        0x2 
  .rodata.ichigo_move_skill_frames
-                0x08043fa8       0xa0 ./Core/Src/ichigo_moveset.o
+                0x080acc78       0xa0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_0_pixels
-                0x08044048     0x13b0 ./Core/Src/ichigo_moveset.o
+                0x080acd18     0x13b0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_1_pixels
-                0x080453f8     0x14b8 ./Core/Src/ichigo_moveset.o
+                0x080ae0c8     0x14b8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_2_pixels
-                0x080468b0     0x14b8 ./Core/Src/ichigo_moveset.o
+                0x080af580     0x14b8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_3_pixels
-                0x08047d68     0x1178 ./Core/Src/ichigo_moveset.o
+                0x080b0a38     0x1178 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_4_pixels
-                0x08048ee0     0x1b38 ./Core/Src/ichigo_moveset.o
+                0x080b1bb0     0x1b38 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_5_pixels
-                0x0804aa18     0x1ad0 ./Core/Src/ichigo_moveset.o
+                0x080b36e8     0x1ad0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_6_pixels
-                0x0804c4e8     0x1b80 ./Core/Src/ichigo_moveset.o
+                0x080b51b8     0x1b80 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_7_pixels
-                0x0804e068     0x15a8 ./Core/Src/ichigo_moveset.o
+                0x080b6d38     0x15a8 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_jump_frames
-                0x0804f610       0x80 ./Core/Src/ichigo_moveset.o
+                0x080b82e0       0x80 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_hit_0_pixels
-                0x0804f690     0x1398 ./Core/Src/ichigo_moveset.o
+                0x080b8360     0x1398 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_hit_1_pixels
-                0x08050a28     0x14a0 ./Core/Src/ichigo_moveset.o
+                0x080b96f8     0x14a0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_hit_2_pixels
-                0x08051ec8     0x14a0 ./Core/Src/ichigo_moveset.o
+                0x080bab98     0x14a0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_hit_frames
-                0x08053368       0x30 ./Core/Src/ichigo_moveset.o
+                0x080bc038       0x30 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dead_0_pixels
-                0x08053398     0x14a0 ./Core/Src/ichigo_moveset.o
+                0x080bc068     0x14a0 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dead_1_pixels
-                0x08054838      0xec4 ./Core/Src/ichigo_moveset.o
+                0x080bd508      0xec4 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dead_2_pixels
-                0x080556fc      0xf50 ./Core/Src/ichigo_moveset.o
+                0x080be3cc      0xf50 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dead_3_pixels
-                0x0805664c      0x800 ./Core/Src/ichigo_moveset.o
+                0x080bf31c      0x800 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_dead_frames
-                0x08056e4c       0x40 ./Core/Src/ichigo_moveset.o
+                0x080bfb1c       0x40 ./Core/Src/ichigo_moveset.o
  .rodata.ichigo_move_animations
-                0x08056e8c      0x160 ./Core/Src/ichigo_moveset.o
-                0x08056e8c                ichigo_move_animations
+                0x080bfb5c      0x160 ./Core/Src/ichigo_moveset.o
+                0x080bfb5c                ichigo_move_animations
+ .rodata.mainmenu_map
+                0x080bfcbc    0x25800 ./Core/Src/mainmenu.o
+                0x080bfcbc                mainmenu_map
  .rodata.naruto_move_idle_0_pixels
-                0x08056fec      0xe38 ./Core/Src/naruto_moveset.o
+                0x080e54bc      0xe38 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_idle_1_pixels
-                0x08057e24      0xf08 ./Core/Src/naruto_moveset.o
+                0x080e62f4      0xf08 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_idle_2_pixels
-                0x08058d2c      0xe10 ./Core/Src/naruto_moveset.o
+                0x080e71fc      0xe10 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_idle_3_pixels
-                0x08059b3c      0xdf2 ./Core/Src/naruto_moveset.o
- *fill*         0x0805a92e        0x2 
+                0x080e800c      0xdf2 ./Core/Src/naruto_moveset.o
+ *fill*         0x080e8dfe        0x2 
  .rodata.naruto_move_idle_frames
-                0x0805a930       0x40 ./Core/Src/naruto_moveset.o
+                0x080e8e00       0x40 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_run_0_pixels
-                0x0805a970      0xd96 ./Core/Src/naruto_moveset.o
- *fill*         0x0805b706        0x2 
+                0x080e8e40      0xd96 ./Core/Src/naruto_moveset.o
+ *fill*         0x080e9bd6        0x2 
  .rodata.naruto_move_run_1_pixels
-                0x0805b708      0xe60 ./Core/Src/naruto_moveset.o
+                0x080e9bd8      0xe60 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_run_2_pixels
-                0x0805c568      0xdf4 ./Core/Src/naruto_moveset.o
+                0x080eaa38      0xdf4 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_run_3_pixels
-                0x0805d35c      0xe04 ./Core/Src/naruto_moveset.o
+                0x080eb82c      0xe04 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_run_4_pixels
-                0x0805e160      0xda8 ./Core/Src/naruto_moveset.o
+                0x080ec630      0xda8 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_run_frames
-                0x0805ef08       0x50 ./Core/Src/naruto_moveset.o
+                0x080ed3d8       0x50 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dash_0_pixels
-                0x0805ef58      0xf0e ./Core/Src/naruto_moveset.o
- *fill*         0x0805fe66        0x2 
+                0x080ed428      0xf0e ./Core/Src/naruto_moveset.o
+ *fill*         0x080ee336        0x2 
  .rodata.naruto_move_dash_1_pixels
-                0x0805fe68      0xf00 ./Core/Src/naruto_moveset.o
+                0x080ee338      0xf00 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dash_frames
-                0x08060d68       0x20 ./Core/Src/naruto_moveset.o
+                0x080ef238       0x20 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack_light_0_pixels
-                0x08060d88      0xdec ./Core/Src/naruto_moveset.o
+                0x080ef258      0xdec ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack_light_1_pixels
-                0x08061b74      0xea0 ./Core/Src/naruto_moveset.o
+                0x080f0044      0xea0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack_light_2_pixels
-                0x08062a14     0x10cc ./Core/Src/naruto_moveset.o
+                0x080f0ee4     0x10cc ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack_light_3_pixels
-                0x08063ae0     0x11fe ./Core/Src/naruto_moveset.o
- *fill*         0x08064cde        0x2 
+                0x080f1fb0     0x11fe ./Core/Src/naruto_moveset.o
+ *fill*         0x080f31ae        0x2 
  .rodata.naruto_move_attack_light_4_pixels
-                0x08064ce0      0xdac ./Core/Src/naruto_moveset.o
+                0x080f31b0      0xdac ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack_light_frames
-                0x08065a8c       0x50 ./Core/Src/naruto_moveset.o
+                0x080f3f5c       0x50 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack2_0_pixels
-                0x08065adc      0x9f4 ./Core/Src/naruto_moveset.o
+                0x080f3fac      0x9f4 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack2_1_pixels
-                0x080664d0     0x11f8 ./Core/Src/naruto_moveset.o
+                0x080f49a0     0x11f8 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack2_2_pixels
-                0x080676c8      0xcc0 ./Core/Src/naruto_moveset.o
+                0x080f5b98      0xcc0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack2_3_pixels
-                0x08068388      0x958 ./Core/Src/naruto_moveset.o
+                0x080f6858      0x958 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack2_frames
-                0x08068ce0       0x40 ./Core/Src/naruto_moveset.o
+                0x080f71b0       0x40 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack3_0_pixels
-                0x08068d20      0x9b4 ./Core/Src/naruto_moveset.o
+                0x080f71f0      0x9b4 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack3_1_pixels
-                0x080696d4     0x11d0 ./Core/Src/naruto_moveset.o
+                0x080f7ba4     0x11d0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack3_2_pixels
-                0x0806a8a4     0x114c ./Core/Src/naruto_moveset.o
+                0x080f8d74     0x114c ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack3_3_pixels
-                0x0806b9f0      0xf50 ./Core/Src/naruto_moveset.o
+                0x080f9ec0      0xf50 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_attack3_frames
-                0x0806c940       0x40 ./Core/Src/naruto_moveset.o
+                0x080fae10       0x40 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_block_0_pixels
-                0x0806c980      0xb40 ./Core/Src/naruto_moveset.o
+                0x080fae50      0xb40 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_block_frames
-                0x0806d4c0       0x10 ./Core/Src/naruto_moveset.o
+                0x080fb990       0x10 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_0_pixels
-                0x0806d4d0      0xc80 ./Core/Src/naruto_moveset.o
+                0x080fb9a0      0xc80 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_1_pixels
-                0x0806e150      0xea0 ./Core/Src/naruto_moveset.o
+                0x080fc620      0xea0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_2_pixels
-                0x0806eff0      0xea0 ./Core/Src/naruto_moveset.o
+                0x080fd4c0      0xea0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_3_pixels
-                0x0806fe90     0x1130 ./Core/Src/naruto_moveset.o
+                0x080fe360     0x1130 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_4_pixels
-                0x08070fc0     0x15c8 ./Core/Src/naruto_moveset.o
+                0x080ff490     0x15c8 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_5_pixels
-                0x08072588     0x1524 ./Core/Src/naruto_moveset.o
+                0x08100a58     0x1524 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_6_pixels
-                0x08073aac     0x14a0 ./Core/Src/naruto_moveset.o
+                0x08101f7c     0x14a0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_skill_frames
-                0x08074f4c       0x70 ./Core/Src/naruto_moveset.o
+                0x0810341c       0x70 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_0_pixels
-                0x08074fbc      0xcc0 ./Core/Src/naruto_moveset.o
+                0x0810348c      0xcc0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_1_pixels
-                0x08075c7c      0xf8a ./Core/Src/naruto_moveset.o
- *fill*         0x08076c06        0x2 
+                0x0810414c      0xf8a ./Core/Src/naruto_moveset.o
+ *fill*         0x081050d6        0x2 
  .rodata.naruto_move_jump_2_pixels
-                0x08076c08      0xf8a ./Core/Src/naruto_moveset.o
- *fill*         0x08077b92        0x2 
+                0x081050d8      0xf8a ./Core/Src/naruto_moveset.o
+ *fill*         0x08106062        0x2 
  .rodata.naruto_move_jump_3_pixels
-                0x08077b94      0xdd0 ./Core/Src/naruto_moveset.o
+                0x08106064      0xdd0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_4_pixels
-                0x08078964      0xdd0 ./Core/Src/naruto_moveset.o
+                0x08106e34      0xdd0 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_5_pixels
-                0x08079734      0xdf4 ./Core/Src/naruto_moveset.o
+                0x08107c04      0xdf4 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_6_pixels
-                0x0807a528      0xb16 ./Core/Src/naruto_moveset.o
- *fill*         0x0807b03e        0x2 
+                0x081089f8      0xb16 ./Core/Src/naruto_moveset.o
+ *fill*         0x0810950e        0x2 
  .rodata.naruto_move_jump_7_pixels
-                0x0807b040      0x94c ./Core/Src/naruto_moveset.o
+                0x08109510      0x94c ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_jump_frames
-                0x0807b98c       0x80 ./Core/Src/naruto_moveset.o
+                0x08109e5c       0x80 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_hit_0_pixels
-                0x0807ba0c      0xe70 ./Core/Src/naruto_moveset.o
+                0x08109edc      0xe70 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_hit_1_pixels
-                0x0807c87c      0xe70 ./Core/Src/naruto_moveset.o
+                0x0810ad4c      0xe70 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_hit_2_pixels
-                0x0807d6ec      0xe70 ./Core/Src/naruto_moveset.o
+                0x0810bbbc      0xe70 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_hit_frames
-                0x0807e55c       0x30 ./Core/Src/naruto_moveset.o
+                0x0810ca2c       0x30 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dead_0_pixels
-                0x0807e58c      0xe70 ./Core/Src/naruto_moveset.o
+                0x0810ca5c      0xe70 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dead_1_pixels
-                0x0807f3fc      0xe14 ./Core/Src/naruto_moveset.o
+                0x0810d8cc      0xe14 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dead_2_pixels
-                0x08080210      0xaf8 ./Core/Src/naruto_moveset.o
+                0x0810e6e0      0xaf8 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dead_3_pixels
-                0x08080d08      0x5cc ./Core/Src/naruto_moveset.o
+                0x0810f1d8      0x5cc ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_dead_frames
-                0x080812d4       0x40 ./Core/Src/naruto_moveset.o
+                0x0810f7a4       0x40 ./Core/Src/naruto_moveset.o
  .rodata.naruto_move_animations
-                0x08081314       0x58 ./Core/Src/naruto_moveset.o
-                0x08081314                naruto_move_animations
+                0x0810f7e4       0x58 ./Core/Src/naruto_moveset.o
+                0x0810f7e4                naruto_move_animations
  .rodata.sasuke_move_idle_0_pixels
-                0x0808136c      0xa10 ./Core/Src/sasuke_moveset.o
+                0x0810f83c      0xa10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_idle_1_pixels
-                0x08081d7c      0x9e2 ./Core/Src/sasuke_moveset.o
- *fill*         0x0808275e        0x2 
+                0x0811024c      0x9e2 ./Core/Src/sasuke_moveset.o
+ *fill*         0x08110c2e        0x2 
  .rodata.sasuke_move_idle_2_pixels
-                0x08082760      0xa10 ./Core/Src/sasuke_moveset.o
+                0x08110c30      0xa10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_idle_3_pixels
-                0x08083170      0xa10 ./Core/Src/sasuke_moveset.o
+                0x08111640      0xa10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_idle_frames
-                0x08083b80       0x40 ./Core/Src/sasuke_moveset.o
+                0x08112050       0x40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_0_pixels
-                0x08083bc0      0xd5c ./Core/Src/sasuke_moveset.o
+                0x08112090      0xd5c ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_1_pixels
-                0x0808491c      0xe6a ./Core/Src/sasuke_moveset.o
- *fill*         0x08085786        0x2 
+                0x08112dec      0xe6a ./Core/Src/sasuke_moveset.o
+ *fill*         0x08113c56        0x2 
  .rodata.sasuke_move_run_2_pixels
-                0x08085788      0xf20 ./Core/Src/sasuke_moveset.o
+                0x08113c58      0xf20 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_3_pixels
-                0x080866a8      0xe10 ./Core/Src/sasuke_moveset.o
+                0x08114b78      0xe10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_4_pixels
-                0x080874b8      0xd10 ./Core/Src/sasuke_moveset.o
+                0x08115988      0xd10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_5_pixels
-                0x080881c8      0xdc0 ./Core/Src/sasuke_moveset.o
+                0x08116698      0xdc0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_6_pixels
-                0x08088f88      0xf78 ./Core/Src/sasuke_moveset.o
+                0x08117458      0xf78 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_7_pixels
-                0x08089f00      0xe04 ./Core/Src/sasuke_moveset.o
+                0x081183d0      0xe04 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_run_frames
-                0x0808ad04       0x80 ./Core/Src/sasuke_moveset.o
+                0x081191d4       0x80 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dash_0_pixels
-                0x0808ad84     0x1130 ./Core/Src/sasuke_moveset.o
+                0x08119254     0x1130 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dash_1_pixels
-                0x0808beb4     0x1130 ./Core/Src/sasuke_moveset.o
+                0x0811a384     0x1130 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dash_frames
-                0x0808cfe4       0x20 ./Core/Src/sasuke_moveset.o
+                0x0811b4b4       0x20 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack1_0_pixels
-                0x0808d004      0xec4 ./Core/Src/sasuke_moveset.o
+                0x0811b4d4      0xec4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack1_1_pixels
-                0x0808dec8      0xe38 ./Core/Src/sasuke_moveset.o
+                0x0811c398      0xe38 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack1_2_pixels
-                0x0808ed00     0x1188 ./Core/Src/sasuke_moveset.o
+                0x0811d1d0     0x1188 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack1_3_pixels
-                0x0808fe88     0x14be ./Core/Src/sasuke_moveset.o
- *fill*         0x08091346        0x2 
+                0x0811e358     0x14be ./Core/Src/sasuke_moveset.o
+ *fill*         0x0811f816        0x2 
  .rodata.sasuke_move_attack1_4_pixels
-                0x08091348     0x1534 ./Core/Src/sasuke_moveset.o
+                0x0811f818     0x1534 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack1_frames
-                0x0809287c       0x50 ./Core/Src/sasuke_moveset.o
+                0x08120d4c       0x50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_0_pixels
-                0x080928cc      0xe14 ./Core/Src/sasuke_moveset.o
+                0x08120d9c      0xe14 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_1_pixels
-                0x080936e0     0x12c2 ./Core/Src/sasuke_moveset.o
- *fill*         0x080949a2        0x2 
+                0x08121bb0     0x12c2 ./Core/Src/sasuke_moveset.o
+ *fill*         0x08122e72        0x2 
  .rodata.sasuke_move_attack2_2_pixels
-                0x080949a4     0x15c0 ./Core/Src/sasuke_moveset.o
+                0x08122e74     0x15c0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_3_pixels
-                0x08095f64     0x18c8 ./Core/Src/sasuke_moveset.o
+                0x08124434     0x18c8 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_4_pixels
-                0x0809782c     0x14b4 ./Core/Src/sasuke_moveset.o
+                0x08125cfc     0x14b4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_5_pixels
-                0x08098ce0     0x18b4 ./Core/Src/sasuke_moveset.o
+                0x081271b0     0x18b4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_6_pixels
-                0x0809a594     0x16e0 ./Core/Src/sasuke_moveset.o
+                0x08128a64     0x16e0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_7_pixels
-                0x0809bc74     0x1560 ./Core/Src/sasuke_moveset.o
+                0x0812a144     0x1560 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_8_pixels
-                0x0809d1d4      0xd40 ./Core/Src/sasuke_moveset.o
+                0x0812b6a4      0xd40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack2_frames
-                0x0809df14       0x90 ./Core/Src/sasuke_moveset.o
+                0x0812c3e4       0x90 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_0_pixels
-                0x0809dfa4      0xfc0 ./Core/Src/sasuke_moveset.o
+                0x0812c474      0xfc0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_1_pixels
-                0x0809ef64      0xac4 ./Core/Src/sasuke_moveset.o
+                0x0812d434      0xac4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_2_pixels
-                0x0809fa28     0x12ba ./Core/Src/sasuke_moveset.o
- *fill*         0x080a0ce2        0x2 
+                0x0812def8     0x12ba ./Core/Src/sasuke_moveset.o
+ *fill*         0x0812f1b2        0x2 
  .rodata.sasuke_move_attack3_3_pixels
-                0x080a0ce4     0x1780 ./Core/Src/sasuke_moveset.o
+                0x0812f1b4     0x1780 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_4_pixels
-                0x080a2464     0x10e0 ./Core/Src/sasuke_moveset.o
+                0x08130934     0x10e0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_5_pixels
-                0x080a3544     0x10e0 ./Core/Src/sasuke_moveset.o
+                0x08131a14     0x10e0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_6_pixels
-                0x080a4624      0xff0 ./Core/Src/sasuke_moveset.o
+                0x08132af4      0xff0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_attack3_frames
-                0x080a5614       0x70 ./Core/Src/sasuke_moveset.o
+                0x08133ae4       0x70 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_block_0_pixels
-                0x080a5684      0xec4 ./Core/Src/sasuke_moveset.o
+                0x08133b54      0xec4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_block_1_pixels
-                0x080a6548      0xf70 ./Core/Src/sasuke_moveset.o
+                0x08134a18      0xf70 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_block_2_pixels
-                0x080a74b8      0xdec ./Core/Src/sasuke_moveset.o
+                0x08135988      0xdec ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_block_frames
-                0x080a82a4       0x30 ./Core/Src/sasuke_moveset.o
+                0x08136774       0x30 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_0_pixels
-                0x080a82d4      0xb2e ./Core/Src/sasuke_moveset.o
- *fill*         0x080a8e02        0x2 
+                0x081367a4      0xb2e ./Core/Src/sasuke_moveset.o
+ *fill*         0x081372d2        0x2 
  .rodata.sasuke_move_skill_1_pixels
-                0x080a8e04      0xc7e ./Core/Src/sasuke_moveset.o
- *fill*         0x080a9a82        0x2 
+                0x081372d4      0xc7e ./Core/Src/sasuke_moveset.o
+ *fill*         0x08137f52        0x2 
  .rodata.sasuke_move_skill_2_pixels
-                0x080a9a84      0xc2c ./Core/Src/sasuke_moveset.o
+                0x08137f54      0xc2c ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_3_pixels
-                0x080aa6b0     0x1326 ./Core/Src/sasuke_moveset.o
- *fill*         0x080ab9d6        0x2 
+                0x08138b80     0x1326 ./Core/Src/sasuke_moveset.o
+ *fill*         0x08139ea6        0x2 
  .rodata.sasuke_move_skill_4_pixels
-                0x080ab9d8     0x1260 ./Core/Src/sasuke_moveset.o
+                0x08139ea8     0x1260 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_5_pixels
-                0x080acc38     0x13d4 ./Core/Src/sasuke_moveset.o
+                0x0813b108     0x13d4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_6_pixels
-                0x080ae00c     0x13b0 ./Core/Src/sasuke_moveset.o
+                0x0813c4dc     0x13b0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_7_pixels
-                0x080af3bc     0x1340 ./Core/Src/sasuke_moveset.o
+                0x0813d88c     0x1340 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_8_pixels
-                0x080b06fc      0xd80 ./Core/Src/sasuke_moveset.o
+                0x0813ebcc      0xd80 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_9_pixels
-                0x080b147c      0xac4 ./Core/Src/sasuke_moveset.o
+                0x0813f94c      0xac4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_skill_frames
-                0x080b1f40       0xa0 ./Core/Src/sasuke_moveset.o
+                0x08140410       0xa0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_startup_0_pixels
-                0x080b1fe0      0xdc0 ./Core/Src/sasuke_moveset.o
+                0x081404b0      0xdc0 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_startup_frames
-                0x080b2da0       0x10 ./Core/Src/sasuke_moveset.o
+                0x08141270       0x10 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_air_0_pixels
-                0x080b2db0      0xdec ./Core/Src/sasuke_moveset.o
+                0x08141280      0xdec ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_air_1_pixels
-                0x080b3b9c      0xdec ./Core/Src/sasuke_moveset.o
+                0x0814206c      0xdec ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_air_frames
-                0x080b4988       0x20 ./Core/Src/sasuke_moveset.o
+                0x08142e58       0x20 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_fall_0_pixels
-                0x080b49a8      0xc38 ./Core/Src/sasuke_moveset.o
+                0x08142e78      0xc38 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_fall_1_pixels
-                0x080b55e0      0xc38 ./Core/Src/sasuke_moveset.o
+                0x08143ab0      0xc38 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_fall_frames
-                0x080b6218       0x20 ./Core/Src/sasuke_moveset.o
+                0x081446e8       0x20 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_land_0_pixels
-                0x080b6238      0xc60 ./Core/Src/sasuke_moveset.o
+                0x08144708      0xc60 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_land_1_pixels
-                0x080b6e98      0xc2c ./Core/Src/sasuke_moveset.o
+                0x08145368      0xc2c ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_jump_land_frames
-                0x080b7ac4       0x20 ./Core/Src/sasuke_moveset.o
+                0x08145f94       0x20 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_hit_0_pixels
-                0x080b7ae4      0xdec ./Core/Src/sasuke_moveset.o
+                0x08145fb4      0xdec ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_hit_1_pixels
-                0x080b88d0      0xc5a ./Core/Src/sasuke_moveset.o
- *fill*         0x080b952a        0x2 
+                0x08146da0      0xc5a ./Core/Src/sasuke_moveset.o
+ *fill*         0x081479fa        0x2 
  .rodata.sasuke_move_hit_2_pixels
-                0x080b952c      0xdf4 ./Core/Src/sasuke_moveset.o
+                0x081479fc      0xdf4 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_hit_frames
-                0x080ba320       0x30 ./Core/Src/sasuke_moveset.o
+                0x081487f0       0x30 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_0_pixels
-                0x080ba350      0xdec ./Core/Src/sasuke_moveset.o
+                0x08148820      0xdec ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_1_pixels
-                0x080bb13c      0xaf6 ./Core/Src/sasuke_moveset.o
- *fill*         0x080bbc32        0x2 
+                0x0814960c      0xaf6 ./Core/Src/sasuke_moveset.o
+ *fill*         0x0814a102        0x2 
  .rodata.sasuke_move_dead_2_pixels
-                0x080bbc34      0xa50 ./Core/Src/sasuke_moveset.o
+                0x0814a104      0xa50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_3_pixels
-                0x080bc684      0xb40 ./Core/Src/sasuke_moveset.o
+                0x0814ab54      0xb40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_4_pixels
-                0x080bd1c4      0x960 ./Core/Src/sasuke_moveset.o
+                0x0814b694      0x960 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_5_pixels
-                0x080bdb24      0xaf6 ./Core/Src/sasuke_moveset.o
- *fill*         0x080be61a        0x2 
+                0x0814bff4      0xaf6 ./Core/Src/sasuke_moveset.o
+ *fill*         0x0814caea        0x2 
  .rodata.sasuke_move_dead_6_pixels
-                0x080be61c      0xa50 ./Core/Src/sasuke_moveset.o
+                0x0814caec      0xa50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_7_pixels
-                0x080bf06c      0xb40 ./Core/Src/sasuke_moveset.o
+                0x0814d53c      0xb40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_8_pixels
-                0x080bfbac      0x960 ./Core/Src/sasuke_moveset.o
+                0x0814e07c      0x960 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_9_pixels
-                0x080c050c      0xaf6 ./Core/Src/sasuke_moveset.o
- *fill*         0x080c1002        0x2 
+                0x0814e9dc      0xaf6 ./Core/Src/sasuke_moveset.o
+ *fill*         0x0814f4d2        0x2 
  .rodata.sasuke_move_dead_10_pixels
-                0x080c1004      0xa50 ./Core/Src/sasuke_moveset.o
+                0x0814f4d4      0xa50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_11_pixels
-                0x080c1a54      0xb40 ./Core/Src/sasuke_moveset.o
+                0x0814ff24      0xb40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_12_pixels
-                0x080c2594      0x960 ./Core/Src/sasuke_moveset.o
+                0x08150a64      0x960 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_13_pixels
-                0x080c2ef4      0xaf6 ./Core/Src/sasuke_moveset.o
- *fill*         0x080c39ea        0x2 
+                0x081513c4      0xaf6 ./Core/Src/sasuke_moveset.o
+ *fill*         0x08151eba        0x2 
  .rodata.sasuke_move_dead_14_pixels
-                0x080c39ec      0xa50 ./Core/Src/sasuke_moveset.o
+                0x08151ebc      0xa50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_15_pixels
-                0x080c443c      0xb40 ./Core/Src/sasuke_moveset.o
+                0x0815290c      0xb40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_16_pixels
-                0x080c4f7c      0x960 ./Core/Src/sasuke_moveset.o
+                0x0815344c      0x960 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_17_pixels
-                0x080c58dc      0xaf6 ./Core/Src/sasuke_moveset.o
- *fill*         0x080c63d2        0x2 
+                0x08153dac      0xaf6 ./Core/Src/sasuke_moveset.o
+ *fill*         0x081548a2        0x2 
  .rodata.sasuke_move_dead_18_pixels
-                0x080c63d4      0xa50 ./Core/Src/sasuke_moveset.o
+                0x081548a4      0xa50 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_19_pixels
-                0x080c6e24      0xb40 ./Core/Src/sasuke_moveset.o
+                0x081552f4      0xb40 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_20_pixels
-                0x080c7964      0x960 ./Core/Src/sasuke_moveset.o
+                0x08155e34      0x960 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_21_pixels
-                0x080c82c4      0xd96 ./Core/Src/sasuke_moveset.o
- *fill*         0x080c905a        0x2 
+                0x08156794      0xd96 ./Core/Src/sasuke_moveset.o
+ *fill*         0x0815752a        0x2 
  .rodata.sasuke_move_dead_22_pixels
-                0x080c905c      0xe9c ./Core/Src/sasuke_moveset.o
+                0x0815752c      0xe9c ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_dead_23_pixels
-                0x080c9ef8      0x6ea ./Core/Src/sasuke_moveset.o
- *fill*         0x080ca5e2        0x2 
+                0x081583c8      0x6ea ./Core/Src/sasuke_moveset.o
+ *fill*         0x08158ab2        0x2 
  .rodata.sasuke_move_dead_frames
-                0x080ca5e4      0x180 ./Core/Src/sasuke_moveset.o
+                0x08158ab4      0x180 ./Core/Src/sasuke_moveset.o
  .rodata.sasuke_move_animations
-                0x080ca764      0x1c0 ./Core/Src/sasuke_moveset.o
-                0x080ca764                sasuke_move_animations
+                0x08158c34      0x1c0 ./Core/Src/sasuke_moveset.o
+                0x08158c34                sasuke_move_animations
  .rodata.ichigo_getsuga_0
-                0x080ca924     0x3a64 ./Core/Src/sprite_data.o
-                0x080ca924                ichigo_getsuga_0
+                0x08158df4     0x3a64 ./Core/Src/sprite_data.o
+                0x08158df4                ichigo_getsuga_0
  .rodata.ichigo_getsuga_1
-                0x080ce388     0x3a64 ./Core/Src/sprite_data.o
-                0x080ce388                ichigo_getsuga_1
+                0x0815c858     0x3a64 ./Core/Src/sprite_data.o
+                0x0815c858                ichigo_getsuga_1
  .rodata.ichigo_getsuga_2
-                0x080d1dec     0x3a64 ./Core/Src/sprite_data.o
-                0x080d1dec                ichigo_getsuga_2
+                0x081602bc     0x3a64 ./Core/Src/sprite_data.o
+                0x081602bc                ichigo_getsuga_2
  .rodata.ichigo_getsuga_3
-                0x080d5850     0x3a64 ./Core/Src/sprite_data.o
-                0x080d5850                ichigo_getsuga_3
+                0x08163d20     0x3a64 ./Core/Src/sprite_data.o
+                0x08163d20                ichigo_getsuga_3
  .rodata.ichigo_getsuga_4
-                0x080d92b4     0x3a64 ./Core/Src/sprite_data.o
-                0x080d92b4                ichigo_getsuga_4
+                0x08167784     0x3a64 ./Core/Src/sprite_data.o
+                0x08167784                ichigo_getsuga_4
  .rodata.ichigo_getsuga_frames
-                0x080dcd18       0x14 ./Core/Src/sprite_data.o
-                0x080dcd18                ichigo_getsuga_frames
+                0x0816b1e8       0x14 ./Core/Src/sprite_data.o
+                0x0816b1e8                ichigo_getsuga_frames
  .rodata.getsuga_projectile_0
-                0x080dcd2c     0x1fa4 ./Core/Src/sprite_data.o
-                0x080dcd2c                getsuga_projectile_0
+                0x0816b1fc     0x1fa4 ./Core/Src/sprite_data.o
+                0x0816b1fc                getsuga_projectile_0
  .rodata.getsuga_projectile_1
-                0x080decd0     0x1fa4 ./Core/Src/sprite_data.o
-                0x080decd0                getsuga_projectile_1
+                0x0816d1a0     0x1fa4 ./Core/Src/sprite_data.o
+                0x0816d1a0                getsuga_projectile_1
  .rodata.getsuga_projectile_frames
-                0x080e0c74        0x8 ./Core/Src/sprite_data.o
-                0x080e0c74                getsuga_projectile_frames
+                0x0816f144        0x8 ./Core/Src/sprite_data.o
+                0x0816f144                getsuga_projectile_frames
  .rodata.AHBPrescTable
-                0x080e0c7c       0x10 ./Core/Src/system_stm32f4xx.o
-                0x080e0c7c                AHBPrescTable
+                0x0816f14c       0x10 ./Core/Src/system_stm32f4xx.o
+                0x0816f14c                AHBPrescTable
  .rodata.vizard_move_idle_0_pixels
-                0x080e0c8c     0x1368 ./Core/Src/vizard_moveset.o
+                0x0816f15c     0x1368 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_idle_1_pixels
-                0x080e1ff4     0x15f0 ./Core/Src/vizard_moveset.o
+                0x081704c4     0x15f0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_idle_2_pixels
-                0x080e35e4     0x1584 ./Core/Src/vizard_moveset.o
+                0x08171ab4     0x1584 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_idle_3_pixels
-                0x080e4b68     0x1518 ./Core/Src/vizard_moveset.o
+                0x08173038     0x1518 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_idle_frames
-                0x080e6080       0x40 ./Core/Src/vizard_moveset.o
+                0x08174550       0x40 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_run_0_pixels
-                0x080e60c0     0x1224 ./Core/Src/vizard_moveset.o
+                0x08174590     0x1224 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_run_1_pixels
-                0x080e72e4     0x1130 ./Core/Src/vizard_moveset.o
+                0x081757b4     0x1130 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_run_2_pixels
-                0x080e8414     0x11f0 ./Core/Src/vizard_moveset.o
+                0x081768e4     0x11f0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_run_3_pixels
-                0x080e9604     0x1260 ./Core/Src/vizard_moveset.o
+                0x08177ad4     0x1260 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_run_4_pixels
-                0x080ea864     0x11ce ./Core/Src/vizard_moveset.o
- *fill*         0x080eba32        0x2 
+                0x08178d34     0x11ce ./Core/Src/vizard_moveset.o
+ *fill*         0x08179f02        0x2 
  .rodata.vizard_move_run_frames
-                0x080eba34       0x50 ./Core/Src/vizard_moveset.o
+                0x08179f04       0x50 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_dash_0_pixels
-                0x080eba84     0x17a0 ./Core/Src/vizard_moveset.o
+                0x08179f54     0x17a0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_dash_1_pixels
-                0x080ed224     0x1432 ./Core/Src/vizard_moveset.o
- *fill*         0x080ee656        0x2 
+                0x0817b6f4     0x1432 ./Core/Src/vizard_moveset.o
+ *fill*         0x0817cb26        0x2 
  .rodata.vizard_move_dash_frames
-                0x080ee658       0x20 ./Core/Src/vizard_moveset.o
+                0x0817cb28       0x20 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack_light_0_pixels
-                0x080ee678     0x1086 ./Core/Src/vizard_moveset.o
- *fill*         0x080ef6fe        0x2 
+                0x0817cb48     0x1086 ./Core/Src/vizard_moveset.o
+ *fill*         0x0817dbce        0x2 
  .rodata.vizard_move_attack_light_1_pixels
-                0x080ef700     0x1014 ./Core/Src/vizard_moveset.o
+                0x0817dbd0     0x1014 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack_light_2_pixels
-                0x080f0714      0xfc0 ./Core/Src/vizard_moveset.o
+                0x0817ebe4      0xfc0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack_light_3_pixels
-                0x080f16d4     0x15a8 ./Core/Src/vizard_moveset.o
+                0x0817fba4     0x15a8 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack_light_4_pixels
-                0x080f2c7c      0xf18 ./Core/Src/vizard_moveset.o
+                0x0818114c      0xf18 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack_light_frames
-                0x080f3b94       0x50 ./Core/Src/vizard_moveset.o
+                0x08182064       0x50 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack2_0_pixels
-                0x080f3be4     0x11ee ./Core/Src/vizard_moveset.o
- *fill*         0x080f4dd2        0x2 
+                0x081820b4     0x11ee ./Core/Src/vizard_moveset.o
+ *fill*         0x081832a2        0x2 
  .rodata.vizard_move_attack2_1_pixels
-                0x080f4dd4     0x2010 ./Core/Src/vizard_moveset.o
+                0x081832a4     0x2010 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack2_2_pixels
-                0x080f6de4     0x1dc0 ./Core/Src/vizard_moveset.o
+                0x081852b4     0x1dc0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack2_3_pixels
-                0x080f8ba4     0x17a2 ./Core/Src/vizard_moveset.o
- *fill*         0x080fa346        0x2 
+                0x08187074     0x17a2 ./Core/Src/vizard_moveset.o
+ *fill*         0x08188816        0x2 
  .rodata.vizard_move_attack2_frames
-                0x080fa348       0x40 ./Core/Src/vizard_moveset.o
+                0x08188818       0x40 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack3_0_pixels
-                0x080fa388     0x1984 ./Core/Src/vizard_moveset.o
+                0x08188858     0x1984 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack3_1_pixels
-                0x080fbd0c     0x14b8 ./Core/Src/vizard_moveset.o
+                0x0818a1dc     0x14b8 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack3_2_pixels
-                0x080fd1c4     0x1ddc ./Core/Src/vizard_moveset.o
+                0x0818b694     0x1ddc ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack3_3_pixels
-                0x080fefa0     0x1090 ./Core/Src/vizard_moveset.o
+                0x0818d470     0x1090 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_attack3_frames
-                0x08100030       0x40 ./Core/Src/vizard_moveset.o
+                0x0818e500       0x40 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_block_0_pixels
-                0x08100070     0x1584 ./Core/Src/vizard_moveset.o
+                0x0818e540     0x1584 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_block_frames
-                0x081015f4       0x10 ./Core/Src/vizard_moveset.o
+                0x0818fac4       0x10 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_0_pixels
-                0x08101604     0x2260 ./Core/Src/vizard_moveset.o
+                0x0818fad4     0x2260 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_1_pixels
-                0x08103864     0x2120 ./Core/Src/vizard_moveset.o
+                0x08191d34     0x2120 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_2_pixels
-                0x08105984     0x2260 ./Core/Src/vizard_moveset.o
+                0x08193e54     0x2260 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_3_pixels
-                0x08107be4     0x17a2 ./Core/Src/vizard_moveset.o
- *fill*         0x08109386        0x2 
+                0x081960b4     0x17a2 ./Core/Src/vizard_moveset.o
+ *fill*         0x08197856        0x2 
  .rodata.vizard_move_skill_4_pixels
-                0x08109388     0x2800 ./Core/Src/vizard_moveset.o
+                0x08197858     0x2800 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_5_pixels
-                0x0810bb88     0x1c38 ./Core/Src/vizard_moveset.o
+                0x0819a058     0x1c38 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_6_pixels
-                0x0810d7c0     0x13b0 ./Core/Src/vizard_moveset.o
+                0x0819bc90     0x13b0 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_7_pixels
-                0x0810eb70     0x15fc ./Core/Src/vizard_moveset.o
+                0x0819d040     0x15fc ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_frames
-                0x0811016c       0x80 ./Core/Src/vizard_moveset.o
+                0x0819e63c       0x80 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_projectile_0_pixels
-                0x081101ec     0x1e78 ./Core/Src/vizard_moveset.o
+                0x0819e6bc     0x1e78 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_projectile_1_pixels
-                0x08112064     0x20e8 ./Core/Src/vizard_moveset.o
+                0x081a0534     0x20e8 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_skill_projectile_frames
-                0x0811414c       0x20 ./Core/Src/vizard_moveset.o
+                0x081a261c       0x20 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_jump_0_pixels
-                0x0811416c     0x11fe ./Core/Src/vizard_moveset.o
- *fill*         0x0811536a        0x2 
+                0x081a263c     0x11fe ./Core/Src/vizard_moveset.o
+ *fill*         0x081a383a        0x2 
  .rodata.vizard_move_jump_1_pixels
-                0x0811536c     0x1110 ./Core/Src/vizard_moveset.o
+                0x081a383c     0x1110 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_jump_2_pixels
-                0x0811647c      0xec8 ./Core/Src/vizard_moveset.o
+                0x081a494c      0xec8 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_jump_3_pixels
-                0x08117344     0x170c ./Core/Src/vizard_moveset.o
+                0x081a5814     0x170c ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_jump_4_pixels
-                0x08118a50     0x11fe ./Core/Src/vizard_moveset.o
- *fill*         0x08119c4e        0x2 
+                0x081a6f20     0x11fe ./Core/Src/vizard_moveset.o
+ *fill*         0x081a811e        0x2 
  .rodata.vizard_move_jump_5_pixels
-                0x08119c50      0xe74 ./Core/Src/vizard_moveset.o
+                0x081a8120      0xe74 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_jump_6_pixels
-                0x0811aac4     0x11fe ./Core/Src/vizard_moveset.o
- *fill*         0x0811bcc2        0x2 
+                0x081a8f94     0x11fe ./Core/Src/vizard_moveset.o
+ *fill*         0x081aa192        0x2 
  .rodata.vizard_move_jump_frames
-                0x0811bcc4       0x70 ./Core/Src/vizard_moveset.o
+                0x081aa194       0x70 ./Core/Src/vizard_moveset.o
  .rodata.vizard_move_animations
-                0x0811bd34      0x140 ./Core/Src/vizard_moveset.o
-                0x0811bd34                vizard_move_animations
-                0x0811be74                        . = ALIGN (0x4)
+                0x081aa204      0x140 ./Core/Src/vizard_moveset.o
+                0x081aa204                vizard_move_animations
+                0x081aa344                        . = ALIGN (0x4)
 
-.ARM.extab      0x0811be74        0x0
-                0x0811be74                        . = ALIGN (0x4)
+.ARM.extab      0x081aa344        0x0
+                0x081aa344                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0811be74                        . = ALIGN (0x4)
+                0x081aa344                        . = ALIGN (0x4)
 
-.ARM            0x0811be74        0x8
-                0x0811be74                        . = ALIGN (0x4)
-                0x0811be74                        __exidx_start = .
+.ARM            0x081aa344        0x8
+                0x081aa344                        . = ALIGN (0x4)
+                0x081aa344                        __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x0811be74        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
-                0x0811be7c                        __exidx_end = .
-                0x0811be7c                        . = ALIGN (0x4)
+ .ARM.exidx     0x081aa344        0x8 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x081aa34c                        __exidx_end = .
+                0x081aa34c                        . = ALIGN (0x4)
 
-.preinit_array  0x0811be7c        0x0
-                0x0811be7c                        . = ALIGN (0x4)
-                0x0811be7c                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x081aa34c        0x0
+                0x081aa34c                        . = ALIGN (0x4)
+                0x081aa34c                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x0811be7c                        PROVIDE (__preinit_array_end = .)
-                0x0811be7c                        . = ALIGN (0x4)
+                0x081aa34c                        PROVIDE (__preinit_array_end = .)
+                0x081aa34c                        . = ALIGN (0x4)
 
-.init_array     0x0811be7c        0x4
-                0x0811be7c                        . = ALIGN (0x4)
-                0x0811be7c                        PROVIDE (__init_array_start = .)
+.init_array     0x081aa34c        0x4
+                0x081aa34c                        . = ALIGN (0x4)
+                0x081aa34c                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x0811be7c        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0811be80                        PROVIDE (__init_array_end = .)
-                0x0811be80                        . = ALIGN (0x4)
+ .init_array    0x081aa34c        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x081aa350                        PROVIDE (__init_array_end = .)
+                0x081aa350                        . = ALIGN (0x4)
 
-.fini_array     0x0811be80        0x4
-                0x0811be80                        . = ALIGN (0x4)
+.fini_array     0x081aa350        0x4
+                0x081aa350                        . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0811be80        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x081aa350        0x4 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x0811be84                        . = ALIGN (0x4)
-                0x0811be84                        _sidata = LOADADDR (.data)
+                0x081aa354                        . = ALIGN (0x4)
+                0x081aa354                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x0811be84        0x0
- .rel.iplt      0x0811be84        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x081aa354        0x0
+ .rel.iplt      0x081aa354        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.data           0x20000000       0x14 load address 0x0811be84
+.data           0x20000000       0x18 load address 0x081aa354
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -4144,30 +4519,38 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .data.LCD_WIDTH
                 0x20000002        0x2 ./Core/Src/ILI9341_STM32_Driver.o
                 0x20000002                LCD_WIDTH
+ .data.s_selectedDifficulty
+                0x20000004        0x1 ./Core/Src/app_flow.o
+ .data.s_selectedCharacter
+                0x20000005        0x1 ./Core/Src/app_flow.o
+ .data.s_playerCharacter
+                0x20000006        0x1 ./Core/Src/battle_demo.o
+ .data.s_cpuCharacter
+                0x20000007        0x1 ./Core/Src/battle_demo.o
  .data.s_centerX
-                0x20000004        0x2 ./Core/Src/combat_input.o
+                0x20000008        0x2 ./Core/Src/combat_input.o
  .data.s_centerY
-                0x20000006        0x2 ./Core/Src/combat_input.o
+                0x2000000a        0x2 ./Core/Src/combat_input.o
  .data.SystemCoreClock
-                0x20000008        0x4 ./Core/Src/system_stm32f4xx.o
-                0x20000008                SystemCoreClock
+                0x2000000c        0x4 ./Core/Src/system_stm32f4xx.o
+                0x2000000c                SystemCoreClock
  .data.uwTickPrio
-                0x2000000c        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x2000000c                uwTickPrio
+                0x20000010        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x20000010                uwTickPrio
  .data.uwTickFreq
-                0x20000010        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x20000010                uwTickFreq
+                0x20000014        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x20000014                uwTickFreq
  *(.RamFunc)
  *(.RamFunc*)
-                0x20000014                        . = ALIGN (0x4)
- *fill*         0x20000011        0x3 
-                0x20000014                        _edata = .
-                0x0811be98                        _siccmram = LOADADDR (.ccmram)
+                0x20000018                        . = ALIGN (0x4)
+ *fill*         0x20000015        0x3 
+                0x20000018                        _edata = .
+                0x081aa36c                        _siccmram = LOADADDR (.ccmram)
 
-.igot.plt       0x20000014        0x0 load address 0x0811be98
- .igot.plt      0x20000014        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.igot.plt       0x20000018        0x0 load address 0x081aa36c
+ .igot.plt      0x20000018        0x0 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ccmram         0x10000000        0x0 load address 0x0811be98
+.ccmram         0x10000000        0x0 load address 0x081aa36c
                 0x10000000                        . = ALIGN (0x4)
                 0x10000000                        _sccmram = .
  *(.ccmram)
@@ -4176,7 +4559,7 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
                 0x10000000                        _eccmram = .
                 0x10000000                        . = ALIGN (0x4)
 
-.bss            0x20000018    0x261f4
+.bss            0x20000018    0x263f4
                 0x20000018                        _sbss = .
                 0x20000018                        __bss_start__ = _sbss
  *(.bss)
@@ -4187,60 +4570,71 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
                 0x20000038      0x1f4 ./Core/Src/ILI9341_STM32_Driver.o
  .bss.txBuffer.1
                 0x2000022c      0x1f4 ./Core/Src/ILI9341_STM32_Driver.o
- .bss.s_player  0x20000420       0x24 ./Core/Src/battle_demo.o
- .bss.s_cpu     0x20000444       0x24 ./Core/Src/battle_demo.o
+ .bss.txBuffer.0
+                0x20000420      0x1f4 ./Core/Src/ILI9341_STM32_Driver.o
+ .bss.s_screen  0x20000614        0x1 ./Core/Src/app_flow.o
+ *fill*         0x20000615        0x3 
+ .bss.s_screenStartedMs
+                0x20000618        0x4 ./Core/Src/app_flow.o
+ .bss.s_selectedMenu
+                0x2000061c        0x1 ./Core/Src/app_flow.o
+ .bss.s_navLatched
+                0x2000061d        0x1 ./Core/Src/app_flow.o
+ *fill*         0x2000061e        0x2 
+ .bss.s_player  0x20000620       0x24 ./Core/Src/battle_demo.o
+ .bss.s_cpu     0x20000644       0x24 ./Core/Src/battle_demo.o
  .bss.s_getsuga
-                0x20000468       0x10 ./Core/Src/battle_demo.o
- .bss.s_cpuAi   0x20000478       0x38 ./Core/Src/battle_demo.o
+                0x20000668       0x10 ./Core/Src/battle_demo.o
+ .bss.s_cpuAi   0x20000678       0x38 ./Core/Src/battle_demo.o
  .bss.s_playerSnapshot
-                0x200004b0       0x10 ./Core/Src/battle_demo.o
+                0x200006b0       0x10 ./Core/Src/battle_demo.o
  .bss.s_cpuSnapshot
-                0x200004c0       0x10 ./Core/Src/battle_demo.o
+                0x200006c0       0x10 ./Core/Src/battle_demo.o
  .bss.s_getsugaSnapshot
-                0x200004d0       0x10 ./Core/Src/battle_demo.o
+                0x200006d0       0x10 ./Core/Src/battle_demo.o
  .bss.s_chidoriSnapshot
-                0x200004e0       0x10 ./Core/Src/battle_demo.o
+                0x200006e0       0x10 ./Core/Src/battle_demo.o
  .bss.s_compositeRun
-                0x200004f0      0x280 ./Core/Src/battle_demo.o
+                0x200006f0      0x280 ./Core/Src/battle_demo.o
  .bss.s_backgroundPixels
-                0x20000770    0x25800 ./Core/Src/battle_demo.o
+                0x20000970    0x25800 ./Core/Src/battle_demo.o
  .bss.s_lastTickMs
-                0x20025f70        0x4 ./Core/Src/battle_demo.o
+                0x20026170        0x4 ./Core/Src/battle_demo.o
  .bss.s_lastPlayerHp
-                0x20025f74        0x2 ./Core/Src/battle_demo.o
+                0x20026174        0x2 ./Core/Src/battle_demo.o
  .bss.s_lastCpuHp
-                0x20025f76        0x2 ./Core/Src/battle_demo.o
+                0x20026176        0x2 ./Core/Src/battle_demo.o
  .bss.s_lastGetsugaSkillStartMs
-                0x20025f78        0x4 ./Core/Src/battle_demo.o
+                0x20026178        0x4 ./Core/Src/battle_demo.o
  .bss.s_lastVizardSkillStartMs
-                0x20025f7c        0x4 ./Core/Src/battle_demo.o
+                0x2002617c        0x4 ./Core/Src/battle_demo.o
  .bss.s_lastVizardProjectileSkillStartMs
-                0x20025f80        0x4 ./Core/Src/battle_demo.o
+                0x20026180        0x4 ./Core/Src/battle_demo.o
  .bss.s_vizardTeleported
-                0x20025f84        0x1 ./Core/Src/battle_demo.o
+                0x20026184        0x1 ./Core/Src/battle_demo.o
  .bss.s_lastButtons
-                0x20025f85        0x1 ./Core/Src/combat_input.o
- *fill*         0x20025f86        0x2 
+                0x20026185        0x1 ./Core/Src/combat_input.o
+ *fill*         0x20026186        0x2 
  .bss.s_runBuffer
-                0x20025f88      0x280 ./Core/Src/sprite_render.o
- .bss.uwTick    0x20026208        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x20026208                uwTick
+                0x20026188      0x280 ./Core/Src/sprite_render.o
+ .bss.uwTick    0x20026408        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x20026408                uwTick
  *(COMMON)
-                0x2002620c                        . = ALIGN (0x4)
-                0x2002620c                        _ebss = .
-                0x2002620c                        __bss_end__ = _ebss
+                0x2002640c                        . = ALIGN (0x4)
+                0x2002640c                        _ebss = .
+                0x2002640c                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2002620c      0x604
-                0x20026210                        . = ALIGN (0x8)
- *fill*         0x2002620c        0x4 
+                0x2002640c      0x604
+                0x20026410                        . = ALIGN (0x8)
+ *fill*         0x2002640c        0x4 
                 [!provide]                        PROVIDE (end = .)
-                0x20026210                        PROVIDE (_end = .)
-                0x20026410                        . = (. + _Min_Heap_Size)
- *fill*         0x20026210      0x200 
-                0x20026810                        . = (. + _Min_Stack_Size)
- *fill*         0x20026410      0x400 
-                0x20026810                        . = ALIGN (0x8)
+                0x20026410                        PROVIDE (_end = .)
+                0x20026610                        . = (. + _Min_Heap_Size)
+ *fill*         0x20026410      0x200 
+                0x20026a10                        . = (. + _Min_Stack_Size)
+ *fill*         0x20026610      0x400 
+                0x20026a10                        . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -4259,215 +4653,255 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .ARM.attributes
                 0x0000008a       0x34 ./Core/Src/ILI9341_STM32_Driver.o
  .ARM.attributes
-                0x000000be       0x34 ./Core/Src/battle_demo.o
+                0x000000be       0x34 ./Core/Src/app_flow.o
  .ARM.attributes
-                0x000000f2       0x34 ./Core/Src/chidori_data.o
+                0x000000f2       0x34 ./Core/Src/battle_demo.o
  .ARM.attributes
-                0x00000126       0x34 ./Core/Src/combat_actor.o
+                0x00000126       0x34 ./Core/Src/bleach_vs_naruto_splash.o
  .ARM.attributes
-                0x0000015a       0x34 ./Core/Src/combat_attack_data.o
+                0x0000015a       0x34 ./Core/Src/chidori_data.o
  .ARM.attributes
-                0x0000018e       0x34 ./Core/Src/combat_box.o
+                0x0000018e       0x34 ./Core/Src/choose_char.o
  .ARM.attributes
-                0x000001c2       0x34 ./Core/Src/combat_input.o
+                0x000001c2       0x34 ./Core/Src/choose_ui_assets.o
  .ARM.attributes
-                0x000001f6       0x34 ./Core/Src/fonts.o
+                0x000001f6       0x34 ./Core/Src/combat_actor.o
  .ARM.attributes
-                0x0000022a       0x34 ./Core/Src/ichigo_moveset.o
+                0x0000022a       0x34 ./Core/Src/combat_attack_data.o
  .ARM.attributes
-                0x0000025e       0x34 ./Core/Src/lcd_port.o
+                0x0000025e       0x34 ./Core/Src/combat_box.o
  .ARM.attributes
-                0x00000292       0x34 ./Core/Src/main.o
+                0x00000292       0x34 ./Core/Src/combat_input.o
  .ARM.attributes
-                0x000002c6       0x34 ./Core/Src/naruto_moveset.o
+                0x000002c6       0x34 ./Core/Src/fonts.o
  .ARM.attributes
-                0x000002fa       0x34 ./Core/Src/sasuke_moveset.o
+                0x000002fa       0x34 ./Core/Src/game_ui.o
  .ARM.attributes
-                0x0000032e       0x34 ./Core/Src/sprite_data.o
+                0x0000032e       0x34 ./Core/Src/ichigo_moveset.o
  .ARM.attributes
-                0x00000362       0x34 ./Core/Src/sprite_render.o
+                0x00000362       0x34 ./Core/Src/lcd_port.o
  .ARM.attributes
-                0x00000396       0x34 ./Core/Src/stm32f4xx_hal_msp.o
+                0x00000396       0x34 ./Core/Src/main.o
  .ARM.attributes
-                0x000003ca       0x34 ./Core/Src/stm32f4xx_it.o
+                0x000003ca       0x34 ./Core/Src/mainmenu.o
  .ARM.attributes
-                0x000003fe       0x34 ./Core/Src/system_stm32f4xx.o
+                0x000003fe       0x34 ./Core/Src/naruto_moveset.o
  .ARM.attributes
-                0x00000432       0x34 ./Core/Src/vizard_moveset.o
+                0x00000432       0x34 ./Core/Src/sasuke_moveset.o
  .ARM.attributes
-                0x00000466       0x21 ./Core/Startup/startup_stm32f429zitx.o
+                0x00000466       0x34 ./Core/Src/sprite_data.o
  .ARM.attributes
-                0x00000487       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000049a       0x34 ./Core/Src/sprite_render.o
  .ARM.attributes
-                0x000004bb       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x000004ce       0x34 ./Core/Src/stm32f4xx_hal_msp.o
  .ARM.attributes
-                0x000004ef       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x00000502       0x34 ./Core/Src/stm32f4xx_it.o
  .ARM.attributes
-                0x00000523       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x00000536       0x34 ./Core/Src/system_stm32f4xx.o
  .ARM.attributes
-                0x00000557       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+                0x0000056a       0x34 ./Core/Src/vizard_moveset.o
  .ARM.attributes
-                0x0000058b       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+                0x0000059e       0x21 ./Core/Startup/startup_stm32f429zitx.o
  .ARM.attributes
-                0x000005bf       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+                0x000005bf       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
  .ARM.attributes
-                0x000005e1       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x000005f3       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .ARM.attributes
-                0x00000615       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
+                0x00000627       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .ARM.attributes
-                0x00000637       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x0000065b       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .ARM.attributes
+                0x0000068f       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+ .ARM.attributes
+                0x000006c3       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+ .ARM.attributes
+                0x000006f7       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x00000719       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+ .ARM.attributes
+                0x0000074d       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x0000076f       0x22 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard/crtn.o
 OUTPUT(final.elf elf32-littlearm)
 LOAD linker stubs
 LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc.a
 LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a
 LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a
 
-.debug_info     0x00000000     0xdca5
+.debug_info     0x00000000     0xeef5
  .debug_info    0x00000000      0x683 ./Core/Src/ILI9341_GFX.o
  .debug_info    0x00000683     0x18d8 ./Core/Src/ILI9341_STM32_Driver.o
- .debug_info    0x00001f5b     0x276f ./Core/Src/battle_demo.o
- .debug_info    0x000046ca      0x335 ./Core/Src/chidori_data.o
- .debug_info    0x000049ff     0x17e2 ./Core/Src/combat_actor.o
- .debug_info    0x000061e1      0x454 ./Core/Src/combat_attack_data.o
- .debug_info    0x00006635      0x1c3 ./Core/Src/combat_box.o
- .debug_info    0x000067f8      0x614 ./Core/Src/combat_input.o
- .debug_info    0x00006e0c      0x159 ./Core/Src/fonts.o
- .debug_info    0x00006f65      0xac2 ./Core/Src/ichigo_moveset.o
- .debug_info    0x00007a27      0x3b9 ./Core/Src/lcd_port.o
- .debug_info    0x00007de0      0x4d2 ./Core/Src/main.o
- .debug_info    0x000082b2      0x9d8 ./Core/Src/naruto_moveset.o
- .debug_info    0x00008c8a      0xe87 ./Core/Src/sasuke_moveset.o
- .debug_info    0x00009b11      0x303 ./Core/Src/sprite_data.o
- .debug_info    0x00009e14      0x4c9 ./Core/Src/sprite_render.o
- .debug_info    0x0000a2dd      0x281 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_info    0x0000a55e      0x112 ./Core/Src/stm32f4xx_it.o
- .debug_info    0x0000a670      0x52e ./Core/Src/system_stm32f4xx.o
- .debug_info    0x0000ab9e      0x9a5 ./Core/Src/vizard_moveset.o
- .debug_info    0x0000b543       0x30 ./Core/Startup/startup_stm32f429zitx.o
- .debug_info    0x0000b573      0x9ba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_info    0x0000bf2d      0xdc2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_info    0x0000ccef      0x6db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_info    0x0000d3ca      0x8db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_info    0x00001f5b      0x4ac ./Core/Src/app_flow.o
+ .debug_info    0x00002407     0x2a68 ./Core/Src/battle_demo.o
+ .debug_info    0x00004e6f       0xb0 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_info    0x00004f1f      0x335 ./Core/Src/chidori_data.o
+ .debug_info    0x00005254       0xb8 ./Core/Src/choose_char.o
+ .debug_info    0x0000530c      0x22c ./Core/Src/choose_ui_assets.o
+ .debug_info    0x00005538     0x17e2 ./Core/Src/combat_actor.o
+ .debug_info    0x00006d1a      0x454 ./Core/Src/combat_attack_data.o
+ .debug_info    0x0000716e      0x1c3 ./Core/Src/combat_box.o
+ .debug_info    0x00007331      0x614 ./Core/Src/combat_input.o
+ .debug_info    0x00007945      0x159 ./Core/Src/fonts.o
+ .debug_info    0x00007a9e      0x65f ./Core/Src/game_ui.o
+ .debug_info    0x000080fd      0xac2 ./Core/Src/ichigo_moveset.o
+ .debug_info    0x00008bbf      0x3b9 ./Core/Src/lcd_port.o
+ .debug_info    0x00008f78      0x4d2 ./Core/Src/main.o
+ .debug_info    0x0000944a       0xb8 ./Core/Src/mainmenu.o
+ .debug_info    0x00009502      0x9d8 ./Core/Src/naruto_moveset.o
+ .debug_info    0x00009eda      0xe87 ./Core/Src/sasuke_moveset.o
+ .debug_info    0x0000ad61      0x303 ./Core/Src/sprite_data.o
+ .debug_info    0x0000b064      0x4c9 ./Core/Src/sprite_render.o
+ .debug_info    0x0000b52d      0x281 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_info    0x0000b7ae      0x112 ./Core/Src/stm32f4xx_it.o
+ .debug_info    0x0000b8c0      0x52e ./Core/Src/system_stm32f4xx.o
+ .debug_info    0x0000bdee      0x9a5 ./Core/Src/vizard_moveset.o
+ .debug_info    0x0000c793       0x30 ./Core/Startup/startup_stm32f429zitx.o
+ .debug_info    0x0000c7c3      0x9ba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_info    0x0000d17d      0xdc2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_info    0x0000df3f      0x6db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_info    0x0000e61a      0x8db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_abbrev   0x00000000     0x234d
+.debug_abbrev   0x00000000     0x287c
  .debug_abbrev  0x00000000      0x166 ./Core/Src/ILI9341_GFX.o
  .debug_abbrev  0x00000166      0x2ef ./Core/Src/ILI9341_STM32_Driver.o
- .debug_abbrev  0x00000455      0x2bd ./Core/Src/battle_demo.o
- .debug_abbrev  0x00000712       0xcf ./Core/Src/chidori_data.o
- .debug_abbrev  0x000007e1      0x27f ./Core/Src/combat_actor.o
- .debug_abbrev  0x00000a60      0x132 ./Core/Src/combat_attack_data.o
- .debug_abbrev  0x00000b92       0xcd ./Core/Src/combat_box.o
- .debug_abbrev  0x00000c5f      0x1cd ./Core/Src/combat_input.o
- .debug_abbrev  0x00000e2c       0x8e ./Core/Src/fonts.o
- .debug_abbrev  0x00000eba       0xe7 ./Core/Src/ichigo_moveset.o
- .debug_abbrev  0x00000fa1      0x12e ./Core/Src/lcd_port.o
- .debug_abbrev  0x000010cf      0x1df ./Core/Src/main.o
- .debug_abbrev  0x000012ae       0xe9 ./Core/Src/naruto_moveset.o
- .debug_abbrev  0x00001397       0xe9 ./Core/Src/sasuke_moveset.o
- .debug_abbrev  0x00001480       0x95 ./Core/Src/sprite_data.o
- .debug_abbrev  0x00001515      0x10a ./Core/Src/sprite_render.o
- .debug_abbrev  0x0000161f       0xd8 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_abbrev  0x000016f7       0x73 ./Core/Src/stm32f4xx_it.o
- .debug_abbrev  0x0000176a      0x11a ./Core/Src/system_stm32f4xx.o
- .debug_abbrev  0x00001884       0xe9 ./Core/Src/vizard_moveset.o
- .debug_abbrev  0x0000196d       0x24 ./Core/Startup/startup_stm32f429zitx.o
- .debug_abbrev  0x00001991      0x214 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_abbrev  0x00001ba5      0x31d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_abbrev  0x00001ec2      0x1d4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_abbrev  0x00002096      0x2b7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_abbrev  0x00000455      0x17a ./Core/Src/app_flow.o
+ .debug_abbrev  0x000005cf      0x2bf ./Core/Src/battle_demo.o
+ .debug_abbrev  0x0000088e       0x63 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_abbrev  0x000008f1       0xcf ./Core/Src/chidori_data.o
+ .debug_abbrev  0x000009c0       0x72 ./Core/Src/choose_char.o
+ .debug_abbrev  0x00000a32       0x97 ./Core/Src/choose_ui_assets.o
+ .debug_abbrev  0x00000ac9      0x27f ./Core/Src/combat_actor.o
+ .debug_abbrev  0x00000d48      0x132 ./Core/Src/combat_attack_data.o
+ .debug_abbrev  0x00000e7a       0xcd ./Core/Src/combat_box.o
+ .debug_abbrev  0x00000f47      0x1cd ./Core/Src/combat_input.o
+ .debug_abbrev  0x00001114       0x8e ./Core/Src/fonts.o
+ .debug_abbrev  0x000011a2      0x1d5 ./Core/Src/game_ui.o
+ .debug_abbrev  0x00001377       0xe7 ./Core/Src/ichigo_moveset.o
+ .debug_abbrev  0x0000145e      0x12e ./Core/Src/lcd_port.o
+ .debug_abbrev  0x0000158c      0x1df ./Core/Src/main.o
+ .debug_abbrev  0x0000176b       0x72 ./Core/Src/mainmenu.o
+ .debug_abbrev  0x000017dd       0xe9 ./Core/Src/naruto_moveset.o
+ .debug_abbrev  0x000018c6       0xe9 ./Core/Src/sasuke_moveset.o
+ .debug_abbrev  0x000019af       0x95 ./Core/Src/sprite_data.o
+ .debug_abbrev  0x00001a44      0x10a ./Core/Src/sprite_render.o
+ .debug_abbrev  0x00001b4e       0xd8 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_abbrev  0x00001c26       0x73 ./Core/Src/stm32f4xx_it.o
+ .debug_abbrev  0x00001c99      0x11a ./Core/Src/system_stm32f4xx.o
+ .debug_abbrev  0x00001db3       0xe9 ./Core/Src/vizard_moveset.o
+ .debug_abbrev  0x00001e9c       0x24 ./Core/Startup/startup_stm32f429zitx.o
+ .debug_abbrev  0x00001ec0      0x214 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_abbrev  0x000020d4      0x31d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_abbrev  0x000023f1      0x1d4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_abbrev  0x000025c5      0x2b7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_aranges  0x00000000      0x918
+.debug_aranges  0x00000000      0xaa0
  .debug_aranges
                 0x00000000       0x58 ./Core/Src/ILI9341_GFX.o
  .debug_aranges
                 0x00000058       0xc0 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_aranges
-                0x00000118      0x148 ./Core/Src/battle_demo.o
+                0x00000118       0x68 ./Core/Src/app_flow.o
  .debug_aranges
-                0x00000260       0x18 ./Core/Src/chidori_data.o
+                0x00000180      0x160 ./Core/Src/battle_demo.o
  .debug_aranges
-                0x00000278       0xd0 ./Core/Src/combat_actor.o
+                0x000002e0       0x18 ./Core/Src/bleach_vs_naruto_splash.o
  .debug_aranges
-                0x00000348       0x38 ./Core/Src/combat_attack_data.o
+                0x000002f8       0x18 ./Core/Src/chidori_data.o
  .debug_aranges
-                0x00000380       0x30 ./Core/Src/combat_box.o
+                0x00000310       0x18 ./Core/Src/choose_char.o
  .debug_aranges
-                0x000003b0       0x48 ./Core/Src/combat_input.o
+                0x00000328       0x18 ./Core/Src/choose_ui_assets.o
  .debug_aranges
-                0x000003f8       0x18 ./Core/Src/fonts.o
+                0x00000340       0xd0 ./Core/Src/combat_actor.o
  .debug_aranges
-                0x00000410       0x18 ./Core/Src/ichigo_moveset.o
+                0x00000410       0x38 ./Core/Src/combat_attack_data.o
  .debug_aranges
-                0x00000428       0x48 ./Core/Src/lcd_port.o
+                0x00000448       0x30 ./Core/Src/combat_box.o
  .debug_aranges
-                0x00000470       0x30 ./Core/Src/main.o
+                0x00000478       0x48 ./Core/Src/combat_input.o
  .debug_aranges
-                0x000004a0       0x18 ./Core/Src/naruto_moveset.o
+                0x000004c0       0x18 ./Core/Src/fonts.o
  .debug_aranges
-                0x000004b8       0x18 ./Core/Src/sasuke_moveset.o
+                0x000004d8       0xa8 ./Core/Src/game_ui.o
  .debug_aranges
-                0x000004d0       0x18 ./Core/Src/sprite_data.o
+                0x00000580       0x18 ./Core/Src/ichigo_moveset.o
  .debug_aranges
-                0x000004e8       0x38 ./Core/Src/sprite_render.o
+                0x00000598       0x48 ./Core/Src/lcd_port.o
  .debug_aranges
-                0x00000520       0x20 ./Core/Src/stm32f4xx_hal_msp.o
+                0x000005e0       0x30 ./Core/Src/main.o
  .debug_aranges
-                0x00000540       0x60 ./Core/Src/stm32f4xx_it.o
+                0x00000610       0x18 ./Core/Src/mainmenu.o
  .debug_aranges
-                0x000005a0       0x28 ./Core/Src/system_stm32f4xx.o
+                0x00000628       0x18 ./Core/Src/naruto_moveset.o
  .debug_aranges
-                0x000005c8       0x18 ./Core/Src/vizard_moveset.o
+                0x00000640       0x18 ./Core/Src/sasuke_moveset.o
  .debug_aranges
-                0x000005e0       0x28 ./Core/Startup/startup_stm32f429zitx.o
+                0x00000658       0x18 ./Core/Src/sprite_data.o
  .debug_aranges
-                0x00000608      0x100 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x00000670       0x38 ./Core/Src/sprite_render.o
  .debug_aranges
-                0x00000708      0x130 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x000006a8       0x20 ./Core/Src/stm32f4xx_hal_msp.o
  .debug_aranges
-                0x00000838       0x58 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x000006c8       0x60 ./Core/Src/stm32f4xx_it.o
  .debug_aranges
-                0x00000890       0x88 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x00000728       0x28 ./Core/Src/system_stm32f4xx.o
+ .debug_aranges
+                0x00000750       0x18 ./Core/Src/vizard_moveset.o
+ .debug_aranges
+                0x00000768       0x28 ./Core/Startup/startup_stm32f429zitx.o
+ .debug_aranges
+                0x00000790      0x100 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_aranges
+                0x00000890      0x130 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_aranges
+                0x000009c0       0x58 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_aranges
+                0x00000a18       0x88 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
 .debug_rnglists
-                0x00000000      0x757
+                0x00000000      0x837
  .debug_rnglists
                 0x00000000       0x44 ./Core/Src/ILI9341_GFX.o
  .debug_rnglists
                 0x00000044       0xc4 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_rnglists
-                0x00000108      0x17c ./Core/Src/battle_demo.o
+                0x00000108       0x4a ./Core/Src/app_flow.o
  .debug_rnglists
-                0x00000284      0x117 ./Core/Src/combat_actor.o
+                0x00000152      0x18f ./Core/Src/battle_demo.o
  .debug_rnglists
-                0x0000039b       0x27 ./Core/Src/combat_attack_data.o
+                0x000002e1      0x117 ./Core/Src/combat_actor.o
  .debug_rnglists
-                0x000003c2       0x20 ./Core/Src/combat_box.o
+                0x000003f8       0x27 ./Core/Src/combat_attack_data.o
  .debug_rnglists
-                0x000003e2       0x33 ./Core/Src/combat_input.o
+                0x0000041f       0x20 ./Core/Src/combat_box.o
  .debug_rnglists
-                0x00000415       0x31 ./Core/Src/lcd_port.o
+                0x0000043f       0x33 ./Core/Src/combat_input.o
  .debug_rnglists
-                0x00000446       0x20 ./Core/Src/main.o
+                0x00000472       0x83 ./Core/Src/game_ui.o
  .debug_rnglists
-                0x00000466       0x28 ./Core/Src/sprite_render.o
+                0x000004f5       0x31 ./Core/Src/lcd_port.o
  .debug_rnglists
-                0x0000048e       0x13 ./Core/Src/stm32f4xx_hal_msp.o
+                0x00000526       0x20 ./Core/Src/main.o
  .debug_rnglists
-                0x000004a1       0x43 ./Core/Src/stm32f4xx_it.o
+                0x00000546       0x28 ./Core/Src/sprite_render.o
  .debug_rnglists
-                0x000004e4       0x1a ./Core/Src/system_stm32f4xx.o
+                0x0000056e       0x13 ./Core/Src/stm32f4xx_hal_msp.o
  .debug_rnglists
-                0x000004fe       0x19 ./Core/Startup/startup_stm32f429zitx.o
+                0x00000581       0x43 ./Core/Src/stm32f4xx_it.o
  .debug_rnglists
-                0x00000517       0xbb ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x000005c4       0x1a ./Core/Src/system_stm32f4xx.o
  .debug_rnglists
-                0x000005d2       0xe0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x000005de       0x19 ./Core/Startup/startup_stm32f429zitx.o
  .debug_rnglists
-                0x000006b2       0x3f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x000005f7       0xbb ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
  .debug_rnglists
-                0x000006f1       0x66 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x000006b2       0xe0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_rnglists
+                0x00000792       0x3f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_rnglists
+                0x000007d1       0x66 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_macro    0x00000000    0x227f5
+.debug_macro    0x00000000    0x22f89
  .debug_macro   0x00000000      0x1d7 ./Core/Src/ILI9341_GFX.o
  .debug_macro   0x000001d7      0xad8 ./Core/Src/ILI9341_GFX.o
  .debug_macro   0x00000caf      0x28f ./Core/Src/ILI9341_GFX.o
@@ -4509,103 +4943,134 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_macro   0x00020a17       0x22 ./Core/Src/ILI9341_GFX.o
  .debug_macro   0x00020a39       0x10 ./Core/Src/ILI9341_GFX.o
  .debug_macro   0x00020a49      0x1c5 ./Core/Src/ILI9341_STM32_Driver.o
- .debug_macro   0x00020c0e      0x336 ./Core/Src/battle_demo.o
- .debug_macro   0x00020f44       0x16 ./Core/Src/battle_demo.o
- .debug_macro   0x00020f5a       0x58 ./Core/Src/battle_demo.o
- .debug_macro   0x00020fb2       0x6d ./Core/Src/chidori_data.o
- .debug_macro   0x0002101f       0xef ./Core/Src/combat_actor.o
- .debug_macro   0x0002110e       0x77 ./Core/Src/combat_attack_data.o
- .debug_macro   0x00021185       0x77 ./Core/Src/combat_box.o
- .debug_macro   0x000211fc      0x230 ./Core/Src/combat_input.o
- .debug_macro   0x0002142c       0x72 ./Core/Src/fonts.o
- .debug_macro   0x0002149e       0x1c ./Core/Src/fonts.o
- .debug_macro   0x000214ba       0x76 ./Core/Src/ichigo_moveset.o
- .debug_macro   0x00021530      0x1d4 ./Core/Src/lcd_port.o
- .debug_macro   0x00021704       0x10 ./Core/Src/lcd_port.o
- .debug_macro   0x00021714      0x1c4 ./Core/Src/main.o
- .debug_macro   0x000218d8       0x76 ./Core/Src/naruto_moveset.o
- .debug_macro   0x0002194e       0x76 ./Core/Src/sasuke_moveset.o
- .debug_macro   0x000219c4       0x72 ./Core/Src/sprite_data.o
- .debug_macro   0x00021a36       0x52 ./Core/Src/sprite_data.o
- .debug_macro   0x00021a88       0x7f ./Core/Src/sprite_render.o
- .debug_macro   0x00021b07      0x1ba ./Core/Src/stm32f4xx_hal_msp.o
- .debug_macro   0x00021cc1      0x1c4 ./Core/Src/stm32f4xx_it.o
- .debug_macro   0x00021e85      0x1b0 ./Core/Src/system_stm32f4xx.o
- .debug_macro   0x00022035       0x76 ./Core/Src/vizard_moveset.o
- .debug_macro   0x000220ab      0x210 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_macro   0x000222bb      0x1b0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_macro   0x0002246b      0x1b6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_macro   0x00022621      0x1d4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_macro   0x00020c0e      0x228 ./Core/Src/app_flow.o
+ .debug_macro   0x00020e36       0x34 ./Core/Src/app_flow.o
+ .debug_macro   0x00020e6a       0x16 ./Core/Src/app_flow.o
+ .debug_macro   0x00020e80      0x34e ./Core/Src/battle_demo.o
+ .debug_macro   0x000211ce       0x58 ./Core/Src/battle_demo.o
+ .debug_macro   0x00021226       0x87 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_macro   0x000212ad       0x6d ./Core/Src/chidori_data.o
+ .debug_macro   0x0002131a       0x84 ./Core/Src/choose_char.o
+ .debug_macro   0x0002139e       0x16 ./Core/Src/choose_char.o
+ .debug_macro   0x000213b4       0x72 ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00021426       0x2e ./Core/Src/choose_ui_assets.o
+ .debug_macro   0x00021454       0xef ./Core/Src/combat_actor.o
+ .debug_macro   0x00021543       0x77 ./Core/Src/combat_attack_data.o
+ .debug_macro   0x000215ba       0x77 ./Core/Src/combat_box.o
+ .debug_macro   0x00021631      0x230 ./Core/Src/combat_input.o
+ .debug_macro   0x00021861       0x72 ./Core/Src/fonts.o
+ .debug_macro   0x000218d3       0x1c ./Core/Src/fonts.o
+ .debug_macro   0x000218ef      0x271 ./Core/Src/game_ui.o
+ .debug_macro   0x00021b60       0x1c ./Core/Src/game_ui.o
+ .debug_macro   0x00021b7c       0x1c ./Core/Src/game_ui.o
+ .debug_macro   0x00021b98       0x1c ./Core/Src/game_ui.o
+ .debug_macro   0x00021bb4       0x76 ./Core/Src/ichigo_moveset.o
+ .debug_macro   0x00021c2a      0x1d4 ./Core/Src/lcd_port.o
+ .debug_macro   0x00021dfe       0x10 ./Core/Src/lcd_port.o
+ .debug_macro   0x00021e0e      0x1c4 ./Core/Src/main.o
+ .debug_macro   0x00021fd2       0x84 ./Core/Src/mainmenu.o
+ .debug_macro   0x00022056       0x16 ./Core/Src/mainmenu.o
+ .debug_macro   0x0002206c       0x76 ./Core/Src/naruto_moveset.o
+ .debug_macro   0x000220e2       0x76 ./Core/Src/sasuke_moveset.o
+ .debug_macro   0x00022158       0x72 ./Core/Src/sprite_data.o
+ .debug_macro   0x000221ca       0x52 ./Core/Src/sprite_data.o
+ .debug_macro   0x0002221c       0x7f ./Core/Src/sprite_render.o
+ .debug_macro   0x0002229b      0x1ba ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_macro   0x00022455      0x1c4 ./Core/Src/stm32f4xx_it.o
+ .debug_macro   0x00022619      0x1b0 ./Core/Src/system_stm32f4xx.o
+ .debug_macro   0x000227c9       0x76 ./Core/Src/vizard_moveset.o
+ .debug_macro   0x0002283f      0x210 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_macro   0x00022a4f      0x1b0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_macro   0x00022bff      0x1b6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_macro   0x00022db5      0x1d4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_line     0x00000000     0xd536
+.debug_line     0x00000000     0xfae0
  .debug_line    0x00000000      0xa22 ./Core/Src/ILI9341_GFX.o
  .debug_line    0x00000a22      0xf82 ./Core/Src/ILI9341_STM32_Driver.o
- .debug_line    0x000019a4     0x1c32 ./Core/Src/battle_demo.o
- .debug_line    0x000035d6      0x41c ./Core/Src/chidori_data.o
- .debug_line    0x000039f2     0x11bb ./Core/Src/combat_actor.o
- .debug_line    0x00004bad      0x504 ./Core/Src/combat_attack_data.o
- .debug_line    0x000050b1      0x528 ./Core/Src/combat_box.o
- .debug_line    0x000055d9      0x941 ./Core/Src/combat_input.o
- .debug_line    0x00005f1a      0x40e ./Core/Src/fonts.o
- .debug_line    0x00006328      0x431 ./Core/Src/ichigo_moveset.o
- .debug_line    0x00006759      0x7e2 ./Core/Src/lcd_port.o
- .debug_line    0x00006f3b      0x783 ./Core/Src/main.o
- .debug_line    0x000076be      0x431 ./Core/Src/naruto_moveset.o
- .debug_line    0x00007aef      0x431 ./Core/Src/sasuke_moveset.o
- .debug_line    0x00007f20      0x41a ./Core/Src/sprite_data.o
- .debug_line    0x0000833a      0x6ca ./Core/Src/sprite_render.o
- .debug_line    0x00008a04      0x701 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_line    0x00009105      0x7b0 ./Core/Src/stm32f4xx_it.o
- .debug_line    0x000098b5      0x777 ./Core/Src/system_stm32f4xx.o
- .debug_line    0x0000a02c      0x431 ./Core/Src/vizard_moveset.o
- .debug_line    0x0000a45d       0x7a ./Core/Startup/startup_stm32f429zitx.o
- .debug_line    0x0000a4d7      0xa2c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_line    0x0000af03      0xcc3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_line    0x0000bbc6      0xb70 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_line    0x0000c736      0xe00 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_line    0x000019a4      0x9c8 ./Core/Src/app_flow.o
+ .debug_line    0x0000236c     0x1cfc ./Core/Src/battle_demo.o
+ .debug_line    0x00004068      0x409 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_line    0x00004471      0x41c ./Core/Src/chidori_data.o
+ .debug_line    0x0000488d      0x41a ./Core/Src/choose_char.o
+ .debug_line    0x00004ca7      0x424 ./Core/Src/choose_ui_assets.o
+ .debug_line    0x000050cb     0x11bb ./Core/Src/combat_actor.o
+ .debug_line    0x00006286      0x504 ./Core/Src/combat_attack_data.o
+ .debug_line    0x0000678a      0x528 ./Core/Src/combat_box.o
+ .debug_line    0x00006cb2      0x941 ./Core/Src/combat_input.o
+ .debug_line    0x000075f3      0x40e ./Core/Src/fonts.o
+ .debug_line    0x00007a01      0xac0 ./Core/Src/game_ui.o
+ .debug_line    0x000084c1      0x431 ./Core/Src/ichigo_moveset.o
+ .debug_line    0x000088f2      0x7e2 ./Core/Src/lcd_port.o
+ .debug_line    0x000090d4      0x780 ./Core/Src/main.o
+ .debug_line    0x00009854      0x414 ./Core/Src/mainmenu.o
+ .debug_line    0x00009c68      0x431 ./Core/Src/naruto_moveset.o
+ .debug_line    0x0000a099      0x431 ./Core/Src/sasuke_moveset.o
+ .debug_line    0x0000a4ca      0x41a ./Core/Src/sprite_data.o
+ .debug_line    0x0000a8e4      0x6ca ./Core/Src/sprite_render.o
+ .debug_line    0x0000afae      0x701 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_line    0x0000b6af      0x7b0 ./Core/Src/stm32f4xx_it.o
+ .debug_line    0x0000be5f      0x777 ./Core/Src/system_stm32f4xx.o
+ .debug_line    0x0000c5d6      0x431 ./Core/Src/vizard_moveset.o
+ .debug_line    0x0000ca07       0x7a ./Core/Startup/startup_stm32f429zitx.o
+ .debug_line    0x0000ca81      0xa2c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_line    0x0000d4ad      0xcc3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_line    0x0000e170      0xb70 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_line    0x0000ece0      0xe00 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_str      0x00000000    0xcfe83
- .debug_str     0x00000000    0xcfe83 ./Core/Src/ILI9341_GFX.o
+.debug_str      0x00000000    0xd0b0f
+ .debug_str     0x00000000    0xd0b0f ./Core/Src/ILI9341_GFX.o
                               0xca412 (size before relaxing)
- .debug_str     0x000cfe83    0xca5ff ./Core/Src/ILI9341_STM32_Driver.o
- .debug_str     0x000cfe83    0xcb646 ./Core/Src/battle_demo.o
- .debug_str     0x000cfe83     0x3ed7 ./Core/Src/chidori_data.o
- .debug_str     0x000cfe83     0x4b9d ./Core/Src/combat_actor.o
- .debug_str     0x000cfe83     0x4148 ./Core/Src/combat_attack_data.o
- .debug_str     0x000cfe83     0x3e36 ./Core/Src/combat_box.o
- .debug_str     0x000cfe83    0xca49b ./Core/Src/combat_input.o
- .debug_str     0x000cfe83     0x3e26 ./Core/Src/fonts.o
- .debug_str     0x000cfe83     0x47a0 ./Core/Src/ichigo_moveset.o
- .debug_str     0x000cfe83    0xca2b6 ./Core/Src/lcd_port.o
- .debug_str     0x000cfe83    0xca1a0 ./Core/Src/main.o
- .debug_str     0x000cfe83     0x46ab ./Core/Src/naruto_moveset.o
- .debug_str     0x000cfe83     0x4b8b ./Core/Src/sasuke_moveset.o
- .debug_str     0x000cfe83     0x4030 ./Core/Src/sprite_data.o
- .debug_str     0x000cfe83     0x408d ./Core/Src/sprite_render.o
- .debug_str     0x000cfe83    0xc9fbf ./Core/Src/stm32f4xx_hal_msp.o
- .debug_str     0x000cfe83    0xc9f32 ./Core/Src/stm32f4xx_it.o
- .debug_str     0x000cfe83    0xca06f ./Core/Src/system_stm32f4xx.o
- .debug_str     0x000cfe83     0x46cc ./Core/Src/vizard_moveset.o
- .debug_str     0x000cfe83       0x53 ./Core/Startup/startup_stm32f429zitx.o
- .debug_str     0x000cfe83    0xcac92 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_str     0x000cfe83    0xca9c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_str     0x000cfe83    0xca1ea ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_str     0x000cfe83    0xca4a3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_str     0x000d0b0f    0xca5ff ./Core/Src/ILI9341_STM32_Driver.o
+ .debug_str     0x000d0b0f    0xca60d ./Core/Src/app_flow.o
+ .debug_str     0x000d0b0f    0xcb75d ./Core/Src/battle_demo.o
+ .debug_str     0x000d0b0f     0x3e68 ./Core/Src/bleach_vs_naruto_splash.o
+ .debug_str     0x000d0b0f     0x3ed7 ./Core/Src/chidori_data.o
+ .debug_str     0x000d0b0f     0x3e32 ./Core/Src/choose_char.o
+ .debug_str     0x000d0b0f     0x3f94 ./Core/Src/choose_ui_assets.o
+ .debug_str     0x000d0b0f     0x4b9d ./Core/Src/combat_actor.o
+ .debug_str     0x000d0b0f     0x4148 ./Core/Src/combat_attack_data.o
+ .debug_str     0x000d0b0f     0x3e36 ./Core/Src/combat_box.o
+ .debug_str     0x000d0b0f    0xca49b ./Core/Src/combat_input.o
+ .debug_str     0x000d0b0f     0x3e26 ./Core/Src/fonts.o
+ .debug_str     0x000d0b0f    0xca77b ./Core/Src/game_ui.o
+ .debug_str     0x000d0b0f     0x47a0 ./Core/Src/ichigo_moveset.o
+ .debug_str     0x000d0b0f    0xca2b6 ./Core/Src/lcd_port.o
+ .debug_str     0x000d0b0f    0xca197 ./Core/Src/main.o
+ .debug_str     0x000d0b0f     0x3e1d ./Core/Src/mainmenu.o
+ .debug_str     0x000d0b0f     0x46ab ./Core/Src/naruto_moveset.o
+ .debug_str     0x000d0b0f     0x4b8b ./Core/Src/sasuke_moveset.o
+ .debug_str     0x000d0b0f     0x4030 ./Core/Src/sprite_data.o
+ .debug_str     0x000d0b0f     0x408d ./Core/Src/sprite_render.o
+ .debug_str     0x000d0b0f    0xc9fbf ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_str     0x000d0b0f    0xc9f32 ./Core/Src/stm32f4xx_it.o
+ .debug_str     0x000d0b0f    0xca06f ./Core/Src/system_stm32f4xx.o
+ .debug_str     0x000d0b0f     0x46cc ./Core/Src/vizard_moveset.o
+ .debug_str     0x000d0b0f       0x53 ./Core/Startup/startup_stm32f429zitx.o
+ .debug_str     0x000d0b0f    0xcac92 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_str     0x000d0b0f    0xca9c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_str     0x000d0b0f    0xca1ea ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_str     0x000d0b0f    0xca4a3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/ILI9341_GFX.o
                                  0x44 (size before relaxing)
  .comment       0x00000043       0x44 ./Core/Src/ILI9341_STM32_Driver.o
+ .comment       0x00000043       0x44 ./Core/Src/app_flow.o
  .comment       0x00000043       0x44 ./Core/Src/battle_demo.o
+ .comment       0x00000043       0x44 ./Core/Src/bleach_vs_naruto_splash.o
  .comment       0x00000043       0x44 ./Core/Src/chidori_data.o
+ .comment       0x00000043       0x44 ./Core/Src/choose_char.o
+ .comment       0x00000043       0x44 ./Core/Src/choose_ui_assets.o
  .comment       0x00000043       0x44 ./Core/Src/combat_actor.o
  .comment       0x00000043       0x44 ./Core/Src/combat_attack_data.o
  .comment       0x00000043       0x44 ./Core/Src/combat_box.o
  .comment       0x00000043       0x44 ./Core/Src/combat_input.o
  .comment       0x00000043       0x44 ./Core/Src/fonts.o
+ .comment       0x00000043       0x44 ./Core/Src/game_ui.o
  .comment       0x00000043       0x44 ./Core/Src/ichigo_moveset.o
  .comment       0x00000043       0x44 ./Core/Src/lcd_port.o
  .comment       0x00000043       0x44 ./Core/Src/main.o
+ .comment       0x00000043       0x44 ./Core/Src/mainmenu.o
  .comment       0x00000043       0x44 ./Core/Src/naruto_moveset.o
  .comment       0x00000043       0x44 ./Core/Src/sasuke_moveset.o
  .comment       0x00000043       0x44 ./Core/Src/sprite_data.o
@@ -4619,39 +5084,41 @@ LOAD C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .comment       0x00000043       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .comment       0x00000043       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
 
-.debug_frame    0x00000000     0x1cc0
+.debug_frame    0x00000000     0x212c
  .debug_frame   0x00000000      0x148 ./Core/Src/ILI9341_GFX.o
  .debug_frame   0x00000148      0x2b4 ./Core/Src/ILI9341_STM32_Driver.o
- .debug_frame   0x000003fc      0x530 ./Core/Src/battle_demo.o
- .debug_frame   0x0000092c      0x28c ./Core/Src/combat_actor.o
- .debug_frame   0x00000bb8       0xa8 ./Core/Src/combat_attack_data.o
- .debug_frame   0x00000c60       0x84 ./Core/Src/combat_box.o
- .debug_frame   0x00000ce4       0xe0 ./Core/Src/combat_input.o
- .debug_frame   0x00000dc4       0xb4 ./Core/Src/lcd_port.o
- .debug_frame   0x00000e78       0x68 ./Core/Src/main.o
- .debug_frame   0x00000ee0       0xa4 ./Core/Src/sprite_render.o
- .debug_frame   0x00000f84       0x34 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_frame   0x00000fb8       0xf8 ./Core/Src/stm32f4xx_it.o
- .debug_frame   0x000010b0       0x50 ./Core/Src/system_stm32f4xx.o
- .debug_frame   0x00001100      0x354 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_frame   0x00001454      0x4b8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_frame   0x0000190c      0x130 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_frame   0x00001a3c      0x1d8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_frame   0x00001c14       0x20 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
- .debug_frame   0x00001c34       0x2c C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
- .debug_frame   0x00001c60       0x2c C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00001c8c       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x000003fc      0x150 ./Core/Src/app_flow.o
+ .debug_frame   0x0000054c      0x598 ./Core/Src/battle_demo.o
+ .debug_frame   0x00000ae4      0x28c ./Core/Src/combat_actor.o
+ .debug_frame   0x00000d70       0xa8 ./Core/Src/combat_attack_data.o
+ .debug_frame   0x00000e18       0x84 ./Core/Src/combat_box.o
+ .debug_frame   0x00000e9c       0xe0 ./Core/Src/combat_input.o
+ .debug_frame   0x00000f7c      0x2b4 ./Core/Src/game_ui.o
+ .debug_frame   0x00001230       0xb4 ./Core/Src/lcd_port.o
+ .debug_frame   0x000012e4       0x68 ./Core/Src/main.o
+ .debug_frame   0x0000134c       0xa4 ./Core/Src/sprite_render.o
+ .debug_frame   0x000013f0       0x34 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_frame   0x00001424       0xf8 ./Core/Src/stm32f4xx_it.o
+ .debug_frame   0x0000151c       0x50 ./Core/Src/system_stm32f4xx.o
+ .debug_frame   0x0000156c      0x354 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_frame   0x000018c0      0x4b8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_frame   0x00001d78      0x130 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_frame   0x00001ea8      0x1d8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_frame   0x00002080       0x20 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+ .debug_frame   0x000020a0       0x2c C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+ .debug_frame   0x000020cc       0x2c C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x000020f8       0x34 C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
 
 .debug_loclists
-                0x00000000     0x27b5
+                0x00000000     0x29ac
  .debug_loclists
                 0x00000000      0x7c7 ./Core/Src/ILI9341_STM32_Driver.o
  .debug_loclists
-                0x000007c7     0x1694 ./Core/Src/battle_demo.o
+                0x000007c7     0x188b ./Core/Src/battle_demo.o
  .debug_loclists
-                0x00001e5b      0x779 ./Core/Src/combat_actor.o
+                0x00002052      0x779 ./Core/Src/combat_actor.o
  .debug_loclists
-                0x000025d4      0x1e1 ./Core/Src/lcd_port.o
+                0x000027cb      0x1e1 ./Core/Src/lcd_port.o
 
 .debug_line_str
                 0x00000000       0x37

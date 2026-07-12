@@ -53,9 +53,13 @@
 #define RGB565_LINE 0xEF5DU
 #define RGB565_ACCENT_ORANGE 0xFD20U
 #define RGB565_ACCENT_CYAN 0x07FFU
+#define RGB565_HUD_BG 0x0842U
+#define RGB565_HUD_FRAME 0xC618U
 #define RGB565_HP_BACK 0x4208U
 #define RGB565_HP_GOOD 0x07E0U
 #define RGB565_HP_WARN 0xFD20U
+#define RGB565_MANA 0x04FFU
+#define RGB565_MANA_BACK 0x18C6U
 #define RGB565_HURTBOX 0x07E0U
 #define RGB565_HITBOX 0xF800U
 
@@ -148,6 +152,8 @@ static uint32_t s_lastGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
 static uint8_t s_vizardTeleported;
+static CombatCharacterId s_playerCharacter = COMBAT_CHARACTER_VIZARD_ICHIGO;
+static CombatCharacterId s_cpuCharacter = COMBAT_CHARACTER_SASUKE;
 
 static const CombatHitboxDef s_getsugaHitbox = {
     0U,
@@ -213,7 +219,13 @@ static void Battle_DrawGround(void);
 static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
-                                 uint16_t borderColor);
+                                 uint16_t borderColor, uint8_t reverse);
+static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint8_t reverse);
+static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
+                             uint16_t height, uint16_t value,
+                             uint16_t maxValue, uint16_t fillColor,
+                             uint16_t backColor, uint16_t borderColor,
+                             uint8_t reverse);
 static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureActor(const CombatActor *actor,
@@ -254,6 +266,13 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,
                             int16_t height, uint16_t color);
 
+void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
+                              CombatCharacterId cpuCharacter)
+{
+  s_playerCharacter = playerCharacter;
+  s_cpuCharacter = cpuCharacter;
+}
+
 void BattleDemo_Init(void)
 {
   uint32_t now = HAL_GetTick();
@@ -261,13 +280,13 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_VIZARD_ICHIGO,
+                   s_playerCharacter,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
                    now);
   CombatActor_Init(&s_cpu,
-                   COMBAT_CHARACTER_SASUKE,
+                   s_cpuCharacter,
                    BATTLE_CPU_START_X,
                    BATTLE_GROUND_Y,
                    -1,
@@ -319,13 +338,13 @@ void BattleDemo_Update(void)
 
   if (s_player.hp != s_lastPlayerHp)
   {
-    Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
+    Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U);
     s_lastPlayerHp = s_player.hp;
   }
 
   if (s_cpu.hp != s_lastCpuHp)
   {
-    Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);
+    Battle_DrawHealthBar(206U, 15U, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U);
     s_lastCpuHp = s_cpu.hp;
   }
 
@@ -1315,30 +1334,72 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 
 static void Battle_DrawHud(void)
 {
-  ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 35U, RGB565_BLACK);
-  ILI9341_DrawText("P1 VIZARD", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
-                   RGB565_BLACK);
-  Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
-  Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);
+  LCD_Port_FillRect(0U, 0U, LCD_PORT_WIDTH, 37U, RGB565_HUD_BG);
+  LCD_Port_FillRect(0U, 36U, LCD_PORT_WIDTH, 1U, RGB565_HUD_FRAME);
+
+  ILI9341_DrawText("VIZARD", FONT1, 10U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+  ILI9341_DrawText("SASUKE", FONT1, 262U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+
+  Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U);
+  Battle_DrawManaBar(10U, 27U, 0U);
+
+  Battle_DrawHealthBar(206U, 15U, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U);
+  Battle_DrawManaBar(226U, 27U, 1U);
+
+  ILI9341_DrawHollowRectangleCoord(142U, 5U, 177U, 27U, RGB565_HUD_FRAME);
+  LCD_Port_FillRect(143U, 6U, 34U, 21U, RGB565_BLACK);
+  ILI9341_DrawText("60", FONT3, 148U, 8U, RGB565_WHITE, RGB565_BLACK);
 }
 
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
-                                 uint16_t borderColor)
+                                 uint16_t borderColor, uint8_t reverse)
 {
   uint16_t fill = (hp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
-  uint16_t width = (uint16_t)((hp > 100U) ? 100U : hp);
 
-  ILI9341_DrawHollowRectangleCoord(x, y, (uint16_t)(x + 102U),
-                                   (uint16_t)(y + 8U), borderColor);
-  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), 100U, 6U,
-                    RGB565_HP_BACK);
-  if (width != 0U)
+  Battle_DrawMeter(x, y, 104U, 8U, hp, 100U, fill, RGB565_HP_BACK,
+                   borderColor, reverse);
+}
+
+static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint8_t reverse)
+{
+  Battle_DrawMeter(x, y, 84U, 5U, 100U, 100U, RGB565_MANA,
+                   RGB565_MANA_BACK, RGB565_HUD_FRAME, reverse);
+}
+
+static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
+                             uint16_t height, uint16_t value,
+                             uint16_t maxValue, uint16_t fillColor,
+                             uint16_t backColor, uint16_t borderColor,
+                             uint8_t reverse)
+{
+  if ((width < 3U) || (height < 3U) || (maxValue == 0U))
   {
-    LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), width, 6U,
-                      fill);
+    return;
   }
+
+  uint16_t innerWidth = (uint16_t)(width - 2U);
+  uint16_t innerHeight = (uint16_t)(height - 2U);
+  uint16_t clampedValue = (value > maxValue) ? maxValue : value;
+  uint16_t fillWidth =
+      (uint16_t)(((uint32_t)innerWidth * clampedValue) / maxValue);
+
+  ILI9341_DrawHollowRectangleCoord(x, y,
+                                   (uint16_t)(x + width - 1U),
+                                   (uint16_t)(y + height - 1U),
+                                   borderColor);
+  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U),
+                    innerWidth, innerHeight, backColor);
+
+  if (fillWidth == 0U)
+  {
+    return;
+  }
+
+  uint16_t fillX = (reverse != 0U)
+                       ? (uint16_t)(x + 1U + innerWidth - fillWidth)
+                       : (uint16_t)(x + 1U);
+  LCD_Port_FillRect(fillX, (uint16_t)(y + 1U), fillWidth, innerHeight,
+                    fillColor);
 }
 
 static void Battle_DrawBackground(void)
