@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vizard Ichigo Frames Preview</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #eee;
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card img {
+            max-width: 100px;
+            max-height: 100px;
+            background-color: #444; /* checkerboard style backing to verify transparency */
+            background-image: 
+                linear-gradient(45deg, #555 25%, transparent 25%), 
+                linear-gradient(-45deg, #555 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #555 75%), 
+                linear-gradient(-45deg, transparent 75%, #555 75%);
+            background-size: 10px 10px;
+            background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+            border: 1px solid #555;
+            margin-bottom: 8px;
+        }
+        .filename {
+            font-size: 0.8em;
+            word-break: break-all;
+            margin-bottom: 4px;
+        }
+        .details {
+            font-size: 0.75em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vizard Ichigo Frames Preview</h1>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        // Generate cards for 97 frames
+        const grid = document.getElementById('grid');
+        for (let i = 0; i < 97; i++) {
+            const frameNum = String(i).padStart(3, '0');
+            const filename = `vizard_ichigo_${frameNum}.png`;
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const img = document.createElement('img');
+            img.src = `../assets/vizard_ichigo_frames/${filename}`;
+            img.alt = filename;
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'filename';
+            nameDiv.textContent = `Frame ${i}`;
+            
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'details';
+            
+            // Get image dimensions dynamically
+            img.onload = function() {
+                detailsDiv.textContent = `${this.naturalWidth}x${this.naturalHeight}`;
+            };
+            
+            card.appendChild(img);
+            card.appendChild(nameDiv);
+            card.appendChild(detailsDiv);
+            grid.appendChild(card);
+        }
+    </script>
+</body>
+</html>
