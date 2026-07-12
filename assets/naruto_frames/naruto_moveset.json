@@ -1,0 +1,49 @@
+{
+  "source_dir": "assets/naruto_frames",
+  "states": {
+    "idle": {
+      "frames": [0, 1, 2, 3],
+      "frame_duration_ms": 140,
+      "loop": true
+    },
+    "run": {
+      "frames": [4, 5, 6, 7, 8],
+      "frame_duration_ms": 80,
+      "loop": true
+    },
+    "attack_light": {
+      "frames": [75, 76, 77, 78, 79],
+      "frame_duration_ms": 70
+    },
+    "block": {
+      "frames": [15],
+      "frame_duration_ms": 120,
+      "hold_last": true
+    },
+    "skill": {
+      "frames": [206, 207, 208, 209, 210, 211, 212],
+      "frame_duration_ms": 70,
+      "attached_effect": {
+        "name": "rasengan",
+        "sheet": "assets/naruto_effects/rasengan_sheet.png",
+        "first_source_frame": 210,
+        "target_width": 24,
+        "offset_x": -10,
+        "offset_y": 4
+      }
+    },
+    "jump": {
+      "frames": [16, 17, 18, 19, 20, 21, 25, 26],
+      "frame_duration_ms": 90
+    },
+    "hit": {
+      "frames": [27, 28, 29],
+      "frame_duration_ms": 90
+    },
+    "dead": {
+      "frames": [27, 31, 32, 39],
+      "frame_duration_ms": 120,
+      "hold_last": true
+    }
+  }
+}
