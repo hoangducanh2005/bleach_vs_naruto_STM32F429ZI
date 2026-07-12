@@ -12,6 +12,10 @@
   */
 /* USER CODE END Header */
 
+#if defined(__GNUC__)
+#pragma GCC optimize ("O2")
+#endif
+
 #include "lcd_port.h"
 
 #include "ILI9341_STM32_Driver.h"

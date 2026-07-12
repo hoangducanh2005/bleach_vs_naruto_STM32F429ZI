@@ -1,5 +1,9 @@
 #include "battle_demo.h"
 
+#if defined(__GNUC__)
+#pragma GCC optimize ("O2")
+#endif
+
 #include "combat_actor.h"
 #include "combat_box.h"
 #include "combat_input.h"
@@ -9,6 +13,7 @@
 #include "sprite_data.h"
 #include "sprite_render.h"
 #include "stm32f4xx_hal.h"
+#include "vizard_moveset.h"
 
 #define BATTLE_TICK_MS 33U
 #define BATTLE_GROUND_Y 205
@@ -18,6 +23,11 @@
 #define BATTLE_GETSUGA_SPEED 10
 #define BATTLE_GETSUGA_FRAME_MS 40U
 #define BATTLE_GETSUGA_SPAWN_FRAME 4U
+#define BATTLE_PROJECTILE_GETSUGA 0U
+#define BATTLE_PROJECTILE_VIZARD 1U
+#define BATTLE_VIZARD_TELEPORT_FRAME 3U
+#define BATTLE_VIZARD_PROJECTILE_FRAME 5U
+#define BATTLE_VIZARD_TELEPORT_GAP 42
 #define BATTLE_AI_REACTION_MS 220U
 #define BATTLE_AI_ATTACK_RANGE 54
 #define BATTLE_AI_SKILL_RANGE 92
@@ -76,6 +86,7 @@ typedef struct
   int16_t vx;
   uint8_t active;
   uint8_t frameIndex;
+  uint8_t kind;
   uint8_t hitConnected;
   uint32_t startedMs;
 } BattleProjectile;
@@ -134,6 +145,9 @@ static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
 static uint32_t s_lastGetsugaSkillStartMs;
+static uint32_t s_lastVizardSkillStartMs;
+static uint32_t s_lastVizardProjectileSkillStartMs;
+static uint8_t s_vizardTeleported;
 
 static const CombatHitboxDef s_getsugaHitbox = {
     0U,
@@ -144,6 +158,20 @@ static const CombatHitboxDef s_getsugaHitbox = {
     300U,
     160U,
     22,
+    0,
+    COMBAT_HIT_LEVEL_PROJECTILE,
+    1U,
+};
+
+static const CombatHitboxDef s_vizardProjectileHitbox = {
+    0U,
+    0U,
+    {6, 24, 46, 38},
+    16U,
+    3U,
+    320U,
+    170U,
+    24,
     0,
     COMBAT_HIT_LEVEL_PROJECTILE,
     1U,
@@ -171,6 +199,7 @@ static uint8_t Battle_AiActionToInput(BattleAiAction action,
                                       uint32_t nowMs);
 static uint16_t Battle_AiRandom(BattleAiController *ai, uint16_t maxValue);
 static int16_t Battle_AbsI16(int16_t value);
+static void Battle_UpdateVizardSkill(uint32_t nowMs);
 static void Battle_TrySpawnGetsuga(uint32_t nowMs);
 static void Battle_UpdateGetsuga(uint32_t nowMs);
 static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
@@ -180,10 +209,6 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
 static void Battle_DrawBackground(void);
 static void Battle_BuildBackgroundCache(void);
 static void Battle_DrawStaticSky(void);
-static void Battle_DrawSun(uint16_t x, uint16_t y);
-static void Battle_DrawCloud(int16_t x, uint16_t y);
-static void Battle_DrawMountains(void);
-static void Battle_DrawDojoWall(void);
 static void Battle_DrawGround(void);
 static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
@@ -207,12 +232,15 @@ static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
                                       const BattleActorSnapshot *player,
                                       const BattleActorSnapshot *cpu,
                                       const BattleActorSnapshot *projectile,
-                                      const BattleActorSnapshot *chidori);
+                                      const BattleActorSnapshot *chidori,
+                                      uint8_t allowSplit);
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
                                  const BattleActorSnapshot *cpu,
                                  const BattleActorSnapshot *projectile,
                                  const BattleActorSnapshot *chidori);
+static uint8_t Battle_DirtyRectsShouldSplit(BattleDirtyRect a,
+                                            BattleDirtyRect b);
 static void Battle_ComposeActorRow(BattleDirtyRect rect,
                                    const BattleActorSnapshot *snapshot,
                                    uint16_t screenY);
@@ -223,9 +251,6 @@ static void Battle_DrawBox(CombatBox box, uint16_t color);
 static void Battle_ResolveHit(CombatActor *attacker, CombatActor *target,
                               uint32_t nowMs);
 static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y);
-static uint8_t Battle_RectContains(uint16_t x, uint16_t y, int16_t rectX,
-                                   int16_t rectY, int16_t rectW,
-                                   int16_t rectH);
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,
                             int16_t height, uint16_t color);
 
@@ -236,7 +261,7 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_NARUTO,
+                   COMBAT_CHARACTER_VIZARD_ICHIGO,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
@@ -255,7 +280,11 @@ void BattleDemo_Init(void)
   s_getsugaSnapshot.valid = 0U;
   s_chidoriSnapshot.valid = 0U;
   s_getsuga.active = 0U;
+  s_getsuga.kind = BATTLE_PROJECTILE_GETSUGA;
   s_lastGetsugaSkillStartMs = 0U;
+  s_lastVizardSkillStartMs = 0U;
+  s_lastVizardProjectileSkillStartMs = 0U;
+  s_vizardTeleported = 0U;
   Battle_AiInit(&s_cpuAi, now);
 
   Battle_BuildBackgroundCache();
@@ -281,6 +310,7 @@ void BattleDemo_Update(void)
   CombatActor_FaceToward(&s_cpu, &s_player);
   CombatActor_Update(&s_player, input, now, 1U);
   CombatActor_Update(&s_cpu, cpuInput, now, 1U);
+  Battle_UpdateVizardSkill(now);
   Battle_ResolveHit(&s_player, &s_cpu, now);
   Battle_ResolveHit(&s_cpu, &s_player, now);
   Battle_TrySpawnGetsuga(now);
@@ -376,12 +406,20 @@ static void Battle_UpdateActors(void)
 
   if (playerDirty != 0U)
   {
+    uint8_t allowPlayerSplit =
+        ((s_player.character == COMBAT_CHARACTER_VIZARD_ICHIGO) &&
+         (s_player.state == COMBAT_ANIM_SKILL) &&
+         (s_vizardTeleported != 0U))
+            ? 1U
+            : 0U;
+
     Battle_DrawSnapshotChange(&s_playerSnapshot,
                               &nextPlayer,
                               &nextPlayer,
                               &nextCpu,
                               &nextGetsuga,
-                              &nextChidori);
+                              &nextChidori,
+                              allowPlayerSplit);
   }
 
   if (cpuDirty != 0U)
@@ -391,7 +429,8 @@ static void Battle_UpdateActors(void)
                               &nextPlayer,
                               &nextCpu,
                               &nextGetsuga,
-                              &nextChidori);
+                              &nextChidori,
+                              0U);
   }
 
   if (getsugaDirty != 0U)
@@ -401,7 +440,8 @@ static void Battle_UpdateActors(void)
                               &nextPlayer,
                               &nextCpu,
                               &nextGetsuga,
-                              &nextChidori);
+                              &nextChidori,
+                              0U);
   }
 
   if (chidoriDirty != 0U)
@@ -411,7 +451,8 @@ static void Battle_UpdateActors(void)
                               &nextPlayer,
                               &nextCpu,
                               &nextGetsuga,
-                              &nextChidori);
+                              &nextChidori,
+                              0U);
   }
 
   s_playerSnapshot = nextPlayer;
@@ -662,6 +703,49 @@ static int16_t Battle_AbsI16(int16_t value)
   return (value < 0) ? (int16_t)-value : value;
 }
 
+static void Battle_UpdateVizardSkill(uint32_t nowMs)
+{
+  (void)nowMs;
+
+  if ((s_player.character != COMBAT_CHARACTER_VIZARD_ICHIGO) ||
+      (s_player.state != COMBAT_ANIM_SKILL))
+  {
+    s_vizardTeleported = 0U;
+    return;
+  }
+
+  if (s_lastVizardSkillStartMs != s_player.stateStartedMs)
+  {
+    s_lastVizardSkillStartMs = s_player.stateStartedMs;
+    s_vizardTeleported = 0U;
+  }
+
+  if ((s_vizardTeleported != 0U) ||
+      (s_player.frameIndex < BATTLE_VIZARD_TELEPORT_FRAME))
+  {
+    return;
+  }
+
+  int16_t targetX = (s_cpu.facing > 0)
+                        ? (int16_t)(s_cpu.x - BATTLE_VIZARD_TELEPORT_GAP)
+                        : (int16_t)(s_cpu.x + BATTLE_VIZARD_TELEPORT_GAP);
+
+  if (targetX < 32)
+  {
+    targetX = 32;
+  }
+  else if (targetX > 288)
+  {
+    targetX = 288;
+  }
+
+  s_player.x = targetX;
+  s_player.vx = 0;
+  s_player.vy = 0;
+  s_player.facing = (s_cpu.x < s_player.x) ? -1 : 1;
+  s_vizardTeleported = 1U;
+}
+
 static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot)
 {
@@ -709,6 +793,37 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
 
 static void Battle_TrySpawnGetsuga(uint32_t nowMs)
 {
+  if ((s_player.character == COMBAT_CHARACTER_VIZARD_ICHIGO) &&
+      (s_player.state == COMBAT_ANIM_SKILL) &&
+      (s_player.frameIndex >= BATTLE_VIZARD_PROJECTILE_FRAME) &&
+      (s_vizardTeleported != 0U) &&
+      (s_lastVizardProjectileSkillStartMs != s_player.stateStartedMs))
+  {
+    const VizardMoveAnimation *projectileAnim =
+        &vizard_move_animations[VIZARD_MOVE_SKILL_PROJECTILE];
+    const VizardMoveFrame *frame = &projectileAnim->frames[0];
+
+    s_lastVizardProjectileSkillStartMs = s_player.stateStartedMs;
+    s_getsuga.active = 1U;
+    s_getsuga.kind = BATTLE_PROJECTILE_VIZARD;
+    s_getsuga.frameIndex = 0U;
+    s_getsuga.hitConnected = 0U;
+    s_getsuga.startedMs = nowMs;
+    s_getsuga.vx = (s_player.facing < 0) ? -BATTLE_GETSUGA_SPEED
+                                         : BATTLE_GETSUGA_SPEED;
+    s_getsuga.y = (int16_t)(s_player.y - frame->pivotY);
+
+    if (s_player.facing < 0)
+    {
+      s_getsuga.x = (int16_t)(s_player.x - 18 - (int16_t)frame->width);
+    }
+    else
+    {
+      s_getsuga.x = (int16_t)(s_player.x + 18);
+    }
+    return;
+  }
+
   if ((s_player.character != COMBAT_CHARACTER_ICHIGO) ||
       (s_player.state != COMBAT_ANIM_SKILL) ||
       (s_player.frameIndex < BATTLE_GETSUGA_SPAWN_FRAME) ||
@@ -719,6 +834,7 @@ static void Battle_TrySpawnGetsuga(uint32_t nowMs)
 
   s_lastGetsugaSkillStartMs = s_player.stateStartedMs;
   s_getsuga.active = 1U;
+  s_getsuga.kind = BATTLE_PROJECTILE_GETSUGA;
   s_getsuga.frameIndex = 0U;
   s_getsuga.hitConnected = 0U;
   s_getsuga.startedMs = nowMs;
@@ -743,13 +859,24 @@ static void Battle_UpdateGetsuga(uint32_t nowMs)
     return;
   }
 
+  uint8_t frameCount = GETSUGA_PROJECTILE_FRAME_COUNT;
+  uint16_t width = GETSUGA_PROJECTILE_WIDTH;
+
+  if (s_getsuga.kind == BATTLE_PROJECTILE_VIZARD)
+  {
+    const VizardMoveAnimation *projectileAnim =
+        &vizard_move_animations[VIZARD_MOVE_SKILL_PROJECTILE];
+    frameCount = projectileAnim->frameCount;
+    width = projectileAnim->frames[s_getsuga.frameIndex].width;
+  }
+
   s_getsuga.x = (int16_t)(s_getsuga.x + s_getsuga.vx);
   s_getsuga.frameIndex = (uint8_t)(((nowMs - s_getsuga.startedMs) /
                                     BATTLE_GETSUGA_FRAME_MS) %
-                                   GETSUGA_PROJECTILE_FRAME_COUNT);
+                                   frameCount);
 
   if ((s_getsuga.x > (int16_t)LCD_PORT_WIDTH) ||
-      ((s_getsuga.x + (int16_t)GETSUGA_PROJECTILE_WIDTH) < 0))
+      ((s_getsuga.x + (int16_t)width) < 0))
   {
     s_getsuga.active = 0U;
   }
@@ -767,11 +894,16 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
     return;
   }
 
+  const CombatHitboxDef *hitbox =
+      (projectile->kind == BATTLE_PROJECTILE_VIZARD)
+          ? &s_vizardProjectileHitbox
+          : &s_getsugaHitbox;
+
   CombatBox projectileBox = {
-      (int16_t)(projectile->x + s_getsugaHitbox.box.x),
-      (int16_t)(projectile->y + s_getsugaHitbox.box.y),
-      s_getsugaHitbox.box.w,
-      s_getsugaHitbox.box.h,
+      (int16_t)(projectile->x + hitbox->box.x),
+      (int16_t)(projectile->y + hitbox->box.y),
+      hitbox->box.w,
+      hitbox->box.h,
   };
   CombatBox hurtboxWorld = CombatActor_GetHurtboxWorld(target);
 
@@ -780,7 +912,7 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
     return;
   }
 
-  CombatActor_ApplyHit(target, owner, &s_getsugaHitbox, nowMs, 0U);
+  CombatActor_ApplyHit(target, owner, hitbox, nowMs, 0U);
   projectile->hitConnected = 1U;
   projectile->active = 0U;
 }
@@ -799,9 +931,24 @@ static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
     return 0U;
   }
 
-  snapshot->pixels = getsuga_projectile_frames[projectile->frameIndex];
-  snapshot->width = GETSUGA_PROJECTILE_WIDTH;
-  snapshot->height = GETSUGA_PROJECTILE_HEIGHT;
+  if (projectile->kind == BATTLE_PROJECTILE_VIZARD)
+  {
+    const VizardMoveAnimation *projectileAnim =
+        &vizard_move_animations[VIZARD_MOVE_SKILL_PROJECTILE];
+    const VizardMoveFrame *frame =
+        &projectileAnim->frames[projectile->frameIndex];
+
+    snapshot->pixels = frame->pixels;
+    snapshot->width = frame->width;
+    snapshot->height = frame->height;
+  }
+  else
+  {
+    snapshot->pixels = getsuga_projectile_frames[projectile->frameIndex];
+    snapshot->width = GETSUGA_PROJECTILE_WIDTH;
+    snapshot->height = GETSUGA_PROJECTILE_HEIGHT;
+  }
+
   snapshot->x = projectile->x;
   snapshot->y = projectile->y;
   snapshot->flipX = (projectile->vx < 0) ? 1U : 0U;
@@ -863,7 +1010,7 @@ static uint8_t Battle_CaptureChidori(const CombatActor *actor,
   snapshot->pixels = frame->pixels;
   snapshot->width = frame->width;
   snapshot->height = frame->height;
-  snapshot->y = (int16_t)(actor->y - 54 - (int16_t)(frame->height / 2U));
+  snapshot->y = (int16_t)(actor->y - 36 - (int16_t)(frame->height / 2U));
 
   if (actor->facing < 0)
   {
@@ -989,13 +1136,53 @@ static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
                                       const BattleActorSnapshot *player,
                                       const BattleActorSnapshot *cpu,
                                       const BattleActorSnapshot *projectile,
-                                      const BattleActorSnapshot *chidori)
+                                      const BattleActorSnapshot *chidori,
+                                      uint8_t allowSplit)
 {
   BattleDirtyRect dirty = {0, 0, 0, 0, 0U};
+  BattleDirtyRect previousDirty = {0, 0, 0, 0, 0U};
+  BattleDirtyRect nextDirty = {0, 0, 0, 0, 0U};
+
+  Battle_DirtyRectAddSnapshot(&previousDirty, previous);
+  Battle_DirtyRectAddSnapshot(&nextDirty, next);
+
+  if ((allowSplit != 0U) &&
+      (Battle_DirtyRectsShouldSplit(previousDirty, nextDirty) != 0U))
+  {
+    Battle_DrawDirtyRect(previousDirty, player, cpu, projectile, chidori);
+    Battle_DrawDirtyRect(nextDirty, player, cpu, projectile, chidori);
+    return;
+  }
 
   Battle_DirtyRectAddSnapshot(&dirty, previous);
   Battle_DirtyRectAddSnapshot(&dirty, next);
   Battle_DrawDirtyRect(dirty, player, cpu, projectile, chidori);
+}
+
+static uint8_t Battle_DirtyRectsShouldSplit(BattleDirtyRect a,
+                                            BattleDirtyRect b)
+{
+  if ((a.valid == 0U) || (b.valid == 0U))
+  {
+    return 0U;
+  }
+
+  int16_t ax1 = (int16_t)(a.x + a.w);
+  int16_t ay1 = (int16_t)(a.y + a.h);
+  int16_t bx1 = (int16_t)(b.x + b.w);
+  int16_t by1 = (int16_t)(b.y + b.h);
+
+  int16_t unionX0 = (a.x < b.x) ? a.x : b.x;
+  int16_t unionY0 = (a.y < b.y) ? a.y : b.y;
+  int16_t unionX1 = (ax1 > bx1) ? ax1 : bx1;
+  int16_t unionY1 = (ay1 > by1) ? ay1 : by1;
+
+  uint32_t areaA = (uint32_t)a.w * (uint32_t)a.h;
+  uint32_t areaB = (uint32_t)b.w * (uint32_t)b.h;
+  uint32_t unionArea = (uint32_t)(unionX1 - unionX0) *
+                       (uint32_t)(unionY1 - unionY0);
+
+  return (unionArea > ((areaA + areaB) + ((areaA + areaB) / 2U))) ? 1U : 0U;
 }
 
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
@@ -1129,7 +1316,7 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 static void Battle_DrawHud(void)
 {
   ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 35U, RGB565_BLACK);
-  ILI9341_DrawText("P1 NARUTO", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
+  ILI9341_DrawText("P1 VIZARD", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
   ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
   ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
                    RGB565_BLACK);
@@ -1157,11 +1344,6 @@ static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
 static void Battle_DrawBackground(void)
 {
   Battle_DrawStaticSky();
-  Battle_DrawSun(268U, 34U);
-  Battle_DrawCloud(30, 36U);
-  Battle_DrawCloud(178, 58U);
-  Battle_DrawMountains();
-  Battle_DrawDojoWall();
   Battle_DrawGround();
   Battle_DrawArenaMarks();
 }
@@ -1182,52 +1364,7 @@ static void Battle_DrawStaticSky(void)
 {
   LCD_Port_FillRect(0U, 0U, LCD_PORT_WIDTH, 48U, RGB565_SKY_TOP);
   LCD_Port_FillRect(0U, 48U, LCD_PORT_WIDTH, 48U, RGB565_SKY_MID);
-  LCD_Port_FillRect(0U, 96U, LCD_PORT_WIDTH, 52U, RGB565_SKY_LOW);
-}
-
-static void Battle_DrawSun(uint16_t x, uint16_t y)
-{
-  Battle_FillSafe((int16_t)x - 10, (int16_t)y - 10, 20, 20,
-                  RGB565_ACCENT_ORANGE);
-  Battle_FillSafe((int16_t)x - 14, (int16_t)y - 4, 28, 8,
-                  RGB565_ACCENT_ORANGE);
-  Battle_FillSafe((int16_t)x - 4, (int16_t)y - 14, 8, 28,
-                  RGB565_ACCENT_ORANGE);
-}
-
-static void Battle_DrawCloud(int16_t x, uint16_t y)
-{
-  Battle_FillSafe(x + 8, (int16_t)y + 7, 45, 9, RGB565_CLOUD_SHADOW);
-  Battle_FillSafe(x, (int16_t)y + 8, 24, 9, RGB565_CLOUD);
-  Battle_FillSafe(x + 13, (int16_t)y + 2, 27, 15, RGB565_CLOUD);
-  Battle_FillSafe(x + 34, (int16_t)y + 7, 27, 10, RGB565_CLOUD);
-  Battle_FillSafe(x + 7, (int16_t)y + 15, 48, 5, RGB565_CLOUD);
-}
-
-static void Battle_DrawMountains(void)
-{
-  for (uint16_t x = 0U; x < LCD_PORT_WIDTH; x += 8U)
-  {
-    uint16_t h1 = (uint16_t)(22U + ((x * 17U) % 39U));
-    uint16_t h2 = (uint16_t)(14U + ((x * 11U) % 31U));
-    Battle_FillSafe((int16_t)x, (int16_t)(148U - h1), 8, (int16_t)h1,
-                    RGB565_MOUNTAIN_DARK);
-    Battle_FillSafe((int16_t)x, (int16_t)(148U - h2), 4, (int16_t)h2,
-                    RGB565_MOUNTAIN_LIGHT);
-  }
-}
-
-static void Battle_DrawDojoWall(void)
-{
-  LCD_Port_FillRect(0U, 148U, LCD_PORT_WIDTH, 34U, RGB565_WALL_DARK);
-
-  for (uint16_t x = 0U; x < LCD_PORT_WIDTH; x += 32U)
-  {
-    LCD_Port_FillRect(x, 148U, 2U, 34U, RGB565_WALL_LIGHT);
-  }
-
-  LCD_Port_FillRect(0U, 148U, LCD_PORT_WIDTH, 2U, RGB565_WALL_LIGHT);
-  LCD_Port_FillRect(0U, 180U, LCD_PORT_WIDTH, 2U, RGB565_BLACK);
+  LCD_Port_FillRect(0U, 96U, LCD_PORT_WIDTH, 86U, RGB565_SKY_LOW);
 }
 
 static void Battle_DrawGround(void)
@@ -1257,37 +1394,7 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y)
   {
     color = RGB565_SKY_MID;
   }
-  else if (y < 148U)
-  {
-    uint16_t mountainX = (uint16_t)((x / 8U) * 8U);
-    uint16_t localX = (uint16_t)(x - mountainX);
-    uint16_t h1 = (uint16_t)(22U + ((mountainX * 17U) % 39U));
-    uint16_t h2 = (uint16_t)(14U + ((mountainX * 11U) % 31U));
-
-    if ((localX < 4U) && (y >= (uint16_t)(148U - h2)))
-    {
-      color = RGB565_MOUNTAIN_LIGHT;
-    }
-    else if (y >= (uint16_t)(148U - h1))
-    {
-      color = RGB565_MOUNTAIN_DARK;
-    }
-  }
-  else if (y < 182U)
-  {
-    color = RGB565_WALL_DARK;
-
-    if ((x % 32U) < 2U)
-    {
-      color = RGB565_WALL_LIGHT;
-    }
-
-    if ((y < 150U) || (y >= 180U))
-    {
-      color = (y < 150U) ? RGB565_WALL_LIGHT : RGB565_BLACK;
-    }
-  }
-  else
+  else if (y >= 182U)
   {
     color = RGB565_GROUND;
 
@@ -1321,74 +1428,7 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y)
     }
   }
 
-  if (Battle_RectContains(x, y, 258, 24, 20, 20) != 0U)
-  {
-    color = RGB565_ACCENT_ORANGE;
-  }
-  if (Battle_RectContains(x, y, 254, 30, 28, 8) != 0U)
-  {
-    color = RGB565_ACCENT_ORANGE;
-  }
-  if (Battle_RectContains(x, y, 264, 20, 8, 28) != 0U)
-  {
-    color = RGB565_ACCENT_ORANGE;
-  }
-
-  if (Battle_RectContains(x, y, 38, 43, 45, 9) != 0U)
-  {
-    color = RGB565_CLOUD_SHADOW;
-  }
-  if (Battle_RectContains(x, y, 30, 44, 24, 9) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 43, 38, 27, 15) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 64, 43, 27, 10) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 37, 51, 48, 5) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-
-  if (Battle_RectContains(x, y, 186, 65, 45, 9) != 0U)
-  {
-    color = RGB565_CLOUD_SHADOW;
-  }
-  if (Battle_RectContains(x, y, 178, 66, 24, 9) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 191, 60, 27, 15) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 212, 65, 27, 10) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-  if (Battle_RectContains(x, y, 185, 73, 48, 5) != 0U)
-  {
-    color = RGB565_CLOUD;
-  }
-
   return color;
-}
-
-static uint8_t Battle_RectContains(uint16_t x, uint16_t y, int16_t rectX,
-                                   int16_t rectY, int16_t rectW,
-                                   int16_t rectH)
-{
-  return (((int16_t)x >= rectX) &&
-          ((int16_t)x < (int16_t)(rectX + rectW)) &&
-          ((int16_t)y >= rectY) &&
-          ((int16_t)y < (int16_t)(rectY + rectH)))
-             ? 1U
-             : 0U;
 }
 
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,

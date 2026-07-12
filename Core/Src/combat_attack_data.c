@@ -202,7 +202,8 @@ const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
     {
       hitbox = &s_sasukeChidori;
     }
-    else if (character == COMBAT_CHARACTER_ICHIGO)
+    else if ((character == COMBAT_CHARACTER_ICHIGO) ||
+             (character == COMBAT_CHARACTER_VIZARD_ICHIGO))
     {
       hitbox = 0;
     }

@@ -68,14 +68,27 @@
     "bbox": [
       354,
       1,
-      474,
+      408,
       57
     ],
     "x": 354,
     "y": 1,
-    "w": 120,
+    "w": 54,
     "h": 56,
     "file": "vizard_ichigo_005.png"
+  },
+  {
+    "bbox": [
+      416,
+      2,
+      474,
+      57
+    ],
+    "x": 416,
+    "y": 2,
+    "w": 58,
+    "h": 55,
+    "file": "vizard_ichigo_006.png"
   },
   {
     "bbox": [
@@ -88,7 +101,7 @@
     "y": 3,
     "w": 51,
     "h": 54,
-    "file": "vizard_ichigo_006.png"
+    "file": "vizard_ichigo_007.png"
   },
   {
     "bbox": [
@@ -101,7 +114,7 @@
     "y": 4,
     "w": 57,
     "h": 54,
-    "file": "vizard_ichigo_007.png"
+    "file": "vizard_ichigo_008.png"
   },
   {
     "bbox": [
@@ -114,7 +127,7 @@
     "y": 79,
     "w": 54,
     "h": 43,
-    "file": "vizard_ichigo_008.png"
+    "file": "vizard_ichigo_009.png"
   },
   {
     "bbox": [
@@ -127,7 +140,7 @@
     "y": 82,
     "w": 55,
     "h": 40,
-    "file": "vizard_ichigo_009.png"
+    "file": "vizard_ichigo_010.png"
   },
   {
     "bbox": [
@@ -140,7 +153,7 @@
     "y": 81,
     "w": 56,
     "h": 41,
-    "file": "vizard_ichigo_010.png"
+    "file": "vizard_ichigo_011.png"
   },
   {
     "bbox": [
@@ -153,7 +166,7 @@
     "y": 80,
     "w": 56,
     "h": 42,
-    "file": "vizard_ichigo_011.png"
+    "file": "vizard_ichigo_012.png"
   },
   {
     "bbox": [
@@ -166,7 +179,7 @@
     "y": 79,
     "w": 53,
     "h": 43,
-    "file": "vizard_ichigo_012.png"
+    "file": "vizard_ichigo_013.png"
   },
   {
     "bbox": [
@@ -179,7 +192,7 @@
     "y": 82,
     "w": 55,
     "h": 40,
-    "file": "vizard_ichigo_013.png"
+    "file": "vizard_ichigo_014.png"
   },
   {
     "bbox": [
@@ -192,7 +205,7 @@
     "y": 81,
     "w": 56,
     "h": 41,
-    "file": "vizard_ichigo_014.png"
+    "file": "vizard_ichigo_015.png"
   },
   {
     "bbox": [
@@ -205,7 +218,7 @@
     "y": 80,
     "w": 56,
     "h": 42,
-    "file": "vizard_ichigo_015.png"
+    "file": "vizard_ichigo_016.png"
   },
   {
     "bbox": [
@@ -218,7 +231,7 @@
     "y": 168,
     "w": 49,
     "h": 47,
-    "file": "vizard_ichigo_016.png"
+    "file": "vizard_ichigo_017.png"
   },
   {
     "bbox": [
@@ -231,7 +244,7 @@
     "y": 160,
     "w": 42,
     "h": 52,
-    "file": "vizard_ichigo_017.png"
+    "file": "vizard_ichigo_018.png"
   },
   {
     "bbox": [
@@ -244,7 +257,7 @@
     "y": 161,
     "w": 44,
     "h": 43,
-    "file": "vizard_ichigo_018.png"
+    "file": "vizard_ichigo_019.png"
   },
   {
     "bbox": [
@@ -257,7 +270,7 @@
     "y": 152,
     "w": 50,
     "h": 59,
-    "file": "vizard_ichigo_019.png"
+    "file": "vizard_ichigo_020.png"
   },
   {
     "bbox": [
@@ -270,7 +283,7 @@
     "y": 160,
     "w": 49,
     "h": 47,
-    "file": "vizard_ichigo_020.png"
+    "file": "vizard_ichigo_021.png"
   },
   {
     "bbox": [
@@ -283,7 +296,7 @@
     "y": 170,
     "w": 50,
     "h": 37,
-    "file": "vizard_ichigo_021.png"
+    "file": "vizard_ichigo_022.png"
   },
   {
     "bbox": [
@@ -296,7 +309,7 @@
     "y": 160,
     "w": 49,
     "h": 47,
-    "file": "vizard_ichigo_022.png"
+    "file": "vizard_ichigo_023.png"
   },
   {
     "bbox": [
@@ -309,7 +322,7 @@
     "y": 253,
     "w": 47,
     "h": 45,
-    "file": "vizard_ichigo_023.png"
+    "file": "vizard_ichigo_024.png"
   },
   {
     "bbox": [
@@ -322,7 +335,7 @@
     "y": 256,
     "w": 49,
     "h": 42,
-    "file": "vizard_ichigo_024.png"
+    "file": "vizard_ichigo_025.png"
   },
   {
     "bbox": [
@@ -335,7 +348,7 @@
     "y": 256,
     "w": 48,
     "h": 42,
-    "file": "vizard_ichigo_025.png"
+    "file": "vizard_ichigo_026.png"
   },
   {
     "bbox": [
@@ -348,7 +361,7 @@
     "y": 256,
     "w": 66,
     "h": 42,
-    "file": "vizard_ichigo_026.png"
+    "file": "vizard_ichigo_027.png"
   },
   {
     "bbox": [
@@ -361,7 +374,7 @@
     "y": 252,
     "w": 42,
     "h": 46,
-    "file": "vizard_ichigo_027.png"
+    "file": "vizard_ichigo_028.png"
   },
   {
     "bbox": [
@@ -374,7 +387,7 @@
     "y": 248,
     "w": 38,
     "h": 50,
-    "file": "vizard_ichigo_028.png"
+    "file": "vizard_ichigo_029.png"
   },
   {
     "bbox": [
@@ -387,7 +400,7 @@
     "y": 261,
     "w": 30,
     "h": 18,
-    "file": "vizard_ichigo_029.png"
+    "file": "vizard_ichigo_030.png"
   },
   {
     "bbox": [
@@ -400,7 +413,7 @@
     "y": 268,
     "w": 56,
     "h": 27,
-    "file": "vizard_ichigo_030.png"
+    "file": "vizard_ichigo_031.png"
   },
   {
     "bbox": [
@@ -413,7 +426,7 @@
     "y": 320,
     "w": 46,
     "h": 71,
-    "file": "vizard_ichigo_031.png"
+    "file": "vizard_ichigo_032.png"
   },
   {
     "bbox": [
@@ -426,7 +439,7 @@
     "y": 339,
     "w": 51,
     "h": 52,
-    "file": "vizard_ichigo_032.png"
+    "file": "vizard_ichigo_033.png"
   },
   {
     "bbox": [
@@ -439,7 +452,7 @@
     "y": 349,
     "w": 91,
     "h": 42,
-    "file": "vizard_ichigo_033.png"
+    "file": "vizard_ichigo_034.png"
   },
   {
     "bbox": [
@@ -452,7 +465,7 @@
     "y": 351,
     "w": 53,
     "h": 40,
-    "file": "vizard_ichigo_034.png"
+    "file": "vizard_ichigo_035.png"
   },
   {
     "bbox": [
@@ -465,7 +478,7 @@
     "y": 342,
     "w": 42,
     "h": 49,
-    "file": "vizard_ichigo_035.png"
+    "file": "vizard_ichigo_036.png"
   },
   {
     "bbox": [
@@ -478,7 +491,7 @@
     "y": 338,
     "w": 49,
     "h": 53,
-    "file": "vizard_ichigo_036.png"
+    "file": "vizard_ichigo_037.png"
   },
   {
     "bbox": [
@@ -491,7 +504,7 @@
     "y": 326,
     "w": 68,
     "h": 61,
-    "file": "vizard_ichigo_037.png"
+    "file": "vizard_ichigo_038.png"
   },
   {
     "bbox": [
@@ -504,7 +517,7 @@
     "y": 385,
     "w": 19,
     "h": 12,
-    "file": "vizard_ichigo_038.png"
+    "file": "vizard_ichigo_039.png"
   },
   {
     "bbox": [
@@ -517,7 +530,7 @@
     "y": 389,
     "w": 29,
     "h": 8,
-    "file": "vizard_ichigo_039.png"
+    "file": "vizard_ichigo_040.png"
   },
   {
     "bbox": [
@@ -530,7 +543,7 @@
     "y": 422,
     "w": 42,
     "h": 52,
-    "file": "vizard_ichigo_040.png"
+    "file": "vizard_ichigo_041.png"
   },
   {
     "bbox": [
@@ -543,7 +556,7 @@
     "y": 427,
     "w": 47,
     "h": 47,
-    "file": "vizard_ichigo_041.png"
+    "file": "vizard_ichigo_042.png"
   },
   {
     "bbox": [
@@ -556,7 +569,7 @@
     "y": 427,
     "w": 59,
     "h": 47,
-    "file": "vizard_ichigo_042.png"
+    "file": "vizard_ichigo_043.png"
   },
   {
     "bbox": [
@@ -569,7 +582,7 @@
     "y": 426,
     "w": 65,
     "h": 48,
-    "file": "vizard_ichigo_043.png"
+    "file": "vizard_ichigo_044.png"
   },
   {
     "bbox": [
@@ -582,7 +595,7 @@
     "y": 432,
     "w": 66,
     "h": 42,
-    "file": "vizard_ichigo_044.png"
+    "file": "vizard_ichigo_045.png"
   },
   {
     "bbox": [
@@ -595,7 +608,7 @@
     "y": 431,
     "w": 65,
     "h": 43,
-    "file": "vizard_ichigo_045.png"
+    "file": "vizard_ichigo_046.png"
   },
   {
     "bbox": [
@@ -608,7 +621,7 @@
     "y": 427,
     "w": 47,
     "h": 47,
-    "file": "vizard_ichigo_046.png"
+    "file": "vizard_ichigo_047.png"
   },
   {
     "bbox": [
@@ -621,7 +634,7 @@
     "y": 422,
     "w": 42,
     "h": 52,
-    "file": "vizard_ichigo_047.png"
+    "file": "vizard_ichigo_048.png"
   },
   {
     "bbox": [
@@ -634,7 +647,7 @@
     "y": 503,
     "w": 87,
     "h": 41,
-    "file": "vizard_ichigo_048.png"
+    "file": "vizard_ichigo_049.png"
   },
   {
     "bbox": [
@@ -647,7 +660,7 @@
     "y": 491,
     "w": 96,
     "h": 34,
-    "file": "vizard_ichigo_049.png"
+    "file": "vizard_ichigo_050.png"
   },
   {
     "bbox": [
@@ -660,7 +673,7 @@
     "y": 536,
     "w": 58,
     "h": 10,
-    "file": "vizard_ichigo_050.png"
+    "file": "vizard_ichigo_051.png"
   },
   {
     "bbox": [
@@ -673,7 +686,7 @@
     "y": 528,
     "w": 73,
     "h": 18,
-    "file": "vizard_ichigo_051.png"
+    "file": "vizard_ichigo_052.png"
   },
   {
     "bbox": [
@@ -686,7 +699,7 @@
     "y": 586,
     "w": 51,
     "h": 45,
-    "file": "vizard_ichigo_052.png"
+    "file": "vizard_ichigo_053.png"
   },
   {
     "bbox": [
@@ -699,7 +712,7 @@
     "y": 574,
     "w": 72,
     "h": 57,
-    "file": "vizard_ichigo_053.png"
+    "file": "vizard_ichigo_054.png"
   },
   {
     "bbox": [
@@ -712,7 +725,7 @@
     "y": 575,
     "w": 68,
     "h": 56,
-    "file": "vizard_ichigo_054.png"
+    "file": "vizard_ichigo_055.png"
   },
   {
     "bbox": [
@@ -725,7 +738,7 @@
     "y": 576,
     "w": 55,
     "h": 55,
-    "file": "vizard_ichigo_055.png"
+    "file": "vizard_ichigo_056.png"
   },
   {
     "bbox": [
@@ -738,7 +751,7 @@
     "y": 578,
     "w": 53,
     "h": 53,
-    "file": "vizard_ichigo_056.png"
+    "file": "vizard_ichigo_057.png"
   },
   {
     "bbox": [
@@ -751,7 +764,7 @@
     "y": 659,
     "w": 42,
     "h": 52,
-    "file": "vizard_ichigo_057.png"
+    "file": "vizard_ichigo_058.png"
   },
   {
     "bbox": [
@@ -764,7 +777,7 @@
     "y": 664,
     "w": 46,
     "h": 47,
-    "file": "vizard_ichigo_058.png"
+    "file": "vizard_ichigo_059.png"
   },
   {
     "bbox": [
@@ -777,7 +790,7 @@
     "y": 668,
     "w": 47,
     "h": 43,
-    "file": "vizard_ichigo_059.png"
+    "file": "vizard_ichigo_060.png"
   },
   {
     "bbox": [
@@ -790,7 +803,7 @@
     "y": 669,
     "w": 55,
     "h": 42,
-    "file": "vizard_ichigo_060.png"
+    "file": "vizard_ichigo_061.png"
   },
   {
     "bbox": [
@@ -803,7 +816,7 @@
     "y": 669,
     "w": 56,
     "h": 42,
-    "file": "vizard_ichigo_061.png"
+    "file": "vizard_ichigo_062.png"
   },
   {
     "bbox": [
@@ -816,7 +829,7 @@
     "y": 666,
     "w": 59,
     "h": 45,
-    "file": "vizard_ichigo_062.png"
+    "file": "vizard_ichigo_063.png"
   },
   {
     "bbox": [
@@ -829,7 +842,7 @@
     "y": 656,
     "w": 45,
     "h": 55,
-    "file": "vizard_ichigo_063.png"
+    "file": "vizard_ichigo_064.png"
   },
   {
     "bbox": [
@@ -842,7 +855,7 @@
     "y": 658,
     "w": 43,
     "h": 53,
-    "file": "vizard_ichigo_064.png"
+    "file": "vizard_ichigo_065.png"
   },
   {
     "bbox": [
@@ -855,7 +868,7 @@
     "y": 667,
     "w": 78,
     "h": 44,
-    "file": "vizard_ichigo_065.png"
+    "file": "vizard_ichigo_066.png"
   },
   {
     "bbox": [
@@ -868,7 +881,7 @@
     "y": 740,
     "w": 60,
     "h": 42,
-    "file": "vizard_ichigo_066.png"
+    "file": "vizard_ichigo_067.png"
   },
   {
     "bbox": [
@@ -881,7 +894,7 @@
     "y": 740,
     "w": 67,
     "h": 42,
-    "file": "vizard_ichigo_067.png"
+    "file": "vizard_ichigo_068.png"
   },
   {
     "bbox": [
@@ -894,7 +907,7 @@
     "y": 736,
     "w": 42,
     "h": 46,
-    "file": "vizard_ichigo_068.png"
+    "file": "vizard_ichigo_069.png"
   },
   {
     "bbox": [
@@ -907,7 +920,7 @@
     "y": 731,
     "w": 38,
     "h": 51,
-    "file": "vizard_ichigo_069.png"
+    "file": "vizard_ichigo_070.png"
   },
   {
     "bbox": [
@@ -920,7 +933,7 @@
     "y": 764,
     "w": 95,
     "h": 136,
-    "file": "vizard_ichigo_070.png"
+    "file": "vizard_ichigo_071.png"
   },
   {
     "bbox": [
@@ -933,7 +946,7 @@
     "y": 764,
     "w": 87,
     "h": 136,
-    "file": "vizard_ichigo_071.png"
+    "file": "vizard_ichigo_072.png"
   },
   {
     "bbox": [
@@ -946,7 +959,7 @@
     "y": 802,
     "w": 114,
     "h": 78,
-    "file": "vizard_ichigo_072.png"
+    "file": "vizard_ichigo_073.png"
   },
   {
     "bbox": [
@@ -959,7 +972,7 @@
     "y": 802,
     "w": 113,
     "h": 75,
-    "file": "vizard_ichigo_073.png"
+    "file": "vizard_ichigo_074.png"
   },
   {
     "bbox": [
@@ -972,7 +985,7 @@
     "y": 803,
     "w": 113,
     "h": 77,
-    "file": "vizard_ichigo_074.png"
+    "file": "vizard_ichigo_075.png"
   },
   {
     "bbox": [
@@ -985,7 +998,7 @@
     "y": 910,
     "w": 64,
     "h": 41,
-    "file": "vizard_ichigo_075.png"
+    "file": "vizard_ichigo_076.png"
   },
   {
     "bbox": [
@@ -998,7 +1011,7 @@
     "y": 907,
     "w": 80,
     "h": 64,
-    "file": "vizard_ichigo_076.png"
+    "file": "vizard_ichigo_077.png"
   },
   {
     "bbox": [
@@ -1011,7 +1024,7 @@
     "y": 929,
     "w": 86,
     "h": 42,
-    "file": "vizard_ichigo_077.png"
+    "file": "vizard_ichigo_078.png"
   },
   {
     "bbox": [
@@ -1024,7 +1037,7 @@
     "y": 953,
     "w": 84,
     "h": 21,
-    "file": "vizard_ichigo_078.png"
+    "file": "vizard_ichigo_079.png"
   },
   {
     "bbox": [
@@ -1037,7 +1050,7 @@
     "y": 1001,
     "w": 42,
     "h": 52,
-    "file": "vizard_ichigo_079.png"
+    "file": "vizard_ichigo_080.png"
   },
   {
     "bbox": [
@@ -1050,7 +1063,7 @@
     "y": 1006,
     "w": 46,
     "h": 47,
-    "file": "vizard_ichigo_080.png"
+    "file": "vizard_ichigo_081.png"
   },
   {
     "bbox": [
@@ -1063,7 +1076,7 @@
     "y": 1010,
     "w": 48,
     "h": 43,
-    "file": "vizard_ichigo_081.png"
+    "file": "vizard_ichigo_082.png"
   },
   {
     "bbox": [
@@ -1076,7 +1089,7 @@
     "y": 1011,
     "w": 55,
     "h": 42,
-    "file": "vizard_ichigo_082.png"
+    "file": "vizard_ichigo_083.png"
   },
   {
     "bbox": [
@@ -1089,7 +1102,7 @@
     "y": 1011,
     "w": 56,
     "h": 42,
-    "file": "vizard_ichigo_083.png"
+    "file": "vizard_ichigo_084.png"
   },
   {
     "bbox": [
@@ -1102,7 +1115,7 @@
     "y": 1003,
     "w": 46,
     "h": 50,
-    "file": "vizard_ichigo_084.png"
+    "file": "vizard_ichigo_085.png"
   },
   {
     "bbox": [
@@ -1115,7 +1128,7 @@
     "y": 1003,
     "w": 47,
     "h": 50,
-    "file": "vizard_ichigo_085.png"
+    "file": "vizard_ichigo_086.png"
   },
   {
     "bbox": [
@@ -1128,7 +1141,7 @@
     "y": 998,
     "w": 37,
     "h": 58,
-    "file": "vizard_ichigo_086.png"
+    "file": "vizard_ichigo_087.png"
   },
   {
     "bbox": [
@@ -1141,7 +1154,7 @@
     "y": 999,
     "w": 48,
     "h": 58,
-    "file": "vizard_ichigo_087.png"
+    "file": "vizard_ichigo_088.png"
   },
   {
     "bbox": [
@@ -1154,7 +1167,7 @@
     "y": 998,
     "w": 48,
     "h": 59,
-    "file": "vizard_ichigo_088.png"
+    "file": "vizard_ichigo_089.png"
   },
   {
     "bbox": [
@@ -1167,7 +1180,7 @@
     "y": 1076,
     "w": 108,
     "h": 60,
-    "file": "vizard_ichigo_089.png"
+    "file": "vizard_ichigo_090.png"
   },
   {
     "bbox": [
@@ -1180,7 +1193,7 @@
     "y": 1077,
     "w": 47,
     "h": 54,
-    "file": "vizard_ichigo_090.png"
+    "file": "vizard_ichigo_091.png"
   },
   {
     "bbox": [
@@ -1193,7 +1206,7 @@
     "y": 1166,
     "w": 31,
     "h": 84,
-    "file": "vizard_ichigo_091.png"
+    "file": "vizard_ichigo_092.png"
   },
   {
     "bbox": [
@@ -1206,7 +1219,7 @@
     "y": 1165,
     "w": 29,
     "h": 85,
-    "file": "vizard_ichigo_092.png"
+    "file": "vizard_ichigo_093.png"
   },
   {
     "bbox": [
@@ -1219,7 +1232,7 @@
     "y": 1194,
     "w": 77,
     "h": 45,
-    "file": "vizard_ichigo_093.png"
+    "file": "vizard_ichigo_094.png"
   },
   {
     "bbox": [
@@ -1232,7 +1245,7 @@
     "y": 1194,
     "w": 75,
     "h": 46,
-    "file": "vizard_ichigo_094.png"
+    "file": "vizard_ichigo_095.png"
   },
   {
     "bbox": [
@@ -1245,7 +1258,7 @@
     "y": 1200,
     "w": 79,
     "h": 40,
-    "file": "vizard_ichigo_095.png"
+    "file": "vizard_ichigo_096.png"
   },
   {
     "bbox": [
@@ -1258,6 +1271,6 @@
     "y": 1201,
     "w": 77,
     "h": 40,
-    "file": "vizard_ichigo_096.png"
+    "file": "vizard_ichigo_097.png"
   }
 ]

@@ -1,11 +1,12 @@
 from collections import deque
+import argparse
 import csv
 import json
 from pathlib import Path
 from PIL import Image, ImageFilter
 
-SOURCE = Path(r"C:\Users\Admin\Downloads\vizard_ichigo_sprite_by_yurestu_d3ahl60-375w-2x.jpg")
-OUTPUT_DIR = Path("assets/vizard_ichigo_frames")
+DEFAULT_SOURCE = Path(r"C:\Users\Admin\Downloads\vizard_ichigo_sprite_by_yurestu_d3ahl60-375w-2x.jpg")
+DEFAULT_OUTPUT_DIR = Path("assets/vizard_ichigo_frames")
 DILATE_SIZE = 11
 MIN_PIXELS = 18
 MIN_BBOX_AREA = 120
@@ -105,8 +106,17 @@ def make_transparent_frame(image, bbox):
 
     return frame
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Extract Vizard Ichigo spritesheet frames.")
+    parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
+    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--prefix", default="vizard_ichigo")
+    return parser.parse_args()
+
+
 def main():
-    image = Image.open(SOURCE).convert("RGB")
+    args = parse_args()
+    image = Image.open(args.source).convert("RGB")
     width, height = image.size
 
     base_mask = Image.new("L", image.size, 0)
@@ -173,26 +183,26 @@ def main():
         sorted_frames.extend(r)
     frames = sorted_frames
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    for old_file in OUTPUT_DIR.glob("vizard_ichigo_*.png"):
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    for old_file in args.output_dir.glob(f"{args.prefix}_*.png"):
         old_file.unlink()
 
     for index, item in enumerate(frames):
         frame = make_transparent_frame(image, item["bbox"])
-        filename = f"vizard_ichigo_{index:03d}.png"
-        frame.save(OUTPUT_DIR / filename)
+        filename = f"{args.prefix}_{index:03d}.png"
+        frame.save(args.output_dir / filename)
         item["file"] = filename
 
-    with (OUTPUT_DIR / "manifest.csv").open("w", newline="", encoding="utf-8") as csv_file:
+    with (args.output_dir / "manifest.csv").open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=["file", "x", "y", "w", "h"])
         writer.writeheader()
         for item in frames:
             writer.writerow({key: item[key] for key in ["file", "x", "y", "w", "h"]})
 
-    with (OUTPUT_DIR / "manifest.json").open("w", encoding="utf-8") as json_file:
+    with (args.output_dir / "manifest.json").open("w", encoding="utf-8") as json_file:
         json.dump(frames, json_file, indent=2)
 
-    print(f"Extracted {len(frames)} frames to {OUTPUT_DIR}")
+    print(f"Extracted {len(frames)} frames to {args.output_dir}")
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,14 @@
 #include "combat_actor.h"
 
+#if defined(__GNUC__)
+#pragma GCC optimize ("O2")
+#endif
+
 #include "combat_box.h"
 #include "ichigo_moveset.h"
 #include "naruto_moveset.h"
 #include "sasuke_moveset.h"
+#include "vizard_moveset.h"
 
 #define COMBAT_ARENA_MIN_X 32
 #define COMBAT_ARENA_MAX_X 288
@@ -37,6 +42,8 @@ static void CombatActor_MapSasuke(const CombatActor *actor,
                                   SasukeMoveState *move);
 static void CombatActor_MapIchigo(const CombatActor *actor,
                                   IchigoMoveState *move);
+static void CombatActor_MapVizard(const CombatActor *actor,
+                                  VizardMoveState *move);
 
 void CombatActor_Init(CombatActor *actor,
                       CombatCharacterId character,
@@ -513,6 +520,37 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
     return 1U;
   }
 
+  if (actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO)
+  {
+    if ((actor->state == COMBAT_ANIM_HIT) ||
+        (actor->state == COMBAT_ANIM_DEAD))
+    {
+      IchigoMoveState move;
+      CombatActor_MapIchigo(actor, &move);
+      const IchigoMoveAnimation *anim = &ichigo_move_animations[move];
+      const IchigoMoveFrame *frame = &anim->frames[actor->frameIndex];
+      outFrame->pixels = frame->pixels;
+      outFrame->width = frame->width;
+      outFrame->height = frame->height;
+      outFrame->pivotX = frame->pivotX;
+      outFrame->pivotY = frame->pivotY;
+      outFrame->durationMs = frame->durationMs;
+      return 1U;
+    }
+
+    VizardMoveState move;
+    CombatActor_MapVizard(actor, &move);
+    const VizardMoveAnimation *anim = &vizard_move_animations[move];
+    const VizardMoveFrame *frame = &anim->frames[actor->frameIndex];
+    outFrame->pixels = frame->pixels;
+    outFrame->width = frame->width;
+    outFrame->height = frame->height;
+    outFrame->pivotX = frame->pivotX;
+    outFrame->pivotY = frame->pivotY;
+    outFrame->durationMs = frame->durationMs;
+    return 1U;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   const NarutoMoveAnimation *anim = &naruto_move_animations[move];
@@ -588,6 +626,21 @@ static uint8_t CombatActor_GetFrameCount(const CombatActor *actor)
     return ichigo_move_animations[move].frameCount;
   }
 
+  if (actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO)
+  {
+    if ((actor->state == COMBAT_ANIM_HIT) ||
+        (actor->state == COMBAT_ANIM_DEAD))
+    {
+      IchigoMoveState move;
+      CombatActor_MapIchigo(actor, &move);
+      return ichigo_move_animations[move].frameCount;
+    }
+
+    VizardMoveState move;
+    CombatActor_MapVizard(actor, &move);
+    return vizard_move_animations[move].frameCount;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   return naruto_move_animations[move].frameCount;
@@ -607,6 +660,21 @@ static uint8_t CombatActor_GetLoop(const CombatActor *actor)
     IchigoMoveState move;
     CombatActor_MapIchigo(actor, &move);
     return ichigo_move_animations[move].loop;
+  }
+
+  if (actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO)
+  {
+    if ((actor->state == COMBAT_ANIM_HIT) ||
+        (actor->state == COMBAT_ANIM_DEAD))
+    {
+      IchigoMoveState move;
+      CombatActor_MapIchigo(actor, &move);
+      return ichigo_move_animations[move].loop;
+    }
+
+    VizardMoveState move;
+    CombatActor_MapVizard(actor, &move);
+    return vizard_move_animations[move].loop;
   }
 
   NarutoMoveState move;
@@ -782,6 +850,46 @@ static void CombatActor_MapIchigo(const CombatActor *actor,
       break;
     default:
       *move = ICHIGO_MOVE_IDLE;
+      break;
+  }
+}
+
+static void CombatActor_MapVizard(const CombatActor *actor,
+                                  VizardMoveState *move)
+{
+  switch (actor->state)
+  {
+    case COMBAT_ANIM_RUN:
+      *move = VIZARD_MOVE_RUN;
+      break;
+    case COMBAT_ANIM_DASH:
+      *move = VIZARD_MOVE_DASH;
+      break;
+    case COMBAT_ANIM_BLOCK:
+      *move = VIZARD_MOVE_BLOCK;
+      break;
+    case COMBAT_ANIM_JUMP:
+      *move = VIZARD_MOVE_JUMP;
+      break;
+    case COMBAT_ANIM_ATTACK:
+      if (actor->attackStep == 1U)
+      {
+        *move = VIZARD_MOVE_ATTACK2;
+      }
+      else if (actor->attackStep >= 2U)
+      {
+        *move = VIZARD_MOVE_ATTACK3;
+      }
+      else
+      {
+        *move = VIZARD_MOVE_ATTACK_LIGHT;
+      }
+      break;
+    case COMBAT_ANIM_SKILL:
+      *move = VIZARD_MOVE_SKILL;
+      break;
+    default:
+      *move = VIZARD_MOVE_IDLE;
       break;
   }
 }
