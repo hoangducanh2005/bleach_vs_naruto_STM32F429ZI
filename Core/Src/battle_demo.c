@@ -18,6 +18,13 @@
 #define BATTLE_GETSUGA_SPEED 10
 #define BATTLE_GETSUGA_FRAME_MS 40U
 #define BATTLE_GETSUGA_SPAWN_FRAME 4U
+#define BATTLE_AI_REACTION_MS 220U
+#define BATTLE_AI_ATTACK_RANGE 54
+#define BATTLE_AI_SKILL_RANGE 92
+#define BATTLE_AI_NEAR_RANGE 72
+#define BATTLE_AI_FAR_RANGE 132
+#define BATTLE_AI_ACTION_MIN_MS 120U
+#define BATTLE_AI_ACTION_MAX_MS 520U
 
 #define RGB565_BLACK 0x0000U
 #define RGB565_WHITE 0xFFFFU
@@ -73,9 +80,50 @@ typedef struct
   uint32_t startedMs;
 } BattleProjectile;
 
+typedef enum
+{
+  BATTLE_AI_ACTION_HOLD = 0U,
+  BATTLE_AI_ACTION_APPROACH,
+  BATTLE_AI_ACTION_RETREAT,
+  BATTLE_AI_ACTION_BLOCK,
+  BATTLE_AI_ACTION_ATTACK,
+  BATTLE_AI_ACTION_SKILL,
+  BATTLE_AI_ACTION_DASH,
+  BATTLE_AI_ACTION_JUMP
+} BattleAiAction;
+
+typedef struct
+{
+  int16_t selfX;
+  int16_t targetX;
+  int16_t targetY;
+  uint16_t selfHp;
+  uint16_t targetHp;
+  CombatAnimState selfState;
+  CombatAnimState targetState;
+  uint8_t targetFrameIndex;
+  uint8_t targetAttackStep;
+  uint8_t targetOnGround;
+  uint8_t valid;
+} BattleAiObservation;
+
+typedef struct
+{
+  BattleAiObservation visible;
+  BattleAiObservation pending;
+  BattleAiAction action;
+  BattleAiAction queuedAction;
+  uint32_t pendingSeenMs;
+  uint32_t actionStartedMs;
+  uint32_t actionDurationMs;
+  uint32_t nextThinkMs;
+  uint32_t rng;
+} BattleAiController;
+
 static CombatActor s_player;
 static CombatActor s_cpu;
 static BattleProjectile s_getsuga;
+static BattleAiController s_cpuAi;
 static BattleActorSnapshot s_playerSnapshot;
 static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
@@ -104,6 +152,25 @@ static const CombatHitboxDef s_getsugaHitbox = {
 static void Battle_DrawFrame(void);
 static void Battle_DrawActorsInitial(void);
 static void Battle_UpdateActors(void);
+static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs);
+static uint8_t Battle_AiUpdate(BattleAiController *ai,
+                               const CombatActor *self,
+                               const CombatActor *target,
+                               uint32_t nowMs);
+static void Battle_AiObserve(BattleAiController *ai,
+                             const CombatActor *self,
+                             const CombatActor *target,
+                             uint32_t nowMs);
+static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
+                                            const CombatActor *self,
+                                            const CombatActor *target,
+                                            uint32_t nowMs);
+static uint8_t Battle_AiActionToInput(BattleAiAction action,
+                                      const CombatActor *self,
+                                      const CombatActor *target,
+                                      uint32_t nowMs);
+static uint16_t Battle_AiRandom(BattleAiController *ai, uint16_t maxValue);
+static int16_t Battle_AbsI16(int16_t value);
 static void Battle_TrySpawnGetsuga(uint32_t nowMs);
 static void Battle_UpdateGetsuga(uint32_t nowMs);
 static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
@@ -189,6 +256,7 @@ void BattleDemo_Init(void)
   s_chidoriSnapshot.valid = 0U;
   s_getsuga.active = 0U;
   s_lastGetsugaSkillStartMs = 0U;
+  Battle_AiInit(&s_cpuAi, now);
 
   Battle_BuildBackgroundCache();
   Battle_DrawFrame();
@@ -207,12 +275,14 @@ void BattleDemo_Update(void)
   s_lastTickMs += BATTLE_TICK_MS;
 
   uint8_t input = CombatInput_Read();
+  uint8_t cpuInput = Battle_AiUpdate(&s_cpuAi, &s_cpu, &s_player, now);
 
   CombatActor_FaceToward(&s_player, &s_cpu);
   CombatActor_FaceToward(&s_cpu, &s_player);
   CombatActor_Update(&s_player, input, now, 1U);
-  CombatActor_Update(&s_cpu, COMBAT_INPUT_NONE, now, 0U);
+  CombatActor_Update(&s_cpu, cpuInput, now, 1U);
   Battle_ResolveHit(&s_player, &s_cpu, now);
+  Battle_ResolveHit(&s_cpu, &s_player, now);
   Battle_TrySpawnGetsuga(now);
   Battle_UpdateGetsuga(now);
   Battle_ResolveProjectileHit(&s_getsuga, &s_player, &s_cpu, now);
@@ -288,6 +358,10 @@ static void Battle_UpdateActors(void)
   Battle_CaptureActor(&s_cpu, &nextCpu);
   Battle_CaptureGetsuga(&s_getsuga, &nextGetsuga);
   Battle_CaptureChidori(&s_player, &nextChidori);
+  if (nextChidori.valid == 0U)
+  {
+    Battle_CaptureChidori(&s_cpu, &nextChidori);
+  }
 
   playerDirty = (Battle_ActorSnapshotEqual(&s_playerSnapshot, &nextPlayer) == 0U);
   cpuDirty = (Battle_ActorSnapshotEqual(&s_cpuSnapshot, &nextCpu) == 0U);
@@ -344,6 +418,248 @@ static void Battle_UpdateActors(void)
   s_cpuSnapshot = nextCpu;
   s_getsugaSnapshot = nextGetsuga;
   s_chidoriSnapshot = nextChidori;
+}
+
+static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
+{
+  if (ai == 0)
+  {
+    return;
+  }
+
+  ai->visible.valid = 0U;
+  ai->pending.valid = 0U;
+  ai->action = BATTLE_AI_ACTION_HOLD;
+  ai->queuedAction = BATTLE_AI_ACTION_HOLD;
+  ai->pendingSeenMs = nowMs;
+  ai->actionStartedMs = nowMs;
+  ai->actionDurationMs = BATTLE_AI_ACTION_MIN_MS;
+  ai->nextThinkMs = nowMs;
+  ai->rng = 0x13572468UL;
+}
+
+static uint8_t Battle_AiUpdate(BattleAiController *ai,
+                               const CombatActor *self,
+                               const CombatActor *target,
+                               uint32_t nowMs)
+{
+  if ((ai == 0) || (self == 0) || (target == 0))
+  {
+    return COMBAT_INPUT_NONE;
+  }
+
+  Battle_AiObserve(ai, self, target, nowMs);
+
+  if ((self->state == COMBAT_ANIM_HIT) || (self->state == COMBAT_ANIM_DEAD))
+  {
+    ai->action = BATTLE_AI_ACTION_HOLD;
+    ai->queuedAction = BATTLE_AI_ACTION_HOLD;
+    ai->actionStartedMs = nowMs;
+    ai->nextThinkMs = nowMs + BATTLE_AI_REACTION_MS;
+    return COMBAT_INPUT_NONE;
+  }
+
+  uint32_t elapsed = nowMs - ai->actionStartedMs;
+  uint8_t locked = CombatActor_IsActionLocked(self, nowMs);
+  uint32_t thinkPoint =
+      (ai->actionDurationMs * 65U) / 100U;
+
+  if ((self->state == COMBAT_ANIM_ATTACK) &&
+      (self->attackStep < 2U))
+  {
+    return COMBAT_INPUT_ATTACK;
+  }
+
+  if ((elapsed >= thinkPoint) && (nowMs >= ai->nextThinkMs))
+  {
+    ai->queuedAction = Battle_AiChooseAction(ai, self, target, nowMs);
+    ai->nextThinkMs = nowMs + 110U + Battle_AiRandom(ai, 90U);
+  }
+
+  if ((locked == 0U) &&
+      ((elapsed >= ai->actionDurationMs) ||
+       (ai->action == BATTLE_AI_ACTION_HOLD)))
+  {
+    if (ai->action == BATTLE_AI_ACTION_HOLD)
+    {
+      ai->queuedAction = Battle_AiChooseAction(ai, self, target, nowMs);
+    }
+    ai->action = ai->queuedAction;
+    ai->queuedAction = BATTLE_AI_ACTION_HOLD;
+    ai->actionStartedMs = nowMs;
+    ai->actionDurationMs = BATTLE_AI_ACTION_MIN_MS +
+                           Battle_AiRandom(ai,
+                                           (uint16_t)(BATTLE_AI_ACTION_MAX_MS -
+                                                      BATTLE_AI_ACTION_MIN_MS));
+  }
+
+  return Battle_AiActionToInput(ai->action, self, target, nowMs);
+}
+
+static void Battle_AiObserve(BattleAiController *ai,
+                             const CombatActor *self,
+                             const CombatActor *target,
+                             uint32_t nowMs)
+{
+  if ((ai == 0) || (self == 0) || (target == 0))
+  {
+    return;
+  }
+
+  ai->pending.selfX = self->x;
+  ai->pending.targetX = target->x;
+  ai->pending.targetY = target->y;
+  ai->pending.selfHp = self->hp;
+  ai->pending.targetHp = target->hp;
+  ai->pending.selfState = self->state;
+  ai->pending.targetState = target->state;
+  ai->pending.targetFrameIndex = target->frameIndex;
+  ai->pending.targetAttackStep = target->attackStep;
+  ai->pending.targetOnGround = target->onGround;
+  ai->pending.valid = 1U;
+
+  if ((ai->visible.valid == 0U) ||
+      ((nowMs - ai->pendingSeenMs) >= BATTLE_AI_REACTION_MS))
+  {
+    ai->visible = ai->pending;
+    ai->pendingSeenMs = nowMs;
+  }
+}
+
+static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
+                                            const CombatActor *self,
+                                            const CombatActor *target,
+                                            uint32_t nowMs)
+{
+  (void)nowMs;
+
+  if ((ai == 0) || (self == 0) || (target == 0) ||
+      (ai->visible.valid == 0U))
+  {
+    return BATTLE_AI_ACTION_HOLD;
+  }
+
+  int16_t dx = (int16_t)(ai->visible.targetX - ai->visible.selfX);
+  int16_t distance = Battle_AbsI16(dx);
+  uint8_t targetAttacking =
+      (ai->visible.targetState == COMBAT_ANIM_ATTACK) ||
+      (ai->visible.targetState == COMBAT_ANIM_SKILL);
+  uint8_t targetActive =
+      (targetAttacking != 0U) &&
+      (ai->visible.targetFrameIndex >= 2U) &&
+      (ai->visible.targetFrameIndex <= 5U);
+  uint8_t targetRecovering =
+      (targetAttacking != 0U) &&
+      (ai->visible.targetFrameIndex > 5U);
+
+  if ((targetRecovering != 0U) &&
+      (distance <= BATTLE_AI_ATTACK_RANGE))
+  {
+    return BATTLE_AI_ACTION_ATTACK;
+  }
+
+  if ((ai->visible.targetOnGround == 0U) &&
+      (distance <= BATTLE_AI_NEAR_RANGE))
+  {
+    return BATTLE_AI_ACTION_ATTACK;
+  }
+
+  if ((targetActive != 0U) &&
+      (distance <= BATTLE_AI_NEAR_RANGE) &&
+      (Battle_AiRandom(ai, 100U) < 82U))
+  {
+    return BATTLE_AI_ACTION_BLOCK;
+  }
+
+  if ((distance <= BATTLE_AI_SKILL_RANGE) &&
+      ((ai->visible.targetHp <= 45U) || (ai->visible.selfHp <= 35U)) &&
+      (Battle_AiRandom(ai, 100U) < 58U))
+  {
+    return BATTLE_AI_ACTION_SKILL;
+  }
+
+  if (distance <= BATTLE_AI_ATTACK_RANGE)
+  {
+    return BATTLE_AI_ACTION_ATTACK;
+  }
+
+  if ((distance <= 34) &&
+      (ai->visible.selfHp < ai->visible.targetHp) &&
+      (Battle_AiRandom(ai, 100U) < 46U))
+  {
+    return BATTLE_AI_ACTION_RETREAT;
+  }
+
+  if (distance > BATTLE_AI_FAR_RANGE)
+  {
+    return BATTLE_AI_ACTION_DASH;
+  }
+
+  if (distance > BATTLE_AI_ATTACK_RANGE)
+  {
+    return BATTLE_AI_ACTION_APPROACH;
+  }
+
+  if (Battle_AiRandom(ai, 100U) < 18U)
+  {
+    return BATTLE_AI_ACTION_JUMP;
+  }
+
+  return BATTLE_AI_ACTION_HOLD;
+}
+
+static uint8_t Battle_AiActionToInput(BattleAiAction action,
+                                      const CombatActor *self,
+                                      const CombatActor *target,
+                                      uint32_t nowMs)
+{
+  (void)nowMs;
+
+  if ((self == 0) || (target == 0))
+  {
+    return COMBAT_INPUT_NONE;
+  }
+
+  uint8_t toward = (target->x < self->x) ? COMBAT_INPUT_LEFT
+                                         : COMBAT_INPUT_RIGHT;
+  uint8_t away = (target->x < self->x) ? COMBAT_INPUT_RIGHT
+                                       : COMBAT_INPUT_LEFT;
+
+  switch (action)
+  {
+    case BATTLE_AI_ACTION_APPROACH:
+      return toward;
+    case BATTLE_AI_ACTION_RETREAT:
+      return away;
+    case BATTLE_AI_ACTION_BLOCK:
+      return COMBAT_INPUT_BLOCK;
+    case BATTLE_AI_ACTION_ATTACK:
+      return COMBAT_INPUT_ATTACK;
+    case BATTLE_AI_ACTION_SKILL:
+      return COMBAT_INPUT_SKILL;
+    case BATTLE_AI_ACTION_DASH:
+      return (uint8_t)(toward | COMBAT_INPUT_DASH);
+    case BATTLE_AI_ACTION_JUMP:
+      return COMBAT_INPUT_JUMP;
+    default:
+      return COMBAT_INPUT_NONE;
+  }
+}
+
+static uint16_t Battle_AiRandom(BattleAiController *ai, uint16_t maxValue)
+{
+  if ((ai == 0) || (maxValue == 0U))
+  {
+    return 0U;
+  }
+
+  ai->rng = (ai->rng * 1664525UL) + 1013904223UL;
+  return (uint16_t)((ai->rng >> 16) % maxValue);
+}
+
+static int16_t Battle_AbsI16(int16_t value)
+{
+  return (value < 0) ? (int16_t)-value : value;
 }
 
 static void Battle_DrawActor(const CombatActor *actor,

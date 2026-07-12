@@ -463,12 +463,12 @@ uint8_t CombatActor_IsBlockingFront(const CombatActor *target,
     return 0U;
   }
 
-  if ((attacker->x > target->x) && (target->facing > 0))
+  if ((attacker->x > target->x) && (target->facing < 0))
   {
     return 0U;
   }
 
-  if ((attacker->x < target->x) && (target->facing < 0))
+  if ((attacker->x < target->x) && (target->facing > 0))
   {
     return 0U;
   }
