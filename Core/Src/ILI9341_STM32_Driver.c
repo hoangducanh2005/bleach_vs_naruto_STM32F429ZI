@@ -571,7 +571,14 @@ static void ILI9341_BusInit(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	HAL_GPIO_Init(LCD_CS_PORT, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin = LCD_DC_PIN | LCD_RST_PIN;
+	/* Initialize LCD DC pin with no-pull */
+	GPIO_InitStruct.Pin = LCD_DC_PIN;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+	/* Initialize LCD Reset pin with internal pull-up to filter out voltage transients */
+	GPIO_InitStruct.Pin = LCD_RST_PIN;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 	GPIO_InitStruct.Pin = LCD_SPI_SCK_PIN | LCD_SPI_MOSI_PIN;

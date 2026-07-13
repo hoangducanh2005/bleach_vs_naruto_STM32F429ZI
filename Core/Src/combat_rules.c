@@ -1,5 +1,6 @@
 #include "combat_rules.h"
 #include <stdint.h>
+#include "buzzer.h"
 
 // Hàm SetState nội bộ của combat_actor
 extern void CombatActor_SetState(CombatActor *actor, CombatAnimState state, uint32_t nowMs);
@@ -118,6 +119,7 @@ void CombatRules_ProcessHit(CombatActor *attacker, CombatActor *target, const Co
     CombatActor_SetState(target, COMBAT_ANIM_DEAD, nowMs);
     target->knockdownUntilMs = nowMs + COMBAT_KNOCKDOWN_DURATION_MS;
     target->invincibleUntilMs = nowMs + COMBAT_KNOCKDOWN_DURATION_MS;
+    Buzzer_Play(BUZZER_SFX_KNOCKDOWN);
   }
   else
   {
@@ -134,6 +136,7 @@ void CombatRules_ProcessHit(CombatActor *attacker, CombatActor *target, const Co
       target->stunUntilMs = nowMs + hitbox->blockStunMs;
       target->vx = (attacker->x < target->x) ? (int16_t)(hitbox->knockbackX / 2)
                                              : (int16_t)(-hitbox->knockbackX / 2);
+      Buzzer_Play(BUZZER_SFX_BLOCK);
     }
     else
     {
@@ -141,6 +144,7 @@ void CombatRules_ProcessHit(CombatActor *attacker, CombatActor *target, const Co
       target->stunUntilMs = nowMs + hitbox->hitStunMs;
       target->vx = (attacker->x < target->x) ? hitbox->knockbackX
                                              : (int16_t)(-hitbox->knockbackX);
+      Buzzer_Play(BUZZER_SFX_HIT);
     }
   }
 }

@@ -10,6 +10,7 @@
 #include "naruto_moveset.h"
 #include "sasuke_moveset.h"
 #include "vizard_moveset.h"
+#include "buzzer.h"
 
 #define COMBAT_ARENA_MIN_X 32
 #define COMBAT_ARENA_MAX_X 288
@@ -220,6 +221,7 @@ void CombatActor_Update(CombatActor *actor,
     {
       CombatRules_ConsumeSkillMana(actor);
       CombatActor_SetState(actor, COMBAT_ANIM_SKILL, nowMs);
+      Buzzer_Play(BUZZER_SFX_SKILL);
     }
     else if (((inputFlags & COMBAT_INPUT_JUMP) != 0U) &&
              (actor->onGround != 0U))

@@ -15,6 +15,7 @@
 #include "sprite_render.h"
 #include "stm32f4xx_hal.h"
 #include "vizard_moveset.h"
+#include "buzzer.h"
 
 #define BATTLE_TICK_MS 33U
 #define BATTLE_GROUND_Y 205
@@ -137,6 +138,7 @@ typedef struct
   uint32_t actionDurationMs;
   uint32_t nextThinkMs;
   uint32_t rng;
+  uint8_t difficulty;
 } BattleAiController;
 
 static CombatActor s_player;
@@ -195,7 +197,7 @@ static const CombatHitboxDef s_vizardProjectileHitbox = {
 static void Battle_DrawFrame(void);
 static void Battle_DrawActorsInitial(void);
 static void Battle_UpdateActors(void);
-static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs);
+static void Battle_AiInit(BattleAiController *ai, uint8_t difficulty, uint32_t nowMs);
 static uint8_t Battle_AiUpdate(BattleAiController *ai,
                                const CombatActor *self,
                                const CombatActor *target,
@@ -288,7 +290,7 @@ void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
   s_cpuCharacter = cpuCharacter;
 }
 
-void BattleDemo_Init(void)
+void BattleDemo_Init(uint8_t difficulty)
 {
   uint32_t now = HAL_GetTick();
 
@@ -325,7 +327,7 @@ void BattleDemo_Init(void)
   s_battleOver = 0U;
   s_battleWon = 0U;
   s_battleOverInputArmed = 0U;
-  Battle_AiInit(&s_cpuAi, now);
+  Battle_AiInit(&s_cpuAi, difficulty, now);
 
   Battle_DrawFrame();
   LCD_Port_Flush();
@@ -520,7 +522,7 @@ static void Battle_UpdateActors(void)
   s_chidoriSnapshot = nextChidori;
 }
 
-static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
+static void Battle_AiInit(BattleAiController *ai, uint8_t difficulty, uint32_t nowMs)
 {
   if (ai == 0)
   {
@@ -536,6 +538,7 @@ static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
   ai->actionDurationMs = BATTLE_AI_ACTION_MIN_MS;
   ai->nextThinkMs = nowMs;
   ai->rng = 0x13572468UL;
+  ai->difficulty = difficulty;
 }
 
 static uint8_t Battle_AiUpdate(BattleAiController *ai,
@@ -552,10 +555,20 @@ static uint8_t Battle_AiUpdate(BattleAiController *ai,
 
   if ((self->state == COMBAT_ANIM_HIT) || (self->state == COMBAT_ANIM_DEAD))
   {
+    uint32_t reactionMs = 220U;
+    if (ai->difficulty == 0U)
+    {
+      reactionMs = 450U;
+    }
+    else if (ai->difficulty == 2U)
+    {
+      reactionMs = 110U;
+    }
+
     ai->action = BATTLE_AI_ACTION_HOLD;
     ai->queuedAction = BATTLE_AI_ACTION_HOLD;
     ai->actionStartedMs = nowMs;
-    ai->nextThinkMs = nowMs + BATTLE_AI_REACTION_MS;
+    ai->nextThinkMs = nowMs + reactionMs;
     return COMBAT_INPUT_NONE;
   }
 
@@ -618,8 +631,18 @@ static void Battle_AiObserve(BattleAiController *ai,
   ai->pending.targetOnGround = target->onGround;
   ai->pending.valid = 1U;
 
+  uint32_t reactionMs = 220U;
+  if (ai->difficulty == 0U)
+  {
+    reactionMs = 450U;
+  }
+  else if (ai->difficulty == 2U)
+  {
+    reactionMs = 110U;
+  }
+
   if ((ai->visible.valid == 0U) ||
-      ((nowMs - ai->pendingSeenMs) >= BATTLE_AI_REACTION_MS))
+      ((nowMs - ai->pendingSeenMs) >= reactionMs))
   {
     ai->visible = ai->pending;
     ai->pendingSeenMs = nowMs;
@@ -664,16 +687,33 @@ static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
     return BATTLE_AI_ACTION_ATTACK;
   }
 
+  uint16_t blockRate = 60U;
+  uint16_t skillRate = 50U;
+  uint16_t retreatRate = 40U;
+
+  if (ai->difficulty == 0U)
+  {
+    blockRate = 25U;
+    skillRate = 20U;
+    retreatRate = 15U;
+  }
+  else if (ai->difficulty == 2U)
+  {
+    blockRate = 90U;
+    skillRate = 80U;
+    retreatRate = 70U;
+  }
+
   if ((targetActive != 0U) &&
       (distance <= BATTLE_AI_NEAR_RANGE) &&
-      (Battle_AiRandom(ai, 100U) < 82U))
+      (Battle_AiRandom(ai, 100U) < blockRate))
   {
     return BATTLE_AI_ACTION_BLOCK;
   }
 
   if ((distance <= BATTLE_AI_SKILL_RANGE) &&
       ((ai->visible.targetHp <= 45U) || (ai->visible.selfHp <= 35U)) &&
-      (Battle_AiRandom(ai, 100U) < 58U))
+      (Battle_AiRandom(ai, 100U) < skillRate))
   {
     return BATTLE_AI_ACTION_SKILL;
   }
@@ -685,7 +725,7 @@ static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
 
   if ((distance <= 34) &&
       (ai->visible.selfHp < ai->visible.targetHp) &&
-      (Battle_AiRandom(ai, 100U) < 46U))
+      (Battle_AiRandom(ai, 100U) < retreatRate))
   {
     return BATTLE_AI_ACTION_RETREAT;
   }
@@ -1449,6 +1489,15 @@ static void Battle_CheckBattleOver(uint32_t nowMs)
   s_battleOverInputArmed = 0U;
   s_getsuga.active = 0U;
   Battle_DrawBattleOverHud(s_battleWon);
+
+  if (s_battleWon != 0U)
+  {
+    Buzzer_Play(BUZZER_SFX_GAME_WIN);
+  }
+  else
+  {
+    Buzzer_Play(BUZZER_SFX_GAME_LOSE);
+  }
 }
 
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
