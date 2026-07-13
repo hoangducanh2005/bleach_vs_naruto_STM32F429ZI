@@ -144,7 +144,6 @@ static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
 static BattleActorSnapshot s_chidoriSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
-static uint16_t s_backgroundPixels[LCD_PORT_WIDTH * LCD_PORT_HEIGHT];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
@@ -213,13 +212,15 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
                                         CombatActor *target,
                                         uint32_t nowMs);
 static void Battle_DrawBackground(void);
-static void Battle_BuildBackgroundCache(void);
 static void Battle_DrawStaticSky(void);
 static void Battle_DrawGround(void);
 static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
                                  uint16_t borderColor, uint8_t reverse);
+static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
+                                   uint16_t newHp, uint16_t borderColor,
+                                   uint8_t reverse);
 static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint8_t reverse);
 static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
                              uint16_t height, uint16_t value,
@@ -306,7 +307,6 @@ void BattleDemo_Init(void)
   s_vizardTeleported = 0U;
   Battle_AiInit(&s_cpuAi, now);
 
-  Battle_BuildBackgroundCache();
   Battle_DrawFrame();
   LCD_Port_Flush();
 }
@@ -338,13 +338,15 @@ void BattleDemo_Update(void)
 
   if (s_player.hp != s_lastPlayerHp)
   {
-    Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U);
+    Battle_UpdateHealthBar(10U, 15U, s_lastPlayerHp, s_player.hp,
+                           RGB565_ACCENT_CYAN, 0U);
     s_lastPlayerHp = s_player.hp;
   }
 
   if (s_cpu.hp != s_lastCpuHp)
   {
-    Battle_DrawHealthBar(206U, 15U, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U);
+    Battle_UpdateHealthBar(206U, 15U, s_lastCpuHp, s_cpu.hp,
+                           RGB565_ACCENT_ORANGE, 1U);
     s_lastCpuHp = s_cpu.hp;
   }
 
@@ -931,7 +933,8 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
     return;
   }
 
-  CombatActor_ApplyHit(target, owner, hitbox, nowMs, 0U);
+  uint8_t blocked = CombatActor_IsBlockingFront(target, owner);
+  CombatActor_ApplyHit(target, owner, hitbox, nowMs, blocked);
   projectile->hitConnected = 1U;
   projectile->active = 0U;
 }
@@ -1222,8 +1225,7 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
     for (int16_t col = 0; col < rect.w; col++)
     {
       uint16_t x = (uint16_t)(rect.x + col);
-      s_compositeRun[col] =
-          s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x];
+      s_compositeRun[col] = Battle_GetBackgroundPixel(x, y);
     }
 
     Battle_ComposeActorRow(rect, player, y);
@@ -1360,6 +1362,55 @@ static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
                    borderColor, reverse);
 }
 
+static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
+                                   uint16_t newHp, uint16_t borderColor,
+                                   uint8_t reverse)
+{
+  uint16_t oldFill = (oldHp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
+  uint16_t newFill = (newHp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
+  uint16_t innerWidth = 102U;
+  uint16_t innerHeight = 6U;
+  uint16_t oldValue = (oldHp > 100U) ? 100U : oldHp;
+  uint16_t newValue = (newHp > 100U) ? 100U : newHp;
+  uint16_t oldFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * oldValue) / 100U);
+  uint16_t newFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * newValue) / 100U);
+  uint16_t changedWidth;
+  uint16_t changedX;
+
+  if (oldFill != newFill)
+  {
+    Battle_DrawHealthBar(x, y, newHp, borderColor, reverse);
+    return;
+  }
+
+  if (oldFillWidth == newFillWidth)
+  {
+    return;
+  }
+
+  changedWidth = (oldFillWidth > newFillWidth)
+                     ? (uint16_t)(oldFillWidth - newFillWidth)
+                     : (uint16_t)(newFillWidth - oldFillWidth);
+
+  if (newFillWidth > oldFillWidth)
+  {
+    changedX = (reverse != 0U)
+                   ? (uint16_t)(x + 1U + innerWidth - newFillWidth)
+                   : (uint16_t)(x + 1U + oldFillWidth);
+    LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                      innerHeight, newFill);
+    return;
+  }
+
+  changedX = (reverse != 0U)
+                 ? (uint16_t)(x + 1U + innerWidth - oldFillWidth)
+                 : (uint16_t)(x + 1U + newFillWidth);
+  LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                    innerHeight, RGB565_HP_BACK);
+}
+
 static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint8_t reverse)
 {
   Battle_DrawMeter(x, y, 84U, 5U, 100U, 100U, RGB565_MANA,
@@ -1407,18 +1458,6 @@ static void Battle_DrawBackground(void)
   Battle_DrawStaticSky();
   Battle_DrawGround();
   Battle_DrawArenaMarks();
-}
-
-static void Battle_BuildBackgroundCache(void)
-{
-  for (uint16_t y = 0U; y < LCD_PORT_HEIGHT; y++)
-  {
-    for (uint16_t x = 0U; x < LCD_PORT_WIDTH; x++)
-    {
-      s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x] =
-          Battle_GetBackgroundPixel(x, y);
-    }
-  }
 }
 
 static void Battle_DrawStaticSky(void)

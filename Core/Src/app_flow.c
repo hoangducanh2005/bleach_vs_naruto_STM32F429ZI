@@ -36,14 +36,12 @@ static uint32_t s_screenStartedMs = 0U;
 static uint8_t s_selectedMenu = APP_MENU_START;
 static uint8_t s_selectedDifficulty = 1U;
 static uint8_t s_selectedCharacter = CHOOSE_CHARACTER_HOLLOW;
-static uint8_t s_navLatched = 0U;
 
 static void AppFlow_ShowSplash(void);
 static void AppFlow_ShowMainMenu(void);
 static void AppFlow_ShowDifficulty(void);
 static void AppFlow_ShowCharacter(void);
 static void AppFlow_StartCombat(void);
-static int8_t AppFlow_ReadNavEvent(uint8_t input);
 static uint8_t AppFlow_WrapAdd(uint8_t value, uint8_t count, int8_t delta);
 static CombatCharacterId AppFlow_MapChooseCharacter(uint8_t character);
 
@@ -57,7 +55,6 @@ void AppFlow_Init(void)
 void AppFlow_Update(void)
 {
   uint8_t input;
-  int8_t nav;
 
   if (s_screen == APP_SCREEN_COMBAT)
   {
@@ -66,7 +63,6 @@ void AppFlow_Update(void)
   }
 
   input = CombatInput_Read();
-  nav = AppFlow_ReadNavEvent(input);
 
   switch (s_screen)
   {
@@ -79,10 +75,13 @@ void AppFlow_Update(void)
       break;
 
     case APP_SCREEN_MAIN_MENU:
-      if (nav != 0)
+      if ((input & COMBAT_INPUT_JUMP) != 0U)
       {
-        s_selectedMenu = AppFlow_WrapAdd(s_selectedMenu, APP_MAIN_MENU_ITEMS, nav);
-        AppFlow_ShowMainMenu();
+        s_selectedMenu = AppFlow_WrapAdd(s_selectedMenu, APP_MAIN_MENU_ITEMS, 1);
+        GameUI_DrawMainMenuSelection(s_selectedMenu,
+                                     s_selectedDifficulty,
+                                     s_selectedCharacter);
+        LCD_Port_Flush();
       }
       else if ((input & COMBAT_INPUT_ATTACK) != 0U)
       {
@@ -102,12 +101,13 @@ void AppFlow_Update(void)
       break;
 
     case APP_SCREEN_DIFFICULTY:
-      if (nav != 0)
+      if ((input & COMBAT_INPUT_JUMP) != 0U)
       {
         s_selectedDifficulty = AppFlow_WrapAdd(s_selectedDifficulty,
                                                APP_DIFFICULTY_ITEMS,
-                                               nav);
-        AppFlow_ShowDifficulty();
+                                               1);
+        GameUI_DrawDifficultySelect(s_selectedDifficulty);
+        LCD_Port_Flush();
       }
       else if (((input & COMBAT_INPUT_ATTACK) != 0U) ||
                ((input & COMBAT_INPUT_SKILL) != 0U))
@@ -117,12 +117,12 @@ void AppFlow_Update(void)
       break;
 
     case APP_SCREEN_CHARACTER:
-      if (nav != 0)
+      if ((input & COMBAT_INPUT_JUMP) != 0U)
       {
         uint8_t previousCharacter = s_selectedCharacter;
         s_selectedCharacter = AppFlow_WrapAdd(s_selectedCharacter,
                                               CHOOSE_CHARACTER_COUNT,
-                                              nav);
+                                              1);
         GameUI_UpdateCharacterSelect(previousCharacter,
                                      s_selectedCharacter,
                                      APP_CPU_CHARACTER);
@@ -145,7 +145,6 @@ static void AppFlow_ShowSplash(void)
 {
   s_screen = APP_SCREEN_SPLASH;
   s_screenStartedMs = HAL_GetTick();
-  s_navLatched = 0U;
 
   GameUI_DrawSplash();
   ILI9341_DrawText("ATTACK: SKIP", FONT1, 124U, 226U, 0xFFFFU, 0x0000U);
@@ -155,7 +154,6 @@ static void AppFlow_ShowSplash(void)
 static void AppFlow_ShowMainMenu(void)
 {
   s_screen = APP_SCREEN_MAIN_MENU;
-  s_navLatched = 0U;
 
   GameUI_DrawMainMenuSelection(s_selectedMenu,
                                s_selectedDifficulty,
@@ -166,7 +164,6 @@ static void AppFlow_ShowMainMenu(void)
 static void AppFlow_ShowDifficulty(void)
 {
   s_screen = APP_SCREEN_DIFFICULTY;
-  s_navLatched = 0U;
 
   GameUI_DrawDifficultySelect(s_selectedDifficulty);
   LCD_Port_Flush();
@@ -175,7 +172,6 @@ static void AppFlow_ShowDifficulty(void)
 static void AppFlow_ShowCharacter(void)
 {
   s_screen = APP_SCREEN_CHARACTER;
-  s_navLatched = 0U;
 
   GameUI_DrawCharacterSelect(s_selectedCharacter, APP_CPU_CHARACTER);
   LCD_Port_Flush();
@@ -184,30 +180,9 @@ static void AppFlow_ShowCharacter(void)
 static void AppFlow_StartCombat(void)
 {
   s_screen = APP_SCREEN_COMBAT;
-  s_navLatched = 0U;
   BattleDemo_SetCharacters(AppFlow_MapChooseCharacter(s_selectedCharacter),
                            COMBAT_CHARACTER_SASUKE);
   BattleDemo_Init();
-}
-
-static int8_t AppFlow_ReadNavEvent(uint8_t input)
-{
-  uint8_t up = (input & COMBAT_INPUT_UP) != 0U;
-  uint8_t down = (input & COMBAT_INPUT_DOWN) != 0U;
-
-  if ((up == 0U) && (down == 0U))
-  {
-    s_navLatched = 0U;
-    return 0;
-  }
-
-  if ((s_navLatched != 0U) || (up == down))
-  {
-    return 0;
-  }
-
-  s_navLatched = 1U;
-  return up ? -1 : 1;
 }
 
 static uint8_t AppFlow_WrapAdd(uint8_t value, uint8_t count, int8_t delta)

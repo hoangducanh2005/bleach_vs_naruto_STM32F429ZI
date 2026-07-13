@@ -109,7 +109,7 @@ void GameUI_DrawMainMenuSelection(uint8_t selectedMenu,
                         selectedMenu == 2U);
 
   ILI9341_DrawText("DEMO VIZARD  VS  CPU SASUKE", FONT2, 58U, 211U, UI_COLOR_WHITE, UI_COLOR_BLACK);
-  ILI9341_DrawText("JOYSTICK: MOVE  ATTACK: SELECT", FONT1, 48U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+  ILI9341_DrawText("JUMP: NEXT  ATTACK: SELECT", FONT1, 55U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
 void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
@@ -127,8 +127,8 @@ void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
   GameUI_DrawDifficultyOption(126U, "NORMAL", selectedDifficulty == 1U);
   GameUI_DrawDifficultyOption(161U, "HARD", selectedDifficulty == 2U);
 
-  ILI9341_DrawText("CONFIRM: BACK TO MAIN MENU", FONT1, 59U, 216U, UI_COLOR_WHITE, UI_COLOR_BLACK);
-  ILI9341_DrawText("UP/DOWN: CHANGE LEVEL", FONT1, 76U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+  ILI9341_DrawText("ATTACK: OK  SKILL: BACK", FONT1, 70U, 216U, UI_COLOR_WHITE, UI_COLOR_BLACK);
+  ILI9341_DrawText("JUMP: CHANGE LEVEL", FONT1, 88U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
 void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)

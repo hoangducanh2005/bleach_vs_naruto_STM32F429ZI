@@ -48,12 +48,14 @@ Timer giua:
 Ham lien quan:
 - Battle_DrawHud(): ve toan bo HUD luc init/full redraw.
 - Battle_DrawHealthBar(x, y, hp, borderColor, reverse): ve HP.
+- Battle_UpdateHealthBar(...): cap nhat delta HP luc runtime, chi fill doan pixel thay doi de giam nhap nhay.
 - Battle_DrawManaBar(x, y, reverse): ve mana full tam thoi.
 - Battle_DrawMeter(...): ham chung ve meter co reverse.
 
 Cap nhat runtime:
-- Khi player HP doi: Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U).
-- Khi CPU HP doi: Battle_DrawHealthBar(206U, 15U, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U).
+- Khi player HP doi: Battle_UpdateHealthBar(10U, 15U, oldHp, s_player.hp, RGB565_ACCENT_CYAN, 0U).
+- Khi CPU HP doi: Battle_UpdateHealthBar(206U, 15U, oldHp, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U).
+- Neu HP di qua nguong 30 thi redraw ca HP bar mot lan de doi mau fill.
 - Timer hien tai la static 60s, chua co countdown logic.
 
 Ghi chu de ghep HUD sau nay:

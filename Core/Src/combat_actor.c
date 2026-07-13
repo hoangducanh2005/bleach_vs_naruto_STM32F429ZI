@@ -220,7 +220,7 @@ void CombatActor_Update(CombatActor *actor,
     {
       CombatActor_StartJump(actor, nowMs);
     }
-    else if ((inputFlags & COMBAT_INPUT_BLOCK) != 0U)
+    else if ((inputFlags & (COMBAT_INPUT_BLOCK | COMBAT_INPUT_UP)) != 0U)
     {
       if (actor->state != COMBAT_ANIM_BLOCK)
       {
