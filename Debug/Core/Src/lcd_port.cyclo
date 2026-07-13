@@ -1,6 +1,0 @@
-../Core/Src/lcd_port.c:23:6:LCD_Port_Init	1
-../Core/Src/lcd_port.c:30:6:LCD_Port_DrawPixel	3
-../Core/Src/lcd_port.c:40:6:LCD_Port_DrawPixels	5
-../Core/Src/lcd_port.c:56:6:LCD_Port_DrawRGB565Bytes	8
-../Core/Src/lcd_port.c:73:6:LCD_Port_FillRect	5
-../Core/Src/lcd_port.c:93:6:LCD_Port_Flush	1

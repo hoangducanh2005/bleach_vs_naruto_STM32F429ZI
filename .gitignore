@@ -1,6 +1,30 @@
-
+# Build Directories
 Debug/
+Release/
+
+# Object and Dependency files
 *.o
 *.d
 *.su
 *.cyclo
+*.elf
+*.map
+*.hex
+*.bin
+*.list
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and Project configuration files
+.settings/
+*.launch
+.metadata/
+.launches/
+
+# OS specific files
+Thumbs.db
+desktop.ini
+.DS_Store

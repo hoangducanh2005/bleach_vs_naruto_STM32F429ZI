@@ -1,3 +1,0 @@
-../Core/Src/character_select_demo.c:22:16:CharacterSelectDemo_GetCpuCharacter	1
-../Core/Src/character_select_demo.c:27:6:CharacterSelectDemo_Init	1
-../Core/Src/character_select_demo.c:38:6:CharacterSelectDemo_Update	2
