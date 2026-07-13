@@ -10,6 +10,7 @@
 #include "stm32f4xx_hal.h"
 
 #define APP_SPLASH_DURATION_MS 1800U
+#define APP_MENU_INPUT_LOCK_MS 220U
 #define APP_MAIN_MENU_ITEMS    3U
 #define APP_DIFFICULTY_ITEMS   3U
 
@@ -58,7 +59,10 @@ void AppFlow_Update(void)
 
   if (s_screen == APP_SCREEN_COMBAT)
   {
-    BattleDemo_Update();
+    if (BattleDemo_Update() != 0U)
+    {
+      AppFlow_ShowMainMenu();
+    }
     return;
   }
 
@@ -75,6 +79,11 @@ void AppFlow_Update(void)
       break;
 
     case APP_SCREEN_MAIN_MENU:
+      if ((uint32_t)(HAL_GetTick() - s_screenStartedMs) < APP_MENU_INPUT_LOCK_MS)
+      {
+        break;
+      }
+
       if ((input & COMBAT_INPUT_JUMP) != 0U)
       {
         s_selectedMenu = AppFlow_WrapAdd(s_selectedMenu, APP_MAIN_MENU_ITEMS, 1);
@@ -154,6 +163,7 @@ static void AppFlow_ShowSplash(void)
 static void AppFlow_ShowMainMenu(void)
 {
   s_screen = APP_SCREEN_MAIN_MENU;
+  s_screenStartedMs = HAL_GetTick();
 
   GameUI_DrawMainMenuSelection(s_selectedMenu,
                                s_selectedDifficulty,

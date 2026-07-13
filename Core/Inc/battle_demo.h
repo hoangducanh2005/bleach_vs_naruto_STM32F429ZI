@@ -10,7 +10,7 @@ extern "C" {
 void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
                               CombatCharacterId cpuCharacter);
 void BattleDemo_Init(void);
-void BattleDemo_Update(void);
+uint8_t BattleDemo_Update(void);
 
 #ifdef __cplusplus
 }

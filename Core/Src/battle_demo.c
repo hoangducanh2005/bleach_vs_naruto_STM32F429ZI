@@ -36,6 +36,9 @@
 #define BATTLE_AI_FAR_RANGE 132
 #define BATTLE_AI_ACTION_MIN_MS 120U
 #define BATTLE_AI_ACTION_MAX_MS 520U
+#define BATTLE_OVER_INPUT_DELAY_MS 500U
+#define BATTLE_OVER_CONFIRM_MASK \
+  (COMBAT_INPUT_ATTACK | COMBAT_INPUT_SKILL | COMBAT_INPUT_JUMP | COMBAT_INPUT_DASH)
 
 #define RGB565_BLACK 0x0000U
 #define RGB565_WHITE 0xFFFFU
@@ -153,7 +156,11 @@ static uint16_t s_lastCpuMana;
 static uint32_t s_lastGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
+static uint32_t s_battleOverStartedMs;
 static uint8_t s_vizardTeleported;
+static uint8_t s_battleOver;
+static uint8_t s_battleWon;
+static uint8_t s_battleOverInputArmed;
 static CombatCharacterId s_playerCharacter = COMBAT_CHARACTER_VIZARD_ICHIGO;
 static CombatCharacterId s_cpuCharacter = COMBAT_CHARACTER_SASUKE;
 
@@ -219,6 +226,9 @@ static void Battle_DrawStaticSky(void);
 static void Battle_DrawGround(void);
 static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
+static void Battle_DrawBattleOverHud(uint8_t won);
+static uint8_t Battle_UpdateBattleOver(uint32_t nowMs);
+static void Battle_CheckBattleOver(uint32_t nowMs);
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
                                  uint16_t borderColor, uint8_t reverse);
 static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
@@ -310,23 +320,32 @@ void BattleDemo_Init(void)
   s_lastGetsugaSkillStartMs = 0U;
   s_lastVizardSkillStartMs = 0U;
   s_lastVizardProjectileSkillStartMs = 0U;
+  s_battleOverStartedMs = 0U;
   s_vizardTeleported = 0U;
+  s_battleOver = 0U;
+  s_battleWon = 0U;
+  s_battleOverInputArmed = 0U;
   Battle_AiInit(&s_cpuAi, now);
 
   Battle_DrawFrame();
   LCD_Port_Flush();
 }
 
-void BattleDemo_Update(void)
+uint8_t BattleDemo_Update(void)
 {
   uint32_t now = HAL_GetTick();
 
   if ((now - s_lastTickMs) < BATTLE_TICK_MS)
   {
-    return;
+    return 0U;
   }
 
   s_lastTickMs += BATTLE_TICK_MS;
+
+  if (s_battleOver != 0U)
+  {
+    return Battle_UpdateBattleOver(now);
+  }
 
   uint8_t input = CombatInput_Read();
   uint8_t cpuInput = Battle_AiUpdate(&s_cpuAi, &s_cpu, &s_player, now);
@@ -369,7 +388,9 @@ void BattleDemo_Update(void)
   }
 
   Battle_UpdateActors();
+  Battle_CheckBattleOver(now);
   LCD_Port_Flush();
+  return 0U;
 }
 
 static void Battle_ResolveHit(CombatActor *attacker, CombatActor *target,
@@ -1367,6 +1388,67 @@ static void Battle_DrawHud(void)
   ILI9341_DrawHollowRectangleCoord(142U, 5U, 177U, 27U, RGB565_HUD_FRAME);
   LCD_Port_FillRect(143U, 6U, 34U, 21U, RGB565_BLACK);
   ILI9341_DrawText("60", FONT3, 148U, 8U, RGB565_WHITE, RGB565_BLACK);
+}
+
+static void Battle_DrawBattleOverHud(uint8_t won)
+{
+  uint16_t accent = (won != 0U) ? RGB565_ACCENT_CYAN : RGB565_ACCENT_ORANGE;
+
+  LCD_Port_FillRect(40U, 70U, 240U, 98U, RGB565_HUD_BG);
+  ILI9341_DrawHollowRectangleCoord(40U, 70U, 279U, 167U, accent);
+  ILI9341_DrawHollowRectangleCoord(43U, 73U, 276U, 164U, RGB565_HUD_FRAME);
+
+  if (won != 0U)
+  {
+    ILI9341_DrawText("YOU WIN", FONT4, 111U, 91U, RGB565_WHITE, RGB565_HUD_BG);
+    ILI9341_DrawText("CPU DEFEATED", FONT2, 101U, 119U, accent, RGB565_HUD_BG);
+  }
+  else
+  {
+    ILI9341_DrawText("GAME OVER", FONT4, 96U, 91U, RGB565_WHITE, RGB565_HUD_BG);
+    ILI9341_DrawText("PLAYER DOWN", FONT2, 104U, 119U, accent, RGB565_HUD_BG);
+  }
+
+  ILI9341_DrawText("ATTACK: MAIN MENU", FONT1, 91U, 146U,
+                   RGB565_WHITE, RGB565_HUD_BG);
+}
+
+static uint8_t Battle_UpdateBattleOver(uint32_t nowMs)
+{
+  uint8_t input = CombatInput_Read();
+
+  if ((uint32_t)(nowMs - s_battleOverStartedMs) < BATTLE_OVER_INPUT_DELAY_MS)
+  {
+    return 0U;
+  }
+
+  if ((input & BATTLE_OVER_CONFIRM_MASK) == 0U)
+  {
+    s_battleOverInputArmed = 1U;
+    return 0U;
+  }
+
+  return (s_battleOverInputArmed != 0U) ? 1U : 0U;
+}
+
+static void Battle_CheckBattleOver(uint32_t nowMs)
+{
+  if (s_battleOver != 0U)
+  {
+    return;
+  }
+
+  if ((s_player.hp != 0U) && (s_cpu.hp != 0U))
+  {
+    return;
+  }
+
+  s_battleOver = 1U;
+  s_battleWon = (s_cpu.hp == 0U) && (s_player.hp != 0U) ? 1U : 0U;
+  s_battleOverStartedMs = nowMs;
+  s_battleOverInputArmed = 0U;
+  s_getsuga.active = 0U;
+  Battle_DrawBattleOverHud(s_battleWon);
 }
 
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
