@@ -163,6 +163,8 @@ static uint8_t s_vizardTeleported;
 static uint8_t s_battleOver;
 static uint8_t s_battleWon;
 static uint8_t s_battleOverInputArmed;
+static uint8_t s_secondsLeft;
+static uint32_t s_lastSecondUpdateMs;
 static CombatCharacterId s_playerCharacter = COMBAT_CHARACTER_VIZARD_ICHIGO;
 static CombatCharacterId s_cpuCharacter = COMBAT_CHARACTER_SASUKE;
 
@@ -327,6 +329,8 @@ void BattleDemo_Init(uint8_t difficulty)
   s_battleOver = 0U;
   s_battleWon = 0U;
   s_battleOverInputArmed = 0U;
+  s_secondsLeft = 60U;
+  s_lastSecondUpdateMs = now;
   Battle_AiInit(&s_cpuAi, difficulty, now);
 
   Battle_DrawFrame();
@@ -343,6 +347,24 @@ uint8_t BattleDemo_Update(void)
   }
 
   s_lastTickMs += BATTLE_TICK_MS;
+
+  /* Update countdown timer once per 1000ms */
+  if ((now - s_lastSecondUpdateMs) >= 1000U)
+  {
+    s_lastSecondUpdateMs += 1000U;
+    if (s_secondsLeft > 0U)
+    {
+      s_secondsLeft--;
+
+      char timerStr[3];
+      timerStr[0] = (char)('0' + (s_secondsLeft / 10U));
+      timerStr[1] = (char)('0' + (s_secondsLeft % 10U));
+      timerStr[2] = '\0';
+
+      LCD_Port_FillRect(143U, 6U, 34U, 21U, RGB565_BLACK);
+      ILI9341_DrawText(timerStr, FONT3, 148U, 8U, RGB565_WHITE, RGB565_BLACK);
+    }
+  }
 
   if (s_battleOver != 0U)
   {
@@ -1478,13 +1500,20 @@ static void Battle_CheckBattleOver(uint32_t nowMs)
     return;
   }
 
-  if ((s_player.hp != 0U) && (s_cpu.hp != 0U))
+  if ((s_player.hp != 0U) && (s_cpu.hp != 0U) && (s_secondsLeft != 0U))
   {
     return;
   }
 
   s_battleOver = 1U;
-  s_battleWon = (s_cpu.hp == 0U) && (s_player.hp != 0U) ? 1U : 0U;
+  if (s_secondsLeft == 0U)
+  {
+    s_battleWon = (s_player.hp >= s_cpu.hp) ? 1U : 0U;
+  }
+  else
+  {
+    s_battleWon = (s_cpu.hp == 0U) && (s_player.hp != 0U) ? 1U : 0U;
+  }
   s_battleOverStartedMs = nowMs;
   s_battleOverInputArmed = 0U;
   s_getsuga.active = 0U;
