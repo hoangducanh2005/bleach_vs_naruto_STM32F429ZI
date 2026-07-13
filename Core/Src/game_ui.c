@@ -42,6 +42,8 @@ static void GameUI_DrawMenuButton(uint16_t x,
                                   uint16_t width,
                                   const char *label,
                                   uint8_t selected);
+static const char *GameUI_GetDifficultyMenuLabel(uint8_t difficulty);
+static const char *GameUI_GetCharacterMenuLabel(uint8_t character);
 static void GameUI_DrawDifficultyOption(uint16_t y,
                                         const char *label,
                                         uint8_t selected);
@@ -77,6 +79,13 @@ void GameUI_DrawMainMenuBackground(void)
 
 void GameUI_DrawMainMenu(void)
 {
+  GameUI_DrawMainMenuSelection(0U, 1U, CHOOSE_CHARACTER_HOLLOW);
+}
+
+void GameUI_DrawMainMenuSelection(uint8_t selectedMenu,
+                                  uint8_t selectedDifficulty,
+                                  uint8_t selectedCharacter)
+{
   GameUI_DrawMainMenuBackground();
 
   ILI9341_DrawFilledRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_PANEL_DARK);
@@ -87,12 +96,20 @@ void GameUI_DrawMainMenu(void)
   ILI9341_DrawFilledRectangleCoord(30U, 78U, 290U, 205U, UI_COLOR_PANEL);
   ILI9341_DrawHollowRectangleCoord(30U, 78U, 290U, 205U, UI_COLOR_CYAN);
 
-  GameUI_DrawMenuButton(55U, 92U, 210U, "START GAME", 1U);
-  GameUI_DrawMenuButton(55U, 128U, 210U, "DIFFICULTY: NORMAL", 0U);
-  GameUI_DrawMenuButton(55U, 164U, 210U, "CHARACTER: ICHIGO", 0U);
+  GameUI_DrawMenuButton(55U, 92U, 210U, "START COMBAT", selectedMenu == 0U);
+  GameUI_DrawMenuButton(55U,
+                        128U,
+                        210U,
+                        GameUI_GetDifficultyMenuLabel(selectedDifficulty),
+                        selectedMenu == 1U);
+  GameUI_DrawMenuButton(55U,
+                        164U,
+                        210U,
+                        GameUI_GetCharacterMenuLabel(selectedCharacter),
+                        selectedMenu == 2U);
 
-  ILI9341_DrawText("P1 ICHIGO  VS  CPU NARUTO", FONT2, 63U, 211U, UI_COLOR_WHITE, UI_COLOR_BLACK);
-  ILI9341_DrawText("JOYSTICK: MOVE   BTN: SELECT", FONT1, 57U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+  ILI9341_DrawText("DEMO VIZARD  VS  CPU SASUKE", FONT2, 58U, 211U, UI_COLOR_WHITE, UI_COLOR_BLACK);
+  ILI9341_DrawText("JUMP: NEXT  ATTACK: SELECT", FONT1, 55U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
 void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
@@ -110,8 +127,8 @@ void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
   GameUI_DrawDifficultyOption(126U, "NORMAL", selectedDifficulty == 1U);
   GameUI_DrawDifficultyOption(161U, "HARD", selectedDifficulty == 2U);
 
-  ILI9341_DrawText("CONFIRM: BACK TO MAIN MENU", FONT1, 59U, 216U, UI_COLOR_WHITE, UI_COLOR_BLACK);
-  ILI9341_DrawText("UP/DOWN: CHANGE LEVEL", FONT1, 76U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+  ILI9341_DrawText("ATTACK: OK  SKILL: BACK", FONT1, 70U, 216U, UI_COLOR_WHITE, UI_COLOR_BLACK);
+  ILI9341_DrawText("JUMP: CHANGE LEVEL", FONT1, 88U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
 void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)
@@ -177,6 +194,39 @@ static void GameUI_DrawMenuButton(uint16_t x,
   }
 
   ILI9341_DrawText(label, FONT3, x + 34U, y + 5U, textColor, fillColor);
+}
+
+static const char *GameUI_GetDifficultyMenuLabel(uint8_t difficulty)
+{
+  switch (difficulty % 3U)
+  {
+    case 0U:
+      return "DIFFICULTY: EASY";
+    case 2U:
+      return "DIFFICULTY: HARD";
+    default:
+      return "DIFFICULTY: NORMAL";
+  }
+}
+
+static const char *GameUI_GetCharacterMenuLabel(uint8_t character)
+{
+  switch (character % CHOOSE_CHARACTER_COUNT)
+  {
+    case CHOOSE_CHARACTER_NARUTO:
+      return "CHARACTER: NARUTO";
+    case CHOOSE_CHARACTER_NINE_TAIL:
+      return "CHARACTER: NINE";
+    case CHOOSE_CHARACTER_SASUKE:
+      return "CHARACTER: SASUKE";
+    case CHOOSE_CHARACTER_ICHIGO:
+      return "CHARACTER: ICHIGO";
+    case CHOOSE_CHARACTER_GIN:
+      return "CHARACTER: GIN";
+    case CHOOSE_CHARACTER_HOLLOW:
+    default:
+      return "CHARACTER: VIZARD";
+  }
 }
 
 static void GameUI_DrawDifficultyOption(uint16_t y,

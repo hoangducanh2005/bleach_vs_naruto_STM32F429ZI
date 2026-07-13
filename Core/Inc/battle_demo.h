@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+#include "combat_types.h"
+
+void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
+                              CombatCharacterId cpuCharacter);
 void BattleDemo_Init(void);
 void BattleDemo_Update(void);
 
