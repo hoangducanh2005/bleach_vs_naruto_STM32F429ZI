@@ -8,6 +8,7 @@
 #include "combat_rules.h"
 #include "ichigo_moveset.h"
 #include "naruto_moveset.h"
+#include "naruto_full_nine_tails_moveset.h"
 #include "sasuke_moveset.h"
 #include "vizard_moveset.h"
 
@@ -36,6 +37,8 @@ static uint8_t CombatActor_StateFinished(const CombatActor *actor,
                                          uint32_t nowMs);
 static void CombatActor_MapNaruto(const CombatActor *actor,
                                   NarutoMoveState *move);
+static void CombatActor_MapNarutoFullNineTails(const CombatActor *actor,
+                                               NarutoFullNineTailsMoveState *move);
 static void CombatActor_MapSasuke(const CombatActor *actor,
                                   SasukeMoveState *move);
 static void CombatActor_MapIchigo(const CombatActor *actor,
@@ -514,6 +517,21 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
     return 1U;
   }
 
+  if (actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS)
+  {
+    NarutoFullNineTailsMoveState move;
+    CombatActor_MapNarutoFullNineTails(actor, &move);
+    const NarutoFullNineTailsMoveAnimation *anim = &naruto_full_nine_tails_move_animations[move];
+    const NarutoFullNineTailsMoveFrame *frame = &anim->frames[actor->frameIndex];
+    outFrame->pixels = frame->pixels;
+    outFrame->width = frame->width;
+    outFrame->height = frame->height;
+    outFrame->pivotX = frame->pivotX;
+    outFrame->pivotY = frame->pivotY;
+    outFrame->durationMs = frame->durationMs;
+    return 1U;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   const NarutoMoveAnimation *anim = &naruto_move_animations[move];
@@ -605,6 +623,13 @@ static uint8_t CombatActor_GetFrameCount(const CombatActor *actor)
     return vizard_move_animations[move].frameCount;
   }
 
+  if (actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS)
+  {
+    NarutoFullNineTailsMoveState move;
+    CombatActor_MapNarutoFullNineTails(actor, &move);
+    return naruto_full_nine_tails_move_animations[move].frameCount;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   return naruto_move_animations[move].frameCount;
@@ -639,6 +664,13 @@ static uint8_t CombatActor_GetLoop(const CombatActor *actor)
     VizardMoveState move;
     CombatActor_MapVizard(actor, &move);
     return vizard_move_animations[move].loop;
+  }
+
+  if (actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS)
+  {
+    NarutoFullNineTailsMoveState move;
+    CombatActor_MapNarutoFullNineTails(actor, &move);
+    return naruto_full_nine_tails_move_animations[move].loop;
   }
 
   NarutoMoveState move;
@@ -854,6 +886,52 @@ static void CombatActor_MapVizard(const CombatActor *actor,
       break;
     default:
       *move = VIZARD_MOVE_IDLE;
+      break;
+  }
+}
+
+static void CombatActor_MapNarutoFullNineTails(const CombatActor *actor,
+                                               NarutoFullNineTailsMoveState *move)
+{
+  switch (actor->state)
+  {
+    case COMBAT_ANIM_RUN:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_RUN;
+      break;
+    case COMBAT_ANIM_DASH:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_SLIDE;
+      break;
+    case COMBAT_ANIM_BLOCK:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_BLOCK;
+      break;
+    case COMBAT_ANIM_JUMP:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_JUMP;
+      break;
+    case COMBAT_ANIM_ATTACK:
+      if (actor->attackStep == 1U)
+      {
+        *move = NARUTO_FULL_NINE_TAILS_MOVE_ATTACK2;
+      }
+      else if (actor->attackStep >= 2U)
+      {
+        *move = NARUTO_FULL_NINE_TAILS_MOVE_ATTACK3;
+      }
+      else
+      {
+        *move = NARUTO_FULL_NINE_TAILS_MOVE_ATTACK1;
+      }
+      break;
+    case COMBAT_ANIM_SKILL:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_SKILL1;
+      break;
+    case COMBAT_ANIM_HIT:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_HIT;
+      break;
+    case COMBAT_ANIM_DEAD:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_DEAD;
+      break;
+    default:
+      *move = NARUTO_FULL_NINE_TAILS_MOVE_IDLE;
       break;
   }
 }

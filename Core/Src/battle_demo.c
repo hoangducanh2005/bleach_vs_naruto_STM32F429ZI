@@ -11,6 +11,7 @@
 #include "chidori_data.h"
 #include "ILI9341_GFX.h"
 #include "lcd_port.h"
+#include "naruto_full_nine_tails_moveset.h"
 #include "sprite_data.h"
 #include "sprite_render.h"
 #include "stm32f4xx_hal.h"
@@ -26,9 +27,13 @@
 #define BATTLE_GETSUGA_SPAWN_FRAME 4U
 #define BATTLE_PROJECTILE_GETSUGA 0U
 #define BATTLE_PROJECTILE_VIZARD 1U
+#define BATTLE_PROJECTILE_NINETAILS_BOMB 2U
 #define BATTLE_VIZARD_TELEPORT_FRAME 3U
 #define BATTLE_VIZARD_PROJECTILE_FRAME 5U
 #define BATTLE_VIZARD_TELEPORT_GAP 42
+#define BATTLE_NINETAILS_BOMB_SPEED 18
+#define BATTLE_NINETAILS_BOMB_FRAME_MS 80U
+#define BATTLE_NINETAILS_BOMB_SPAWN_FRAME 0U
 #define BATTLE_AI_REACTION_MS 220U
 #define BATTLE_AI_ATTACK_RANGE 54
 #define BATTLE_AI_SKILL_RANGE 92
@@ -135,11 +140,13 @@ typedef struct
 static CombatActor s_player;
 static CombatActor s_cpu;
 static BattleProjectile s_getsuga;
+static BattleProjectile s_ninetailsBomb;
 static BattleAiController s_cpuAi;
 static BattleActorSnapshot s_playerSnapshot;
 static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
 static BattleActorSnapshot s_chidoriSnapshot;
+static BattleActorSnapshot s_ninetailsBombSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
 static uint16_t s_backgroundPixels[LCD_PORT_WIDTH * LCD_PORT_HEIGHT];
 static uint32_t s_lastTickMs;
@@ -150,6 +157,7 @@ static uint16_t s_lastCpuMana;
 static uint32_t s_lastGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
+static uint32_t s_lastNinetailsBombSkillStartMs;
 static uint8_t s_vizardTeleported;
 
 static const CombatHitboxDef s_getsugaHitbox = {
@@ -180,6 +188,20 @@ static const CombatHitboxDef s_vizardProjectileHitbox = {
     1U,
 };
 
+static const CombatHitboxDef s_ninetailsBombHitbox = {
+    0U,
+    0U,
+    {10, 14, 56, 42},
+    20U,
+    4U,
+    350U,
+    180U,
+    28,
+    0,
+    COMBAT_HIT_LEVEL_PROJECTILE,
+    1U,
+};
+
 static void Battle_DrawFrame(void);
 static void Battle_DrawActorsInitial(void);
 static void Battle_UpdateActors(void);
@@ -205,6 +227,10 @@ static int16_t Battle_AbsI16(int16_t value);
 static void Battle_UpdateVizardSkill(uint32_t nowMs);
 static void Battle_TrySpawnGetsuga(uint32_t nowMs);
 static void Battle_UpdateGetsuga(uint32_t nowMs);
+static void Battle_TrySpawnNinetailsBomb(uint32_t nowMs);
+static void Battle_UpdateNinetailsBomb(uint32_t nowMs);
+static uint8_t Battle_CaptureNinetailsBomb(const BattleProjectile *projectile,
+                                           BattleActorSnapshot *snapshot);
 static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
                                         CombatActor *owner,
                                         CombatActor *target,
@@ -266,7 +292,7 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_VIZARD_ICHIGO,
+                   COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
@@ -286,11 +312,14 @@ void BattleDemo_Init(void)
   s_cpuSnapshot.valid = 0U;
   s_getsugaSnapshot.valid = 0U;
   s_chidoriSnapshot.valid = 0U;
+  s_ninetailsBombSnapshot.valid = 0U;
   s_getsuga.active = 0U;
   s_getsuga.kind = BATTLE_PROJECTILE_GETSUGA;
+  s_ninetailsBomb.active = 0U;
   s_lastGetsugaSkillStartMs = 0U;
   s_lastVizardSkillStartMs = 0U;
   s_lastVizardProjectileSkillStartMs = 0U;
+  s_lastNinetailsBombSkillStartMs = 0U;
   s_vizardTeleported = 0U;
   Battle_AiInit(&s_cpuAi, now);
 
@@ -323,6 +352,9 @@ void BattleDemo_Update(void)
   Battle_TrySpawnGetsuga(now);
   Battle_UpdateGetsuga(now);
   Battle_ResolveProjectileHit(&s_getsuga, &s_player, &s_cpu, now);
+  Battle_TrySpawnNinetailsBomb(now);
+  Battle_UpdateNinetailsBomb(now);
+  Battle_ResolveProjectileHit(&s_ninetailsBomb, &s_player, &s_cpu, now);
 
   if (s_player.hp != s_lastPlayerHp)
   {
@@ -397,10 +429,12 @@ static void Battle_UpdateActors(void)
   BattleActorSnapshot nextCpu;
   BattleActorSnapshot nextGetsuga;
   BattleActorSnapshot nextChidori;
+  BattleActorSnapshot nextNinetailsBomb;
   uint8_t playerDirty;
   uint8_t cpuDirty;
   uint8_t getsugaDirty;
   uint8_t chidoriDirty;
+  uint8_t ninetailsBombDirty;
 
   Battle_CaptureActor(&s_player, &nextPlayer);
   Battle_CaptureActor(&s_cpu, &nextCpu);
@@ -410,14 +444,17 @@ static void Battle_UpdateActors(void)
   {
     Battle_CaptureChidori(&s_cpu, &nextChidori);
   }
+  Battle_CaptureNinetailsBomb(&s_ninetailsBomb, &nextNinetailsBomb);
 
   playerDirty = (Battle_ActorSnapshotEqual(&s_playerSnapshot, &nextPlayer) == 0U);
   cpuDirty = (Battle_ActorSnapshotEqual(&s_cpuSnapshot, &nextCpu) == 0U);
   getsugaDirty = (Battle_ActorSnapshotEqual(&s_getsugaSnapshot, &nextGetsuga) == 0U);
   chidoriDirty = (Battle_ActorSnapshotEqual(&s_chidoriSnapshot, &nextChidori) == 0U);
+  ninetailsBombDirty = (Battle_ActorSnapshotEqual(&s_ninetailsBombSnapshot, &nextNinetailsBomb) == 0U);
 
   if ((playerDirty == 0U) && (cpuDirty == 0U) &&
-      (getsugaDirty == 0U) && (chidoriDirty == 0U))
+      (getsugaDirty == 0U) && (chidoriDirty == 0U) &&
+      (ninetailsBombDirty == 0U))
   {
     return;
   }
@@ -473,10 +510,22 @@ static void Battle_UpdateActors(void)
                               0U);
   }
 
+  if (ninetailsBombDirty != 0U)
+  {
+    Battle_DrawSnapshotChange(&s_ninetailsBombSnapshot,
+                              &nextNinetailsBomb,
+                              &nextPlayer,
+                              &nextCpu,
+                              &nextGetsuga,
+                              &nextChidori,
+                              0U);
+  }
+
   s_playerSnapshot = nextPlayer;
   s_cpuSnapshot = nextCpu;
   s_getsugaSnapshot = nextGetsuga;
   s_chidoriSnapshot = nextChidori;
+  s_ninetailsBombSnapshot = nextNinetailsBomb;
 }
 
 static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
@@ -912,10 +961,19 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
     return;
   }
 
-  const CombatHitboxDef *hitbox =
-      (projectile->kind == BATTLE_PROJECTILE_VIZARD)
-          ? &s_vizardProjectileHitbox
-          : &s_getsugaHitbox;
+  const CombatHitboxDef *hitbox;
+  if (projectile->kind == BATTLE_PROJECTILE_VIZARD)
+  {
+    hitbox = &s_vizardProjectileHitbox;
+  }
+  else if (projectile->kind == BATTLE_PROJECTILE_NINETAILS_BOMB)
+  {
+    hitbox = &s_ninetailsBombHitbox;
+  }
+  else
+  {
+    hitbox = &s_getsugaHitbox;
+  }
 
   CombatBox projectileBox = {
       (int16_t)(projectile->x + hitbox->box.x),
@@ -1511,4 +1569,120 @@ static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,
 
   LCD_Port_FillRect((uint16_t)x, (uint16_t)y, (uint16_t)width,
                     (uint16_t)height, color);
+}
+
+/* --------------------------------------------------------------------------
+ * Naruto Full Nine Tails -- SKILL1 quả bom bay đi (projectile)
+ * -------------------------------------------------------------------------- */
+
+static void Battle_TrySpawnNinetailsBomb(uint32_t nowMs)
+{
+  /* Chỉ kích hoạt khi player là Naruto chín đuôi, đang dùng skill, tại frame 0,
+   * và chưa sinh bom cho lần skill này */
+  if ((s_player.character != COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS) ||
+      (s_player.state != COMBAT_ANIM_SKILL) ||
+      (s_player.frameIndex < BATTLE_NINETAILS_BOMB_SPAWN_FRAME) ||
+      (s_lastNinetailsBombSkillStartMs == s_player.stateStartedMs))
+  {
+    return;
+  }
+
+  const NarutoFullNineTailsMoveAnimation *anim =
+      &naruto_full_nine_tails_move_animations[NARUTO_FULL_NINE_TAILS_MOVE_SKILL1];
+
+  if ((anim->projectileFrames == 0) || (anim->projectileFrameCount == 0U))
+  {
+    return;
+  }
+
+  s_lastNinetailsBombSkillStartMs = s_player.stateStartedMs;
+  s_ninetailsBomb.active       = 1U;
+  s_ninetailsBomb.kind         = BATTLE_PROJECTILE_NINETAILS_BOMB;
+  s_ninetailsBomb.frameIndex   = 0U;
+  s_ninetailsBomb.hitConnected = 0U;
+  s_ninetailsBomb.startedMs    = nowMs;
+  s_ninetailsBomb.vx = (s_player.facing < 0) ? -BATTLE_NINETAILS_BOMB_SPEED
+                                              :  BATTLE_NINETAILS_BOMB_SPEED;
+
+  /* Y: căn đáy bom sát mặt đất (bom cao 67px, mặt đất ở BATTLE_GROUND_Y) */
+  s_ninetailsBomb.y = (int16_t)(BATTLE_GROUND_Y - (int16_t)anim->projectileHeight);
+
+  /* X: sinh sát mép nhân vật theo hướng quay mặt */
+  if (s_player.facing < 0)
+  {
+    /* Quay trái: bom xuất hiện bên trái nhân vật */
+    s_ninetailsBomb.x = (int16_t)(s_player.x - 18 - (int16_t)anim->projectileWidth);
+  }
+  else
+  {
+    /* Quay phải: bom xuất hiện bên phải nhân vật */
+    s_ninetailsBomb.x = (int16_t)(s_player.x + 18);
+  }
+}
+
+static void Battle_UpdateNinetailsBomb(uint32_t nowMs)
+{
+  if (s_ninetailsBomb.active == 0U)
+  {
+    return;
+  }
+
+  const NarutoFullNineTailsMoveAnimation *anim =
+      &naruto_full_nine_tails_move_animations[NARUTO_FULL_NINE_TAILS_MOVE_SKILL1];
+
+  uint8_t  frameCount = anim->projectileFrameCount;
+  uint16_t width      = anim->projectileWidth;
+
+  /* Di chuyển theo trục X */
+  s_ninetailsBomb.x = (int16_t)(s_ninetailsBomb.x + s_ninetailsBomb.vx);
+
+  /* Cập nhật frame hoạt ảnh (looping) */
+  s_ninetailsBomb.frameIndex =
+      (uint8_t)(((nowMs - s_ninetailsBomb.startedMs) / BATTLE_NINETAILS_BOMB_FRAME_MS) %
+                frameCount);
+
+  /* Hủy bom khi bay ra khỏi màn hình */
+  if ((s_ninetailsBomb.x > (int16_t)LCD_PORT_WIDTH) ||
+      ((s_ninetailsBomb.x + (int16_t)width) < 0))
+  {
+    s_ninetailsBomb.active = 0U;
+  }
+}
+
+static uint8_t Battle_CaptureNinetailsBomb(const BattleProjectile *projectile,
+                                           BattleActorSnapshot *snapshot)
+{
+  if (snapshot != 0)
+  {
+    snapshot->valid = 0U;
+  }
+
+  if ((projectile == 0) || (snapshot == 0) || (projectile->active == 0U))
+  {
+    return 0U;
+  }
+
+  const NarutoFullNineTailsMoveAnimation *anim =
+      &naruto_full_nine_tails_move_animations[NARUTO_FULL_NINE_TAILS_MOVE_SKILL1];
+
+  if ((anim->projectileFrames == 0) || (anim->projectileFrameCount == 0U))
+  {
+    return 0U;
+  }
+
+  uint8_t idx = projectile->frameIndex;
+  if (idx >= anim->projectileFrameCount)
+  {
+    idx = 0U;
+  }
+
+  snapshot->pixels = anim->projectileFrames[idx];
+  snapshot->width  = anim->projectileWidth;
+  snapshot->height = anim->projectileHeight;
+  snapshot->x      = projectile->x;
+  snapshot->y      = projectile->y;
+  snapshot->flipX  = (projectile->vx < 0) ? 1U : 0U;
+  snapshot->valid  = 1U;
+
+  return 1U;
 }

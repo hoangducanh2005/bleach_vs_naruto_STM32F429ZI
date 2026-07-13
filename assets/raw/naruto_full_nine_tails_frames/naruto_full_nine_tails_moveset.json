@@ -1,0 +1,224 @@
+{
+  "source_dir": "assets/raw/naruto_full_nine_tails_frames",
+  "character": "naruto_full_nine_tails",
+  "notes": "Each frame references a strip subfolder (naruto_full_nine_tails_<strip>) and a frame index within that strip.",
+  "transparent": true,
+  "states": {
+    "idle": {
+      "label_vi": "đứng yên",
+      "loop": true,
+      "frame_duration_ms": 140,
+      "frames": [
+        {
+          "strip": 1,
+          "frame": 0
+        },
+        {
+          "strip": 1,
+          "frame": 1
+        }
+      ]
+    },
+    "run": {
+      "label_vi": "chạy",
+      "loop": true,
+      "frame_duration_ms": 80,
+      "frames": [
+        {
+          "strip": 2,
+          "frame": 1
+        },
+        {
+          "strip": 2,
+          "frame": 2
+        },
+        {
+          "strip": 2,
+          "frame": 4
+        },
+        {
+          "strip": 2,
+          "frame": 6
+        }
+      ]
+    },
+    "slide": {
+      "label_vi": "lướt",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {
+          "strip": 3,
+          "frame": 1
+        }
+      ]
+    },
+    "jump": {
+      "label_vi": "nhảy",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {
+          "strip": 4,
+          "frame": 0
+        },
+        {
+          "strip": 4,
+          "frame": 1
+        },
+        {
+          "strip": 4,
+          "frame": 4
+        },
+        {
+          "strip": 4,
+          "frame": 5
+        },
+        {
+          "strip": 4,
+          "frame": 7
+        }
+      ]
+    },
+    "block": {
+      "label_vi": "đỡ đòn",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 120,
+      "frames": [
+        {
+          "strip": 6,
+          "frame": 1
+        }
+      ]
+    },
+    "hit": {
+      "label_vi": "trúng đòn",
+      "loop": false,
+      "frame_duration_ms": 90,
+      "frames": [
+        {
+          "strip": 7,
+          "frame": 1
+        }
+      ]
+    },
+    "attack1": {
+      "label_vi": "tấn công 1",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {
+          "strip": 9,
+          "frame": 1
+        },
+        {
+          "strip": 9,
+          "frame": 3
+        }
+      ]
+    },
+    "attack2": {
+      "label_vi": "tấn công 2",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {
+          "strip": 14,
+          "frame": 1
+        },
+        {
+          "strip": 14,
+          "frame": 3
+        }
+      ]
+    },
+    "attack3": {
+      "label_vi": "tấn công 3",
+      "loop": false,
+      "frame_duration_ms": 80,
+      "frames": [
+        {
+          "strip": 10,
+          "frame": 1
+        },
+        {
+          "strip": 10,
+          "frame": 3
+        },
+        {
+          "strip": 10,
+          "frame": 6
+        }
+      ]
+    },
+    "skill1": {
+      "label_vi": "kỹ năng 1",
+      "loop": false,
+      "frame_duration_ms": 70,
+      "frames": [
+        {
+          "strip": 17,
+          "frame": 10
+        },
+        {
+          "strip": 18,
+          "frame": 0
+        },
+        {
+          "strip": 18,
+          "frame": 5
+        }
+      ],
+      "caster_effect": {
+        "note": "Quả cầu",
+        "start_frame_idx": 0,
+        "loop": true,
+        "frames": [
+          {
+            "strip": 18,
+            "frame": 7
+          }
+        ]
+      },
+      "projectile": {
+        "note": "Quả cầu bay đi",
+        "loop": true,
+        "frames": [
+          {
+            "strip": 18,
+            "frame": 7
+          }
+        ]
+      }
+    },
+    "dead": {
+      "label_vi": "bị hạ gục",
+      "loop": false,
+      "hold_last": true,
+      "frame_duration_ms": 90,
+      "frames": [
+        {
+          "strip": 8,
+          "frame": 0
+        },
+        {
+          "strip": 8,
+          "frame": 2
+        },
+        {
+          "strip": 8,
+          "frame": 3
+        },
+        {
+          "strip": 8,
+          "frame": 4
+        },
+        {
+          "strip": 8,
+          "frame": 6
+        }
+      ]
+    }
+  }
+}
