@@ -261,7 +261,7 @@ void BattleDemo_Init(void)
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_VIZARD_ICHIGO,
+                   COMBAT_CHARACTER_RUKIA,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,

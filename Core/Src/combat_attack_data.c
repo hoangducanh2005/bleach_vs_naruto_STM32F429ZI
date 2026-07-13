@@ -123,6 +123,20 @@ static const CombatHitboxDef s_narutoSkill = {
     1U,
 };
 
+static const CombatHitboxDef s_rukiaSkill = {
+    2U,
+    4U,
+    {14, -46, 42, 28},
+    14U,
+    3U,
+    340U,
+    180U,
+    26,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
 const CombatHurtboxProfile *CombatAttackData_GetHurtboxProfile(
     CombatCharacterId character)
 {
@@ -201,6 +215,10 @@ const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
     if (character == COMBAT_CHARACTER_SASUKE)
     {
       hitbox = &s_sasukeChidori;
+    }
+    else if (character == COMBAT_CHARACTER_RUKIA)
+    {
+      hitbox = &s_rukiaSkill;
     }
     else if ((character == COMBAT_CHARACTER_ICHIGO) ||
              (character == COMBAT_CHARACTER_VIZARD_ICHIGO))
