@@ -2,7 +2,7 @@
 /**
  ******************************************************************************
  * @file           : sasuke_animation_demo.c
- * @brief          : Sasuke moveset animation demo for the STM32 LCD.
+ * @brief          : Sasuke moveset animation demo for the STM32 LCD with Chidori.
  ******************************************************************************
  */
 /* USER CODE END Header */
@@ -12,6 +12,7 @@
 #include "ILI9341_GFX.h"
 #include "lcd_port.h"
 #include "sasuke_moveset.h"
+#include "chidori_data.h"
 #include "sprite_data.h"
 #include "sprite_render.h"
 #include "stm32f4xx_hal.h"
@@ -79,6 +80,7 @@ static void Demo_DrawFrameTransition(uint8_t nextFrameIndex);
 static uint16_t Demo_GetStateHoldMs(SasukeMoveState state);
 static uint8_t Demo_IsJumpState(SasukeMoveState state);
 static int16_t Demo_GetFrameOffsetY(SasukeMoveState state, uint8_t frameIndex);
+static uint8_t Demo_GetChidoriFrame(uint8_t frameIndex, const uint16_t **pixels, uint16_t *width, uint16_t *height, int16_t *offsetX, int16_t *offsetY);
 static uint16_t Demo_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Demo_DrawStaticSky(void);
 static void Demo_DrawSun(uint16_t x, uint16_t y);
@@ -156,6 +158,54 @@ static void Demo_SetState(uint8_t sequenceIndex) {
   Demo_DrawStateLabel(s_sequence[s_sequenceIndex].label);
 }
 
+static uint8_t Demo_GetChidoriFrame(uint8_t frameIndex, const uint16_t **pixels, uint16_t *width, uint16_t *height, int16_t *offsetX, int16_t *offsetY) {
+  if (frameIndex == 0U || frameIndex >= 18U) {
+    return 0U; // No Chidori
+  }
+  
+  if (frameIndex >= 1U && frameIndex <= 8U) {
+    uint8_t idx = (frameIndex - 1U) % 4U; // chidori_1 has 4 frames
+    *pixels = chidori_1_frames[idx].pixels;
+    *width = chidori_1_frames[idx].width;
+    *height = chidori_1_frames[idx].height;
+    *offsetX = 10;
+    *offsetY = 5;
+    return 1U;
+  }
+  
+  if (frameIndex >= 9U && frameIndex <= 11U) {
+    uint8_t idx = frameIndex - 9U; // chidori_2 has 3 frames
+    *pixels = chidori_2_frames[idx].pixels;
+    *width = chidori_2_frames[idx].width;
+    *height = chidori_2_frames[idx].height;
+    *offsetX = 0;
+    *offsetY = 0;
+    return 1U;
+  }
+  
+  if (frameIndex >= 12U && frameIndex <= 15U) {
+    uint8_t idx = (frameIndex - 12U) % 3U; // chidori_3 has 3 frames
+    *pixels = chidori_3_frames[idx].pixels;
+    *width = chidori_3_frames[idx].width;
+    *height = chidori_3_frames[idx].height;
+    *offsetX = -10;
+    *offsetY = -5;
+    return 1U;
+  }
+  
+  if (frameIndex >= 16U && frameIndex <= 17U) {
+    uint8_t idx = frameIndex - 16U; // chidori_4 has 2 frames
+    *pixels = chidori_4_frames[idx].pixels;
+    *width = chidori_4_frames[idx].width;
+    *height = chidori_4_frames[idx].height;
+    *offsetX = 5;
+    *offsetY = 0;
+    return 1U;
+  }
+  
+  return 0U;
+}
+
 static void Demo_DrawCurrentFrame(void) {
   const SasukeMoveAnimation *animation =
       &sasuke_move_animations[s_sequence[s_sequenceIndex].state];
@@ -167,6 +217,18 @@ static void Demo_DrawCurrentFrame(void) {
 
   SpriteRender_Draw(x, y, frame->pixels, frame->width, frame->height, 0U);
 
+  // Draw Chidori overlay
+  if (s_sequence[s_sequenceIndex].state == SASUKE_MOVE_SKILL) {
+    const uint16_t *cpixels;
+    uint16_t cwidth, cheight;
+    int16_t cx, cy;
+    if (Demo_GetChidoriFrame(s_frameIndex, &cpixels, &cwidth, &cheight, &cx, &cy)) {
+      int16_t drawCx = x + (frame->width - cwidth) / 2 + cx;
+      int16_t drawCy = y + (frame->height - cheight) / 2 + cy;
+      SpriteRender_Draw(drawCx, drawCy, cpixels, cwidth, cheight, 0U);
+    }
+  }
+
   s_previousFrame = frame;
   s_previousX = x;
   s_previousY = y;
@@ -176,6 +238,19 @@ static void Demo_DrawCurrentFrame(void) {
 static void Demo_ErasePreviousFrame(void) {
   if (s_previousFrameValid == 0U) {
     return;
+  }
+
+  // Erase Chidori if active
+  if (s_sequence[s_sequenceIndex].state == SASUKE_MOVE_SKILL) {
+    const uint16_t *cpixels;
+    uint16_t cwidth, cheight;
+    int16_t cx, cy;
+    if (Demo_GetChidoriFrame(s_frameIndex, &cpixels, &cwidth, &cheight, &cx, &cy)) {
+      int16_t drawCx = s_previousX + (s_previousFrame->width - cwidth) / 2 + cx;
+      int16_t drawCy = s_previousY + (s_previousFrame->height - cheight) / 2 + cy;
+      SpriteRender_Erase(drawCx, drawCy, cpixels, cwidth, cheight, 0U,
+                         Demo_GetBackgroundPixel);
+    }
   }
 
   SpriteRender_Erase(s_previousX, s_previousY, s_previousFrame->pixels,
@@ -200,12 +275,46 @@ static void Demo_DrawFrameTransition(uint8_t nextFrameIndex) {
     return;
   }
 
-  int16_t left = (s_previousX < newX) ? s_previousX : newX;
-  int16_t top = (s_previousY < newY) ? s_previousY : newY;
+  int16_t oldLeft = s_previousX;
+  int16_t oldTop = s_previousY;
   int16_t oldRight = (int16_t)(s_previousX + (int16_t)s_previousFrame->width);
-  int16_t newRight = (int16_t)(newX + (int16_t)newFrame->width);
   int16_t oldBottom = (int16_t)(s_previousY + (int16_t)s_previousFrame->height);
+
+  if (s_sequence[s_sequenceIndex].state == SASUKE_MOVE_SKILL) {
+    const uint16_t *cpixels;
+    uint16_t cwidth, cheight;
+    int16_t cx, cy;
+    if (Demo_GetChidoriFrame(s_frameIndex, &cpixels, &cwidth, &cheight, &cx, &cy)) {
+      int16_t drawCx = s_previousX + (s_previousFrame->width - cwidth) / 2 + cx;
+      int16_t drawCy = s_previousY + (s_previousFrame->height - cheight) / 2 + cy;
+      if (drawCx < oldLeft) oldLeft = drawCx;
+      if (drawCy < oldTop) oldTop = drawCy;
+      if (drawCx + cwidth > oldRight) oldRight = drawCx + cwidth;
+      if (drawCy + cheight > oldBottom) oldBottom = drawCy + cheight;
+    }
+  }
+
+  int16_t newLeft = newX;
+  int16_t newTop = newY;
+  int16_t newRight = (int16_t)(newX + (int16_t)newFrame->width);
   int16_t newBottom = (int16_t)(newY + (int16_t)newFrame->height);
+
+  if (s_sequence[s_sequenceIndex].state == SASUKE_MOVE_SKILL) {
+    const uint16_t *cpixels;
+    uint16_t cwidth, cheight;
+    int16_t cx, cy;
+    if (Demo_GetChidoriFrame(nextFrameIndex, &cpixels, &cwidth, &cheight, &cx, &cy)) {
+      int16_t drawCx = newX + (newFrame->width - cwidth) / 2 + cx;
+      int16_t drawCy = newY + (newFrame->height - cheight) / 2 + cy;
+      if (drawCx < newLeft) newLeft = drawCx;
+      if (drawCy < newTop) newTop = drawCy;
+      if (drawCx + cwidth > newRight) newRight = drawCx + cwidth;
+      if (drawCy + cheight > newBottom) newBottom = drawCy + cheight;
+    }
+  }
+
+  int16_t left = (oldLeft < newLeft) ? oldLeft : newLeft;
+  int16_t top = (oldTop < newTop) ? oldTop : newTop;
   int16_t right = (oldRight > newRight) ? oldRight : newRight;
   int16_t bottom = (oldBottom > newBottom) ? oldBottom : newBottom;
 
@@ -237,6 +346,26 @@ static void Demo_DrawFrameTransition(uint8_t nextFrameIndex) {
 
         if (spriteColor != SPRITE_COLOR_KEY_RGB565) {
           color = spriteColor;
+        }
+      }
+
+      // Draw Chidori overlay pixel
+      if (s_sequence[s_sequenceIndex].state == SASUKE_MOVE_SKILL) {
+        const uint16_t *cpixels;
+        uint16_t cwidth, cheight;
+        int16_t cx, cy;
+        if (Demo_GetChidoriFrame(nextFrameIndex, &cpixels, &cwidth, &cheight, &cx, &cy)) {
+          int16_t drawCx = newX + (newFrame->width - cwidth) / 2 + cx;
+          int16_t drawCy = newY + (newFrame->height - cheight) / 2 + cy;
+          if ((x >= drawCx) && (x < (int16_t)(drawCx + cwidth)) &&
+              (y >= drawCy) && (y < (int16_t)(drawCy + cheight))) {
+            uint16_t srcCx = (uint16_t)(x - drawCx);
+            uint16_t srcYc = (uint16_t)(y - drawCy);
+            uint16_t cColor = cpixels[((uint32_t)srcYc * cwidth) + srcCx];
+            if (cColor != SPRITE_COLOR_KEY_RGB565) {
+              color = cColor;
+            }
+          }
         }
       }
 

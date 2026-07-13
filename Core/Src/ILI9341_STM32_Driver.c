@@ -81,6 +81,10 @@
 //	This file was modified by Cong Thuan Do (HUST) for STM32F429-DISC1 board //
 //---------------------------------------------------------------------------//
 
+#if defined(__GNUC__)
+#pragma GCC optimize ("O2")
+#endif
+
 #include "ILI9341_STM32_Driver.h"
 
 volatile uint16_t LCD_HEIGHT = ILI9341_SCREEN_HEIGHT;

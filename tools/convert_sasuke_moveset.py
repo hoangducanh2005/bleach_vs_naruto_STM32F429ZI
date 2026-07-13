@@ -44,10 +44,10 @@ def load_frame(source_dir, frame_number):
 
 def load_moveset():
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
-    source_dir = ROOT / config["source_dir"]
     states = []
 
     for state_name, state in config["states"].items():
+        source_dir = ROOT / state.get("source_dir", config["source_dir"])
         frames = []
         for frame_number in state["frames"]:
             stem, width, height, pixels = load_frame(source_dir, frame_number)
