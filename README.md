@@ -26,14 +26,10 @@ Dự án game đối kháng **Bleach vs Naruto** được lập trình bằng ng
     *   Quét vùng va chạm hình hộp (AABB Box Collision) thời gian thực giữa Hitbox của đòn đánh và Hurtbox của mục tiêu.
 4.  **Chế độ chơi đa dạng:**
     *   **Người vs Máy (Player vs AI):** Tích hợp AI thông minh với 3 mức độ khó (Dễ, Trung bình, Khó) điều chỉnh qua thời gian phản xạ và độ chính xác của AI.
-    *   **Người vs Người (PvP):** Chế độ 2 người chơi qua 2 bộ điều khiển.
 5.  **Giao diện HUD đẹp mắt & Tối ưu hiển thị:**
     *   Hiển thị HP (màu sắc động chuyển sang đỏ khi máu thấp) và Mana (2 thanh chia đôi bởi vạch 1-pixel đen).
     *   Tích hợp bộ đếm ngược thời gian trận đấu (mặc định 60 giây).
     *   **Tối ưu hóa Render:** Sử dụng thuật toán **Dirty Rectangles** (chỉ vẽ lại vùng màn hình có sự thay đổi vị trí của các nhân vật/hiệu ứng đạn) giúp tăng FPS lên mức tối đa, chống nhấp nháy trên màn hình LCD.
-6.  **Hệ thống âm thanh Buzzer:**
-    *   Phát hiệu ứng âm thanh (SFX) thông qua Passive Buzzer sử dụng bộ Timer xuất xung PWM.
-    *   Âm thanh phản hồi trực quan theo sự kiện: Ra chiêu (tấn công), Nhảy, Bị trúng đòn, và Giai điệu khi kết thúc trận đấu (Game Over).
 
 ---
 
