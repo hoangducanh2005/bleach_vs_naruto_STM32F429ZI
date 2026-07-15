@@ -43,11 +43,11 @@ void GameOverDemo_Update(void)
 
 static void GameOverDemo_DrawFrame(void)
 {
-  LCD_Port_DrawRGB565Bytes(0U,
-                           0U,
-                           GAMEOVER_WIDTH,
-                           GAMEOVER_HEIGHT,
-                           gameover_map);
+  LCD_Port_DrawRGB565Bytes2x(0U,
+                             0U,
+                             GAMEOVER_WIDTH,
+                             GAMEOVER_HEIGHT,
+                             gameover_map);
   LCD_Port_Flush();
 }
 

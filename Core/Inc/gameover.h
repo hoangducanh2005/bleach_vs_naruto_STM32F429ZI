@@ -7,9 +7,9 @@ extern "C" {
 
 #include <stdint.h>
 
-#define GAMEOVER_WIDTH   320U
-#define GAMEOVER_HEIGHT  240U
-#define GAMEOVER_SIZE    153600U
+#define GAMEOVER_WIDTH   160U
+#define GAMEOVER_HEIGHT  120U
+#define GAMEOVER_SIZE    38400U
 
 extern const uint8_t gameover_map[GAMEOVER_SIZE];
 

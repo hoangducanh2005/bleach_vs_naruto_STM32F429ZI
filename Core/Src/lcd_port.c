@@ -93,3 +93,34 @@ void LCD_Port_FillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, 
 void LCD_Port_Flush(void)
 {
 }
+
+void LCD_Port_DrawRGB565Bytes2x(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *bytes)
+{
+  if ((width == 0U) || (height == 0U) || (bytes == 0))
+  {
+    return;
+  }
+
+  // Row buffer for 2x width (e.g. 160 pixels -> 320 pixels -> 640 bytes)
+  static uint8_t row_buf[320 * 2];
+
+  for (uint16_t r = 0U; r < height; r++)
+  {
+    for (uint16_t c = 0U; c < width; c++)
+    {
+      uint32_t src_idx = ((uint32_t)r * width + c) * 2U;
+      uint8_t b1 = bytes[src_idx];
+      uint8_t b2 = bytes[src_idx + 1U];
+
+      // Duplicate pixel
+      row_buf[c * 4] = b1;
+      row_buf[c * 4 + 1] = b2;
+      row_buf[c * 4 + 2] = b1;
+      row_buf[c * 4 + 3] = b2;
+    }
+
+    // Draw the upscaled row twice
+    LCD_Port_DrawRGB565Bytes(x, (uint16_t)(y + r * 2U), (uint16_t)(width * 2U), 1U, row_buf);
+    LCD_Port_DrawRGB565Bytes(x, (uint16_t)(y + r * 2U + 1U), (uint16_t)(width * 2U), 1U, row_buf);
+  }
+}

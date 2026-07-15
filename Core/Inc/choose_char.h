@@ -7,9 +7,9 @@ extern "C" {
 
 #include <stdint.h>
 
-#define CHOOSE_CHAR_WIDTH   320U
-#define CHOOSE_CHAR_HEIGHT  240U
-#define CHOOSE_CHAR_SIZE    153600U
+#define CHOOSE_CHAR_WIDTH   160U
+#define CHOOSE_CHAR_HEIGHT  120U
+#define CHOOSE_CHAR_SIZE    38400U
 
 extern const uint8_t choose_char_map[CHOOSE_CHAR_SIZE];
 

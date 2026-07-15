@@ -61,20 +61,20 @@ static uint16_t GameUI_GetCharacterAvatarY(uint8_t character);
 
 void GameUI_DrawSplash(void)
 {
-  LCD_Port_DrawRGB565Bytes(0U,
-                           0U,
-                           BLEACH_VS_NARUTO_SPLASH_WIDTH,
-                           BLEACH_VS_NARUTO_SPLASH_HEIGHT,
-                           bleach_vs_naruto_splash_map);
+  LCD_Port_DrawRGB565Bytes2x(0U,
+                             0U,
+                             BLEACH_VS_NARUTO_SPLASH_WIDTH,
+                             BLEACH_VS_NARUTO_SPLASH_HEIGHT,
+                             bleach_vs_naruto_splash_map);
 }
 
 void GameUI_DrawMainMenuBackground(void)
 {
-  LCD_Port_DrawRGB565Bytes(0U,
-                           0U,
-                           MAINMENU_WIDTH,
-                           MAINMENU_HEIGHT,
-                           mainmenu_map);
+  LCD_Port_DrawRGB565Bytes2x(0U,
+                             0U,
+                             MAINMENU_WIDTH,
+                             MAINMENU_HEIGHT,
+                             mainmenu_map);
 }
 
 void GameUI_DrawMainMenu(void)
@@ -136,11 +136,11 @@ void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)
   selectedCharacter %= CHOOSE_CHARACTER_COUNT;
   cpuCharacter %= CHOOSE_CHARACTER_COUNT;
 
-  LCD_Port_DrawRGB565Bytes(0U,
-                           0U,
-                           CHOOSE_CHAR_WIDTH,
-                           CHOOSE_CHAR_HEIGHT,
-                           choose_char_map);
+  LCD_Port_DrawRGB565Bytes2x(0U,
+                             0U,
+                             CHOOSE_CHAR_WIDTH,
+                             CHOOSE_CHAR_HEIGHT,
+                             choose_char_map);
 
   ILI9341_DrawFilledRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_SHADOW);
   ILI9341_DrawHollowRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_ORANGE);
@@ -254,17 +254,30 @@ static void GameUI_DrawChooseBackgroundRect(uint16_t x,
                                             uint16_t width,
                                             uint16_t height)
 {
-  uint16_t row;
-
   if ((width == 0U) || (height == 0U))
   {
     return;
   }
 
-  for (row = 0U; row < height; row++)
+  // Temporary row buffer for up to 320 pixels (640 bytes)
+  static uint8_t row_buf[320 * 2];
+
+  for (uint16_t row = 0U; row < height; row++)
   {
-    const uint8_t *line = &choose_char_map[((((uint32_t)y + row) * CHOOSE_CHAR_WIDTH) + x) * 2U];
-    LCD_Port_DrawRGB565Bytes(x, (uint16_t)(y + row), width, 1U, line);
+    uint16_t dest_y = (uint16_t)(y + row);
+    uint16_t src_y = (uint16_t)(dest_y / 2U);
+
+    for (uint16_t col = 0U; col < width; col++)
+    {
+      uint16_t dest_x = (uint16_t)(x + col);
+      uint16_t src_x = (uint16_t)(dest_x / 2U);
+
+      uint32_t src_idx = ((uint32_t)src_y * CHOOSE_CHAR_WIDTH + src_x) * 2U;
+      row_buf[col * 2] = choose_char_map[src_idx];
+      row_buf[col * 2 + 1] = choose_char_map[src_idx + 1U];
+    }
+
+    LCD_Port_DrawRGB565Bytes(x, dest_y, width, 1U, row_buf);
   }
 }
 

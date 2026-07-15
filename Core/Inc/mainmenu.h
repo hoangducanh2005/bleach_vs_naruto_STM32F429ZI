@@ -7,9 +7,9 @@ extern "C" {
 
 #include <stdint.h>
 
-#define MAINMENU_WIDTH   320U
-#define MAINMENU_HEIGHT  240U
-#define MAINMENU_SIZE    153600U
+#define MAINMENU_WIDTH   160U
+#define MAINMENU_HEIGHT  120U
+#define MAINMENU_SIZE    38400U
 
 extern const uint8_t mainmenu_map[MAINMENU_SIZE];
 
