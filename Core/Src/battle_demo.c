@@ -156,6 +156,12 @@ static BattleActorSnapshot s_cpuSnapshot;
 static BattleActorSnapshot s_getsugaSnapshot;
 static BattleActorSnapshot s_chidoriSnapshot;
 static BattleActorSnapshot s_ninetailsBombSnapshot;
+static uint16_t s_playerDecompressBuf[185U * 130U];
+static uint16_t s_cpuDecompressBuf[185U * 130U];
+static uint16_t s_projDecompressBuf[115U * 70U];
+
+static void Battle_DecompressRLE(uint16_t *dest, const uint16_t *src, uint32_t totalPixels);
+
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
@@ -950,7 +956,26 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
     return 0U;
   }
 
-  snapshot->pixels = frame.pixels;
+  // Decompress Naruto Nine Tails RLE pixels if needed
+  if (actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS)
+  {
+    uint16_t *decompressBuf = (actor == &s_player) ? s_playerDecompressBuf : s_cpuDecompressBuf;
+    uint32_t totalPixels = (uint32_t)frame.width * frame.height;
+    if (totalPixels <= (185U * 130U))
+    {
+      Battle_DecompressRLE(decompressBuf, frame.pixels, totalPixels);
+      snapshot->pixels = decompressBuf;
+    }
+    else
+    {
+      snapshot->pixels = frame.pixels;
+    }
+  }
+  else
+  {
+    snapshot->pixels = frame.pixels;
+  }
+
   snapshot->width = frame.width;
   snapshot->height = frame.height;
   snapshot->x = (int16_t)(actor->x - frame.pivotX);
@@ -1918,10 +1943,45 @@ static uint8_t Battle_CaptureNinetailsBomb(const BattleProjectile *projectile,
   snapshot->pixels = anim->projectileFrames[idx];
   snapshot->width  = anim->projectileWidth;
   snapshot->height = anim->projectileHeight;
+  
+  // Decompress RLE projectile frame
+  uint32_t totalPixels = (uint32_t)anim->projectileWidth * anim->projectileHeight;
+  if (totalPixels <= (115U * 70U))
+  {
+    Battle_DecompressRLE(s_projDecompressBuf, anim->projectileFrames[idx], totalPixels);
+    snapshot->pixels = s_projDecompressBuf;
+  }
+  else
+  {
+    snapshot->pixels = anim->projectileFrames[idx];
+  }
+
   snapshot->x      = projectile->x;
   snapshot->y      = projectile->y;
   snapshot->flipX  = (projectile->vx < 0) ? 1U : 0U;
   snapshot->valid  = 1U;
 
   return 1U;
+}
+
+static void Battle_DecompressRLE(uint16_t *dest, const uint16_t *src, uint32_t totalPixels)
+{
+  uint32_t destIdx = 0U;
+  uint32_t srcIdx = 0U;
+
+  while (destIdx < totalPixels)
+  {
+    uint16_t count = src[srcIdx];
+    uint16_t color = src[srcIdx + 1U];
+    srcIdx += 2U;
+
+    for (uint16_t i = 0U; i < count; i++)
+    {
+      if (destIdx < totalPixels)
+      {
+        dest[destIdx] = color;
+        destIdx++;
+      }
+    }
+  }
 }

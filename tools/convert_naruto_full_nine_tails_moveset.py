@@ -218,13 +218,35 @@ extern const NarutoFullNineTailsMoveAnimation naruto_full_nine_tails_move_animat
     OUT_H.write_text("".join(lines), encoding="ascii")
 
 
+def compress_rle(pixels):
+    rle = []
+    if not pixels:
+        return rle
+    
+    current_color = pixels[0]
+    count = 1
+    for color in pixels[1:]:
+        if color == current_color and count < 65535:
+            count += 1
+        else:
+            rle.append(count)
+            rle.append(current_color)
+            current_color = color
+            count = 1
+    rle.append(count)
+    rle.append(current_color)
+    return rle
+
+
 def emit_pixel_array(lines, var_name, frame, w, h):
-    """Emit a static uint16_t pixel array."""
-    lines.append(f"static const uint16_t {var_name}[{w}U * {h}U] = {{\n")
+    """Emit an RLE compressed static uint16_t array."""
     pixels = frame["pixels"]
-    for i in range(0, len(pixels), 12):
-        row = ", ".join(f"0x{v:04X}U" for v in pixels[i: i + 12])
-        comma = "," if i + 12 < len(pixels) else ""
+    rle_pixels = compress_rle(pixels)
+    n = len(rle_pixels)
+    lines.append(f"static const uint16_t {var_name}[{n}U] = {{\n")
+    for i in range(0, n, 12):
+        row = ", ".join(f"0x{v:04X}U" for v in rle_pixels[i: i + 12])
+        comma = "," if i + 12 < n else ""
         lines.append(f"  {row}{comma}\n")
     lines.append("};\n\n")
 
