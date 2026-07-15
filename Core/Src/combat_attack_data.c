@@ -123,6 +123,20 @@ static const CombatHitboxDef s_narutoSkill = {
     1U,
 };
 
+static const CombatHitboxDef s_vizardAuraAttack = {
+    2U,
+    5U,
+    {14, -50, 52, 34},
+    14U,
+    3U,
+    360U,
+    180U,
+    28,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
 const CombatHurtboxProfile *CombatAttackData_GetHurtboxProfile(
     CombatCharacterId character)
 {
@@ -149,6 +163,7 @@ CombatBox CombatAttackData_GetHurtbox(CombatCharacterId character,
     case COMBAT_ANIM_ATTACK:
       return profile->attack;
     case COMBAT_ANIM_SKILL:
+    case COMBAT_ANIM_SPECIAL:
       return profile->skill;
     case COMBAT_ANIM_HIT:
       return profile->hit;
@@ -211,6 +226,11 @@ const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
     {
       hitbox = &s_narutoSkill;
     }
+  }
+  else if ((state == COMBAT_ANIM_SPECIAL) &&
+           (character == COMBAT_CHARACTER_VIZARD_ICHIGO))
+  {
+    hitbox = &s_vizardAuraAttack;
   }
 
   if (hitbox == 0)

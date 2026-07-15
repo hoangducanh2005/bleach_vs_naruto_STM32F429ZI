@@ -36,6 +36,40 @@ def load_frame(source_dir, frame_number):
 
     return path.stem, width, height, pixels
 
+def compose_overlay(base_frame, overlay_frame):
+    base_width = base_frame["width"]
+    base_height = base_frame["height"]
+    overlay_width = overlay_frame["width"]
+    overlay_height = overlay_frame["height"]
+    canvas_width = max(base_width, overlay_width)
+    canvas_height = max(base_height, overlay_height)
+    base_x = (canvas_width - base_width) // 2
+    base_y = canvas_height - base_height
+    overlay_x = (canvas_width - overlay_width) // 2
+    overlay_y = canvas_height - overlay_height
+    pixels = [COLOR_KEY] * (canvas_width * canvas_height)
+
+    for y in range(base_height):
+        dst = (base_y + y) * canvas_width + base_x
+        src = y * base_width
+        pixels[dst : dst + base_width] = base_frame["pixels"][src : src + base_width]
+
+    for y in range(overlay_height):
+        for x in range(overlay_width):
+            color = overlay_frame["pixels"][y * overlay_width + x]
+            if color != COLOR_KEY:
+                pixels[(overlay_y + y) * canvas_width + overlay_x + x] = color
+
+    return {
+        "stem": f"{base_frame['stem']}_overlay_{overlay_frame['number']}",
+        "number": base_frame["number"],
+        "width": canvas_width,
+        "height": canvas_height,
+        "pivot_x": base_frame["pivot_x"] + base_x,
+        "pivot_y": canvas_height,
+        "pixels": pixels,
+    }
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert Vizard Ichigo moveset frames to C arrays.")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
@@ -48,19 +82,44 @@ def load_moveset(config_path):
 
     for state_name, state in config["states"].items():
         frames = []
+        overlay = state.get("overlay")
+        overlay_start = overlay.get("start_frame") if overlay else None
+        overlay_numbers = overlay.get("frames", []) if overlay else []
+        overlay_frames = []
+
+        if overlay:
+            for frame_number in overlay_numbers:
+                stem, width, height, pixels = load_frame(source_dir, frame_number)
+                overlay_frames.append(
+                    {
+                        "stem": stem,
+                        "number": frame_number,
+                        "width": width,
+                        "height": height,
+                        "pivot_x": width // 2,
+                        "pivot_y": height,
+                        "pixels": pixels,
+                    }
+                )
+
         for frame_number in state["frames"]:
             stem, width, height, pixels = load_frame(source_dir, frame_number)
-            frames.append(
-                {
-                    "stem": stem,
-                    "number": frame_number,
-                    "width": width,
-                    "height": height,
-                    "pivot_x": width // 2,
-                    "pivot_y": height,
-                    "pixels": pixels,
-                }
-            )
+            frame = {
+                "stem": stem,
+                "number": frame_number,
+                "width": width,
+                "height": height,
+                "pivot_x": width // 2,
+                "pivot_y": height,
+                "pixels": pixels,
+            }
+
+            if overlay_frames and overlay_start is not None and frame_number >= overlay_start:
+                overlay_index = frame_number - overlay_start
+                if overlay_index < len(overlay_frames):
+                    frame = compose_overlay(frame, overlay_frames[overlay_index])
+
+            frames.append(frame)
 
         states.append(
             {

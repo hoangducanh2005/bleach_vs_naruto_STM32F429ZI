@@ -114,7 +114,8 @@ void CombatActor_Update(CombatActor *actor,
     actor->vy = 0;
   }
   else if ((actor->state == COMBAT_ANIM_ATTACK) ||
-           (actor->state == COMBAT_ANIM_SKILL))
+           (actor->state == COMBAT_ANIM_SKILL) ||
+           (actor->state == COMBAT_ANIM_SPECIAL))
   {
     if ((actor->state == COMBAT_ANIM_ATTACK) &&
         (allowInput != 0U) &&
@@ -139,7 +140,8 @@ void CombatActor_Update(CombatActor *actor,
       }
       else
       {
-        if (actor->attackStep < COMBAT_MAX_ATTACK_STEP)
+        if ((actor->state == COMBAT_ANIM_ATTACK) &&
+            (actor->attackStep < COMBAT_MAX_ATTACK_STEP))
         {
           actor->comboNextStep = (uint8_t)(actor->attackStep + 1U);
           actor->comboExpiresMs = nowMs + COMBAT_COMBO_WINDOW_MS;
@@ -204,7 +206,14 @@ void CombatActor_Update(CombatActor *actor,
   {
     actor->vx = 0;
 
-    if ((inputFlags & COMBAT_INPUT_ATTACK) != 0U)
+    if (((inputFlags & COMBAT_INPUT_ATTACK) != 0U) &&
+        ((inputFlags & (COMBAT_INPUT_BLOCK | COMBAT_INPUT_UP)) != 0U) &&
+        (actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO))
+    {
+      CombatActor_SetState(actor, COMBAT_ANIM_SPECIAL, nowMs);
+      Buzzer_Play(BUZZER_SFX_SKILL);
+    }
+    else if ((inputFlags & COMBAT_INPUT_ATTACK) != 0U)
     {
       uint8_t attackStep = 0U;
 
@@ -301,6 +310,7 @@ void CombatActor_FaceToward(CombatActor *actor, const CombatActor *target)
 
   if ((actor->state == COMBAT_ANIM_ATTACK) ||
       (actor->state == COMBAT_ANIM_SKILL) ||
+      (actor->state == COMBAT_ANIM_SPECIAL) ||
       (actor->state == COMBAT_ANIM_DASH) ||
       (actor->state == COMBAT_ANIM_HIT) ||
       (actor->state == COMBAT_ANIM_DEAD))
@@ -571,6 +581,7 @@ uint8_t CombatActor_IsActionLocked(const CombatActor *actor, uint32_t nowMs)
           (nowMs < actor->knockdownUntilMs) ||
           (actor->state == COMBAT_ANIM_ATTACK) ||
           (actor->state == COMBAT_ANIM_SKILL) ||
+          (actor->state == COMBAT_ANIM_SPECIAL) ||
           (actor->state == COMBAT_ANIM_DASH) ||
           (actor->state == COMBAT_ANIM_HIT) ||
           (actor->state == COMBAT_ANIM_DEAD))
@@ -594,6 +605,7 @@ void CombatActor_SetState(CombatActor *actor,
     actor->attackStep = 0U;
     actor->queuedAttack = 0U;
     if ((state == COMBAT_ANIM_SKILL) ||
+        (state == COMBAT_ANIM_SPECIAL) ||
         (state == COMBAT_ANIM_DASH) ||
         (state == COMBAT_ANIM_JUMP) ||
         (state == COMBAT_ANIM_HIT) ||
@@ -898,6 +910,9 @@ static void CombatActor_MapVizard(const CombatActor *actor,
       break;
     case COMBAT_ANIM_SKILL:
       *move = VIZARD_MOVE_SKILL;
+      break;
+    case COMBAT_ANIM_SPECIAL:
+      *move = VIZARD_MOVE_AURA_ATTACK;
       break;
     default:
       *move = VIZARD_MOVE_IDLE;

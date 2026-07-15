@@ -1,0 +1,15 @@
+index,file,source_box,padded_box,width,height,area
+0,frames/naruto_direction_000.png,"[15, 16, 88, 76]","[13, 14, 90, 78]",77,64,1947
+1,frames/naruto_direction_001.png,"[99, 18, 171, 78]","[97, 16, 173, 80]",76,64,1928
+2,frames/naruto_direction_002.png,"[187, 18, 259, 78]","[185, 16, 261, 80]",76,64,1994
+3,frames/naruto_direction_003.png,"[273, 18, 346, 78]","[271, 16, 348, 80]",77,64,1944
+4,frames/naruto_direction_004.png,"[358, 18, 430, 78]","[356, 16, 432, 80]",76,64,1998
+5,frames/naruto_direction_005.png,"[506, 18, 578, 78]","[504, 16, 580, 80]",76,64,2216
+6,frames/naruto_direction_006.png,"[596, 18, 662, 78]","[594, 16, 664, 80]",70,64,1958
+7,frames/naruto_direction_007.png,"[680, 17, 761, 81]","[678, 15, 763, 83]",85,68,2471
+8,frames/naruto_direction_008.png,"[783, 16, 873, 81]","[781, 14, 875, 83]",94,69,2589
+9,frames/naruto_direction_009.png,"[893, 16, 983, 81]","[891, 14, 985, 83]",94,69,2661
+10,frames/naruto_direction_010.png,"[15, 116, 135, 199]","[13, 114, 137, 201]",124,87,5526
+11,frames/naruto_direction_011.png,"[157, 120, 272, 199]","[155, 118, 274, 201]",119,83,5088
+12,frames/naruto_direction_012.png,"[304, 123, 421, 199]","[302, 121, 423, 201]",121,80,5069
+13,frames/naruto_direction_013.png,"[451, 117, 566, 199]","[449, 115, 568, 201]",119,86,5520
