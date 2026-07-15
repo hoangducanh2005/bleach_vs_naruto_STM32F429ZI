@@ -137,6 +137,20 @@ static const CombatHitboxDef s_vizardAuraAttack = {
     1U,
 };
 
+static const CombatHitboxDef s_narutoDirectionAttack = {
+    9U,
+    13U,
+    {18, -48, 58, 34},
+    18U,
+    4U,
+    420U,
+    220U,
+    34,
+    0,
+    COMBAT_HIT_LEVEL_MID,
+    1U,
+};
+
 const CombatHurtboxProfile *CombatAttackData_GetHurtboxProfile(
     CombatCharacterId character)
 {
@@ -231,6 +245,11 @@ const CombatHitboxDef *CombatAttackData_GetHitbox(CombatCharacterId character,
            (character == COMBAT_CHARACTER_VIZARD_ICHIGO))
   {
     hitbox = &s_vizardAuraAttack;
+  }
+  else if ((state == COMBAT_ANIM_SPECIAL) &&
+           (character == COMBAT_CHARACTER_NARUTO))
+  {
+    hitbox = &s_narutoDirectionAttack;
   }
 
   if (hitbox == 0)

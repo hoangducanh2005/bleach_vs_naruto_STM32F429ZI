@@ -102,6 +102,7 @@ typedef struct
   uint8_t active;
   uint8_t frameIndex;
   uint8_t kind;
+  uint8_t fromPlayer;
   uint8_t hitConnected;
   uint32_t startedMs;
 } BattleProjectile;
@@ -170,6 +171,7 @@ static uint16_t s_lastCpuHp;
 static uint16_t s_lastPlayerMana;
 static uint16_t s_lastCpuMana;
 static uint32_t s_lastGetsugaSkillStartMs;
+static uint32_t s_lastCpuGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
 static uint32_t s_lastNinetailsBombSkillStartMs;
@@ -250,6 +252,10 @@ static uint16_t Battle_AiRandom(BattleAiController *ai, uint16_t maxValue);
 static int16_t Battle_AbsI16(int16_t value);
 static void Battle_UpdateVizardSkill(uint32_t nowMs);
 static void Battle_TrySpawnGetsuga(uint32_t nowMs);
+static uint8_t Battle_TrySpawnIchigoGetsuga(const CombatActor *actor,
+                                            uint8_t fromPlayer,
+                                            uint32_t nowMs,
+                                            uint32_t *lastSkillStartMs);
 static void Battle_UpdateGetsuga(uint32_t nowMs);
 static void Battle_TrySpawnNinetailsBomb(uint32_t nowMs);
 static void Battle_UpdateNinetailsBomb(uint32_t nowMs);
@@ -370,8 +376,10 @@ void BattleDemo_Init(uint8_t difficulty)
   s_ninetailsBombSnapshot.valid = 0U;
   s_getsuga.active = 0U;
   s_getsuga.kind = BATTLE_PROJECTILE_GETSUGA;
+  s_getsuga.fromPlayer = 1U;
   s_ninetailsBomb.active = 0U;
   s_lastGetsugaSkillStartMs = 0U;
+  s_lastCpuGetsugaSkillStartMs = 0U;
   s_lastVizardSkillStartMs = 0U;
   s_lastVizardProjectileSkillStartMs = 0U;
   s_lastNinetailsBombSkillStartMs = 0U;
@@ -436,7 +444,14 @@ uint8_t BattleDemo_Update(void)
   Battle_ResolveHit(&s_cpu, &s_player, now);
   Battle_TrySpawnGetsuga(now);
   Battle_UpdateGetsuga(now);
-  Battle_ResolveProjectileHit(&s_getsuga, &s_player, &s_cpu, now);
+  if (s_getsuga.fromPlayer != 0U)
+  {
+    Battle_ResolveProjectileHit(&s_getsuga, &s_player, &s_cpu, now);
+  }
+  else
+  {
+    Battle_ResolveProjectileHit(&s_getsuga, &s_cpu, &s_player, now);
+  }
   Battle_TrySpawnNinetailsBomb(now);
   Battle_UpdateNinetailsBomb(now);
   Battle_ResolveProjectileHit(&s_ninetailsBomb, &s_player, &s_cpu, now);
@@ -979,8 +994,9 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
     return 0U;
   }
 
-  // Decompress Naruto Nine Tails RLE pixels if needed
-  if (actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS)
+  if ((actor->character == COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS) ||
+      ((actor->character == COMBAT_CHARACTER_NARUTO) &&
+       (actor->state == COMBAT_ANIM_SPECIAL)))
   {
     uint16_t *decompressBuf = (actor == &s_player) ? s_playerDecompressBuf : s_cpuDecompressBuf;
     uint32_t totalPixels = (uint32_t)frame.width * frame.height;
@@ -1026,6 +1042,7 @@ static void Battle_TrySpawnGetsuga(uint32_t nowMs)
     s_lastVizardProjectileSkillStartMs = s_player.stateStartedMs;
     s_getsuga.active = 1U;
     s_getsuga.kind = BATTLE_PROJECTILE_VIZARD;
+    s_getsuga.fromPlayer = 1U;
     s_getsuga.frameIndex = 0U;
     s_getsuga.hitConnected = 0U;
     s_getsuga.startedMs = nowMs;
@@ -1044,32 +1061,57 @@ static void Battle_TrySpawnGetsuga(uint32_t nowMs)
     return;
   }
 
-  if ((s_player.character != COMBAT_CHARACTER_ICHIGO) ||
-      (s_player.state != COMBAT_ANIM_SKILL) ||
-      (s_player.frameIndex < BATTLE_GETSUGA_SPAWN_FRAME) ||
-      (s_lastGetsugaSkillStartMs == s_player.stateStartedMs))
+  if (Battle_TrySpawnIchigoGetsuga(&s_player,
+                                   1U,
+                                   nowMs,
+                                   &s_lastGetsugaSkillStartMs) != 0U)
   {
     return;
   }
 
-  s_lastGetsugaSkillStartMs = s_player.stateStartedMs;
+  (void)Battle_TrySpawnIchigoGetsuga(&s_cpu,
+                                     0U,
+                                     nowMs,
+                                     &s_lastCpuGetsugaSkillStartMs);
+}
+
+static uint8_t Battle_TrySpawnIchigoGetsuga(const CombatActor *actor,
+                                            uint8_t fromPlayer,
+                                            uint32_t nowMs,
+                                            uint32_t *lastSkillStartMs)
+{
+  if ((actor == 0) ||
+      (lastSkillStartMs == 0) ||
+      (s_getsuga.active != 0U) ||
+      (actor->character != COMBAT_CHARACTER_ICHIGO) ||
+      (actor->state != COMBAT_ANIM_SKILL) ||
+      (actor->frameIndex < BATTLE_GETSUGA_SPAWN_FRAME) ||
+      (*lastSkillStartMs == actor->stateStartedMs))
+  {
+    return 0U;
+  }
+
+  *lastSkillStartMs = actor->stateStartedMs;
   s_getsuga.active = 1U;
   s_getsuga.kind = BATTLE_PROJECTILE_GETSUGA;
+  s_getsuga.fromPlayer = (fromPlayer != 0U) ? 1U : 0U;
   s_getsuga.frameIndex = 0U;
   s_getsuga.hitConnected = 0U;
   s_getsuga.startedMs = nowMs;
-  s_getsuga.vx = (s_player.facing < 0) ? -BATTLE_GETSUGA_SPEED
-                                       : BATTLE_GETSUGA_SPEED;
-  s_getsuga.y = (int16_t)(s_player.y - 92);
+  s_getsuga.vx = (actor->facing < 0) ? -BATTLE_GETSUGA_SPEED
+                                     : BATTLE_GETSUGA_SPEED;
+  s_getsuga.y = (int16_t)(actor->y - 92);
 
-  if (s_player.facing < 0)
+  if (actor->facing < 0)
   {
-    s_getsuga.x = (int16_t)(s_player.x - 18 - (int16_t)GETSUGA_PROJECTILE_WIDTH);
+    s_getsuga.x = (int16_t)(actor->x - 18 - (int16_t)GETSUGA_PROJECTILE_WIDTH);
   }
   else
   {
-    s_getsuga.x = (int16_t)(s_player.x + 18);
+    s_getsuga.x = (int16_t)(actor->x + 18);
   }
+
+  return 1U;
 }
 
 static void Battle_UpdateGetsuga(uint32_t nowMs)

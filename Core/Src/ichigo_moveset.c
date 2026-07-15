@@ -4067,11 +4067,11 @@ static const uint16_t ichigo_move_attack_light_4_pixels[62U * 40U] = {
 };
 
 static const IchigoMoveFrame ichigo_move_attack_light_frames[] = {
-  { ichigo_move_attack_light_0_pixels, 50U, 51U, 25, 51, 45U },
-  { ichigo_move_attack_light_1_pixels, 29U, 80U, 14, 80, 45U },
-  { ichigo_move_attack_light_2_pixels, 74U, 43U, 37, 43, 45U },
-  { ichigo_move_attack_light_3_pixels, 55U, 47U, 27, 47, 45U },
-  { ichigo_move_attack_light_4_pixels, 62U, 40U, 31, 40, 45U }
+  { ichigo_move_attack_light_0_pixels, 50U, 51U, 25, 51, 70U },
+  { ichigo_move_attack_light_1_pixels, 29U, 80U, 14, 80, 70U },
+  { ichigo_move_attack_light_2_pixels, 74U, 43U, 37, 43, 70U },
+  { ichigo_move_attack_light_3_pixels, 55U, 47U, 27, 47, 70U },
+  { ichigo_move_attack_light_4_pixels, 62U, 40U, 31, 40, 70U }
 };
 
 static const uint16_t ichigo_move_attack2_0_pixels[44U * 54U] = {

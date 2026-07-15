@@ -7,6 +7,7 @@
 #include "combat_box.h"
 #include "combat_rules.h"
 #include "ichigo_moveset.h"
+#include "naruto_direction_moveset.h"
 #include "naruto_moveset.h"
 #include "naruto_full_nine_tails_moveset.h"
 #include "sasuke_moveset.h"
@@ -17,6 +18,7 @@
 #define COMBAT_ARENA_MAX_X 288
 #define COMBAT_RUN_SPEED 4
 #define COMBAT_DASH_SPEED 11
+#define COMBAT_NARUTO_DIRECTION_SPEED 3
 #define COMBAT_JUMP_FORCE -11
 #define COMBAT_GRAVITY 1
 #define COMBAT_MAX_FALL_SPEED 9
@@ -125,6 +127,13 @@ void CombatActor_Update(CombatActor *actor,
       actor->queuedAttack++;
     }
 
+    if (actor->state == COMBAT_ANIM_SPECIAL)
+    {
+      actor->vx = (actor->character == COMBAT_CHARACTER_NARUTO)
+                      ? (int16_t)(actor->facing * COMBAT_NARUTO_DIRECTION_SPEED)
+                      : 0;
+    }
+
     CombatActor_ApplyPhysics(actor);
     if (CombatActor_StateFinished(actor, nowMs) != 0U)
     {
@@ -154,6 +163,7 @@ void CombatActor_Update(CombatActor *actor,
 
         actor->queuedAttack = 0U;
         actor->attackStep = 0U;
+        actor->vx = 0;
         CombatActor_SetState(actor,
                              (actor->onGround != 0U) ? COMBAT_ANIM_IDLE
                                                      : COMBAT_ANIM_JUMP,
@@ -208,7 +218,8 @@ void CombatActor_Update(CombatActor *actor,
 
     if (((inputFlags & COMBAT_INPUT_ATTACK) != 0U) &&
         ((inputFlags & (COMBAT_INPUT_BLOCK | COMBAT_INPUT_UP)) != 0U) &&
-        (actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO))
+        ((actor->character == COMBAT_CHARACTER_VIZARD_ICHIGO) ||
+         (actor->character == COMBAT_CHARACTER_NARUTO)))
     {
       CombatActor_SetState(actor, COMBAT_ANIM_SPECIAL, nowMs);
       Buzzer_Play(BUZZER_SFX_SKILL);
@@ -557,6 +568,20 @@ uint8_t CombatActor_GetFrame(const CombatActor *actor, CombatFrameView *outFrame
     return 1U;
   }
 
+  if ((actor->character == COMBAT_CHARACTER_NARUTO) &&
+      (actor->state == COMBAT_ANIM_SPECIAL))
+  {
+    const NarutoDirectionFrame *frame =
+        &naruto_direction_frames[actor->frameIndex];
+    outFrame->pixels = frame->pixels;
+    outFrame->width = frame->width;
+    outFrame->height = frame->height;
+    outFrame->pivotX = frame->pivotX;
+    outFrame->pivotY = frame->pivotY;
+    outFrame->durationMs = frame->durationMs;
+    return 1U;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   const NarutoMoveAnimation *anim = &naruto_move_animations[move];
@@ -657,6 +682,12 @@ static uint8_t CombatActor_GetFrameCount(const CombatActor *actor)
     return naruto_full_nine_tails_move_animations[move].frameCount;
   }
 
+  if ((actor->character == COMBAT_CHARACTER_NARUTO) &&
+      (actor->state == COMBAT_ANIM_SPECIAL))
+  {
+    return NARUTO_DIRECTION_FRAME_COUNT;
+  }
+
   NarutoMoveState move;
   CombatActor_MapNaruto(actor, &move);
   return naruto_move_animations[move].frameCount;
@@ -698,6 +729,12 @@ static uint8_t CombatActor_GetLoop(const CombatActor *actor)
     NarutoFullNineTailsMoveState move;
     CombatActor_MapNarutoFullNineTails(actor, &move);
     return naruto_full_nine_tails_move_animations[move].loop;
+  }
+
+  if ((actor->character == COMBAT_CHARACTER_NARUTO) &&
+      (actor->state == COMBAT_ANIM_SPECIAL))
+  {
+    return 0U;
   }
 
   NarutoMoveState move;
