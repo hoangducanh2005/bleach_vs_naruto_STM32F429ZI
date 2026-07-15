@@ -12,6 +12,8 @@
 
 #define APP_SPLASH_DURATION_MS 1800U
 #define APP_MENU_INPUT_LOCK_MS 220U
+#define APP_COMBAT_LOAD_MS     2000U
+#define APP_MODE_ITEMS         2U
 #define APP_MAIN_MENU_ITEMS    3U
 #define APP_DIFFICULTY_ITEMS   3U
 
@@ -20,7 +22,9 @@
 typedef enum
 {
   APP_SCREEN_SPLASH = 0U,
+  APP_SCREEN_MODE_SELECT,
   APP_SCREEN_MAIN_MENU,
+  APP_SCREEN_VS_PLAYER_MENU,
   APP_SCREEN_DIFFICULTY,
   APP_SCREEN_CHARACTER,
   APP_SCREEN_COMBAT
@@ -35,12 +39,18 @@ typedef enum
 
 static AppScreen s_screen = APP_SCREEN_SPLASH;
 static uint32_t s_screenStartedMs = 0U;
+static uint8_t s_selectedMode = 0U;
 static uint8_t s_selectedMenu = APP_MENU_START;
 static uint8_t s_selectedDifficulty = 1U;
 static uint8_t s_selectedCharacter = CHOOSE_CHARACTER_HOLLOW;
+static uint8_t s_selectedPlayer2Character = CHOOSE_CHARACTER_SASUKE;
+static uint8_t s_vsPlayer = 0U;
+static uint8_t s_characterSelectPlayer = 1U;
 
 static void AppFlow_ShowSplash(void);
+static void AppFlow_ShowModeSelect(void);
 static void AppFlow_ShowMainMenu(void);
+static void AppFlow_ShowVersusPlayerMenu(void);
 static void AppFlow_ShowDifficulty(void);
 static void AppFlow_ShowCharacter(void);
 static void AppFlow_StartCombat(void);
@@ -62,7 +72,7 @@ void AppFlow_Update(void)
   {
     if (BattleDemo_Update() != 0U)
     {
-      AppFlow_ShowMainMenu();
+      AppFlow_ShowModeSelect();
     }
     return;
   }
@@ -76,7 +86,38 @@ void AppFlow_Update(void)
           ((input & COMBAT_INPUT_ATTACK) != 0U))
       {
         Buzzer_Play(BUZZER_SFX_MENU_SELECT);
-        AppFlow_ShowMainMenu();
+        AppFlow_ShowModeSelect();
+      }
+      break;
+
+    case APP_SCREEN_MODE_SELECT:
+      if ((uint32_t)(HAL_GetTick() - s_screenStartedMs) < APP_MENU_INPUT_LOCK_MS)
+      {
+        break;
+      }
+
+      if ((input & COMBAT_INPUT_JUMP) != 0U)
+      {
+        Buzzer_Play(BUZZER_SFX_MENU_MOVE);
+        s_selectedMode = AppFlow_WrapAdd(s_selectedMode, APP_MODE_ITEMS, 1);
+        GameUI_DrawModeSelect(s_selectedMode);
+        LCD_Port_Flush();
+      }
+      else if ((input & COMBAT_INPUT_ATTACK) != 0U)
+      {
+        Buzzer_Play(BUZZER_SFX_MENU_SELECT);
+        if (s_selectedMode == 0U)
+        {
+          s_vsPlayer = 1U;
+          s_characterSelectPlayer = 1U;
+          AppFlow_ShowCharacter();
+        }
+        else
+        {
+          s_vsPlayer = 0U;
+          s_characterSelectPlayer = 1U;
+          AppFlow_ShowMainMenu();
+        }
       }
       break;
 
@@ -92,7 +133,8 @@ void AppFlow_Update(void)
         s_selectedMenu = AppFlow_WrapAdd(s_selectedMenu, APP_MAIN_MENU_ITEMS, 1);
         GameUI_DrawMainMenuSelection(s_selectedMenu,
                                      s_selectedDifficulty,
-                                     s_selectedCharacter);
+                                     s_selectedCharacter,
+                                     s_vsPlayer);
         LCD_Port_Flush();
       }
       else if ((input & COMBAT_INPUT_ATTACK) != 0U)
@@ -100,6 +142,7 @@ void AppFlow_Update(void)
         Buzzer_Play(BUZZER_SFX_MENU_SELECT);
         if (s_selectedMenu == APP_MENU_START)
         {
+          s_vsPlayer = 0U;
           AppFlow_StartCombat();
         }
         else if (s_selectedMenu == APP_MENU_DIFFICULTY)
@@ -110,6 +153,20 @@ void AppFlow_Update(void)
         {
           AppFlow_ShowCharacter();
         }
+      }
+      break;
+
+    case APP_SCREEN_VS_PLAYER_MENU:
+      if ((uint32_t)(HAL_GetTick() - s_screenStartedMs) < APP_MENU_INPUT_LOCK_MS)
+      {
+        break;
+      }
+
+      if ((input & COMBAT_INPUT_ATTACK) != 0U)
+      {
+        Buzzer_Play(BUZZER_SFX_MENU_SELECT);
+        s_vsPlayer = 1U;
+        AppFlow_StartCombat();
       }
       break;
 
@@ -135,20 +192,44 @@ void AppFlow_Update(void)
       if ((input & COMBAT_INPUT_JUMP) != 0U)
       {
         Buzzer_Play(BUZZER_SFX_MENU_MOVE);
-        uint8_t previousCharacter = s_selectedCharacter;
-        s_selectedCharacter = AppFlow_WrapAdd(s_selectedCharacter,
-                                              CHOOSE_CHARACTER_COUNT,
-                                              1);
+        uint8_t previousCharacter =
+            (s_characterSelectPlayer == 2U) ? s_selectedPlayer2Character : s_selectedCharacter;
+        uint8_t *activeCharacter =
+            (s_characterSelectPlayer == 2U) ? &s_selectedPlayer2Character : &s_selectedCharacter;
+        *activeCharacter = AppFlow_WrapAdd(*activeCharacter,
+                                           CHOOSE_CHARACTER_COUNT,
+                                           1);
+        uint8_t opponentCharacter = APP_CPU_CHARACTER;
+        if (s_vsPlayer != 0U)
+        {
+          opponentCharacter = (s_characterSelectPlayer == 2U)
+                                  ? s_selectedCharacter
+                                  : s_selectedPlayer2Character;
+        }
         GameUI_UpdateCharacterSelect(previousCharacter,
-                                     s_selectedCharacter,
-                                     APP_CPU_CHARACTER);
+                                     *activeCharacter,
+                                     opponentCharacter,
+                                     s_vsPlayer,
+                                     s_characterSelectPlayer);
         LCD_Port_Flush();
       }
       else if (((input & COMBAT_INPUT_ATTACK) != 0U) ||
                ((input & COMBAT_INPUT_SKILL) != 0U))
       {
         Buzzer_Play(BUZZER_SFX_MENU_SELECT);
-        AppFlow_ShowMainMenu();
+        if ((s_vsPlayer != 0U) && (s_characterSelectPlayer == 1U))
+        {
+          s_characterSelectPlayer = 2U;
+          AppFlow_ShowCharacter();
+        }
+        else if (s_vsPlayer != 0U)
+        {
+          AppFlow_ShowVersusPlayerMenu();
+        }
+        else
+        {
+          AppFlow_ShowMainMenu();
+        }
       }
       break;
 
@@ -168,6 +249,15 @@ static void AppFlow_ShowSplash(void)
   LCD_Port_Flush();
 }
 
+static void AppFlow_ShowModeSelect(void)
+{
+  s_screen = APP_SCREEN_MODE_SELECT;
+  s_screenStartedMs = HAL_GetTick();
+
+  GameUI_DrawModeSelect(s_selectedMode);
+  LCD_Port_Flush();
+}
+
 static void AppFlow_ShowMainMenu(void)
 {
   s_screen = APP_SCREEN_MAIN_MENU;
@@ -175,7 +265,17 @@ static void AppFlow_ShowMainMenu(void)
 
   GameUI_DrawMainMenuSelection(s_selectedMenu,
                                s_selectedDifficulty,
-                               s_selectedCharacter);
+                               s_selectedCharacter,
+                               s_vsPlayer);
+  LCD_Port_Flush();
+}
+
+static void AppFlow_ShowVersusPlayerMenu(void)
+{
+  s_screen = APP_SCREEN_VS_PLAYER_MENU;
+  s_screenStartedMs = HAL_GetTick();
+
+  GameUI_DrawVersusPlayerMenu();
   LCD_Port_Flush();
 }
 
@@ -191,7 +291,21 @@ static void AppFlow_ShowCharacter(void)
 {
   s_screen = APP_SCREEN_CHARACTER;
 
-  GameUI_DrawCharacterSelect(s_selectedCharacter, APP_CPU_CHARACTER);
+  uint8_t activeCharacter =
+      (s_characterSelectPlayer == 2U) ? s_selectedPlayer2Character : s_selectedCharacter;
+
+  uint8_t opponentCharacter = APP_CPU_CHARACTER;
+  if (s_vsPlayer != 0U)
+  {
+    opponentCharacter = (s_characterSelectPlayer == 2U)
+                            ? s_selectedCharacter
+                            : s_selectedPlayer2Character;
+  }
+
+  GameUI_DrawCharacterSelect(activeCharacter,
+                             opponentCharacter,
+                             s_vsPlayer,
+                             s_characterSelectPlayer);
   LCD_Port_Flush();
 }
 
@@ -199,15 +313,30 @@ static void AppFlow_StartCombat(void)
 {
   s_screen = APP_SCREEN_COMBAT;
   CombatCharacterId playerChar = AppFlow_MapChooseCharacter(s_selectedCharacter);
-  CombatCharacterId cpuChar = (CombatCharacterId)(HAL_GetTick() % 4U);
+  CombatCharacterId opponentChar;
 
-  /* Prevent mirror match to keep combat diverse */
-  if (cpuChar == playerChar)
+  if (s_vsPlayer != 0U)
   {
-    cpuChar = (CombatCharacterId)(((uint8_t)cpuChar + 1U) % 4U);
+    opponentChar = AppFlow_MapChooseCharacter(s_selectedPlayer2Character);
+  }
+  else
+  {
+    opponentChar = (CombatCharacterId)(HAL_GetTick() % 4U);
+
+    /* Prevent mirror match to keep combat diverse */
+    if (opponentChar == playerChar)
+    {
+      opponentChar = (CombatCharacterId)(((uint8_t)opponentChar + 1U) % 4U);
+    }
   }
 
-  BattleDemo_SetCharacters(playerChar, cpuChar);
+  LCD_Port_FillRect(0U, 0U, 320U, 240U, 0x0000U);
+  ILI9341_DrawText("LOADING", FONT4, 112U, 104U, 0xFFFFU, 0x0000U);
+  LCD_Port_Flush();
+  HAL_Delay(APP_COMBAT_LOAD_MS);
+
+  BattleDemo_SetCharacters(playerChar, opponentChar);
+  BattleDemo_SetVsPlayer(s_vsPlayer);
   BattleDemo_Init(s_selectedDifficulty);
 }
 

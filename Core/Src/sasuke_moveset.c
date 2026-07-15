@@ -6818,9 +6818,9 @@ static const uint16_t sasuke_move_block_2_pixels[33U * 54U] = {
 };
 
 static const SasukeMoveFrame sasuke_move_block_frames[] = {
-  { sasuke_move_block_0_pixels, 35U, 54U, 17, 54, 120U },
+  { sasuke_move_block_2_pixels, 33U, 54U, 16, 54, 120U },
   { sasuke_move_block_1_pixels, 38U, 52U, 19, 52, 120U },
-  { sasuke_move_block_2_pixels, 33U, 54U, 16, 54, 120U }
+  { sasuke_move_block_0_pixels, 35U, 54U, 17, 54, 120U }
 };
 
 static const uint16_t sasuke_move_skill_0_pixels[27U * 53U] = {

@@ -9,6 +9,7 @@ extern "C" {
 
 void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
                               CombatCharacterId cpuCharacter);
+void BattleDemo_SetVsPlayer(uint8_t enabled);
 void BattleDemo_Init(uint8_t difficulty);
 uint8_t BattleDemo_Update(void);
 

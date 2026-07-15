@@ -9,6 +9,7 @@ extern "C" {
 
 void CombatInput_Init(void);
 uint8_t CombatInput_Read(void);
+uint8_t CombatInput_ReadPlayer2(void);
 
 #ifdef __cplusplus
 }

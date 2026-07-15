@@ -166,7 +166,8 @@ static void Phase4_ShowMainMenu(void)
   s_screenStartedMs = HAL_GetTick();
   GameUI_DrawMainMenuSelection(s_selectedMenu,
                                s_selectedDifficulty,
-                               s_selectedCharacter);
+                               s_selectedCharacter,
+                               0U);
   LCD_Port_Flush();
 }
 
@@ -174,7 +175,7 @@ static void Phase4_ShowCharacterSelect(void)
 {
   s_screen = PHASE4_SCREEN_CHARACTER_SELECT;
   s_screenStartedMs = HAL_GetTick();
-  GameUI_DrawCharacterSelect(s_selectedCharacter, s_cpuCharacter);
+  GameUI_DrawCharacterSelect(s_selectedCharacter, s_cpuCharacter, 0U, 1U);
   ILI9341_DrawText("Y DOWN: NEXT  Y UP: OK", FONT1, 72U, 229U, RGB565_WHITE, RGB565_BLACK);
   LCD_Port_Flush();
 }
@@ -227,7 +228,9 @@ static void Phase4_HandleCharacterSelectEvent(MenuJoystickEvent event)
     s_cpuCharacter = Phase4_GetCpuCharacter(s_selectedCharacter);
     GameUI_UpdateCharacterSelect(previousCharacter,
                                  s_selectedCharacter,
-                                 s_cpuCharacter);
+                                 s_cpuCharacter,
+                                 0U,
+                                 1U);
     ILI9341_DrawText("Y DOWN: NEXT  Y UP: OK", FONT1, 72U, 229U, RGB565_WHITE, RGB565_BLACK);
     LCD_Port_Flush();
   }

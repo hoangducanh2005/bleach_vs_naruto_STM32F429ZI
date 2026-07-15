@@ -31,7 +31,9 @@ void CharacterSelectDemo_Init(void)
 
   LCD_Port_Init();
   GameUI_DrawCharacterSelect(s_selectedCharacter,
-                             CharacterSelectDemo_GetCpuCharacter(s_selectedCharacter));
+                             CharacterSelectDemo_GetCpuCharacter(s_selectedCharacter),
+                             0U,
+                             1U);
   LCD_Port_Flush();
 }
 
@@ -50,6 +52,8 @@ void CharacterSelectDemo_Update(void)
 
   GameUI_UpdateCharacterSelect(previousCharacter,
                                s_selectedCharacter,
-                               CharacterSelectDemo_GetCpuCharacter(s_selectedCharacter));
+                               CharacterSelectDemo_GetCpuCharacter(s_selectedCharacter),
+                               0U,
+                               1U);
   LCD_Port_Flush();
 }

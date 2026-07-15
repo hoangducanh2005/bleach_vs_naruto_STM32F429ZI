@@ -55,7 +55,9 @@ static void GameUI_DrawCharacterGrid(void);
 static void GameUI_DrawCharacterAvatar(uint8_t character);
 static void GameUI_DrawCharacterCursor(uint8_t character);
 static void GameUI_DrawCharacterBanners(uint8_t selectedCharacter,
-                                        uint8_t cpuCharacter);
+                                        uint8_t opponentCharacter,
+                                        uint8_t vsPlayer,
+                                        uint8_t activePlayer);
 static uint16_t GameUI_GetCharacterAvatarX(uint8_t character);
 static uint16_t GameUI_GetCharacterAvatarY(uint8_t character);
 
@@ -79,13 +81,49 @@ void GameUI_DrawMainMenuBackground(void)
 
 void GameUI_DrawMainMenu(void)
 {
-  GameUI_DrawMainMenuSelection(0U, 1U, CHOOSE_CHARACTER_HOLLOW);
+  GameUI_DrawMainMenuSelection(0U, 1U, CHOOSE_CHARACTER_HOLLOW, 0U);
+}
+
+void GameUI_DrawModeSelect(uint8_t selectedMode)
+{
+  GameUI_DrawMainMenuBackground();
+
+  ILI9341_DrawFilledRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_PANEL_DARK);
+  ILI9341_DrawHollowRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_ORANGE);
+  ILI9341_DrawText("SELECT MODE", FONT4, 84U, 25U, UI_COLOR_YELLOW, UI_COLOR_PANEL_DARK);
+  ILI9341_DrawText("NARUTO VS BLEACH", FONT2, 93U, 48U, UI_COLOR_WHITE, UI_COLOR_PANEL_DARK);
+
+  ILI9341_DrawFilledRectangleCoord(38U, 84U, 282U, 181U, UI_COLOR_PANEL);
+  ILI9341_DrawHollowRectangleCoord(38U, 84U, 282U, 181U, UI_COLOR_CYAN);
+
+  GameUI_DrawMenuButton(65U, 103U, 190U, "VS PLAYER", selectedMode == 0U);
+  GameUI_DrawMenuButton(65U, 141U, 190U, "VS CPU", selectedMode == 1U);
+
+  ILI9341_DrawText("JUMP: NEXT  ATTACK: SELECT", FONT1, 55U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
+}
+
+void GameUI_DrawVersusPlayerMenu(void)
+{
+  GameUI_DrawMainMenuBackground();
+
+  ILI9341_DrawFilledRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_PANEL_DARK);
+  ILI9341_DrawHollowRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_ORANGE);
+  ILI9341_DrawText("PLAYER VS PLAYER", FONT4, 55U, 25U, UI_COLOR_YELLOW, UI_COLOR_PANEL_DARK);
+  ILI9341_DrawText("READY", FONT2, 136U, 48U, UI_COLOR_WHITE, UI_COLOR_PANEL_DARK);
+
+  ILI9341_DrawFilledRectangleCoord(30U, 78U, 290U, 205U, UI_COLOR_PANEL);
+  ILI9341_DrawHollowRectangleCoord(30U, 78U, 290U, 205U, UI_COLOR_CYAN);
+
+  GameUI_DrawMenuButton(55U, 126U, 210U, "START COMBAT", 1U);
+  ILI9341_DrawText("ATTACK: START", FONT1, 103U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
 void GameUI_DrawMainMenuSelection(uint8_t selectedMenu,
                                   uint8_t selectedDifficulty,
-                                  uint8_t selectedCharacter)
+                                  uint8_t selectedCharacter,
+                                  uint8_t vsPlayer)
 {
+  (void)vsPlayer;
   GameUI_DrawMainMenuBackground();
 
   ILI9341_DrawFilledRectangleCoord(18U, 16U, 302U, 61U, UI_COLOR_PANEL_DARK);
@@ -108,7 +146,7 @@ void GameUI_DrawMainMenuSelection(uint8_t selectedMenu,
                         GameUI_GetCharacterMenuLabel(selectedCharacter),
                         selectedMenu == 2U);
 
-  ILI9341_DrawText("DEMO VIZARD  VS  CPU SASUKE", FONT2, 58U, 211U, UI_COLOR_WHITE, UI_COLOR_BLACK);
+  ILI9341_DrawText("MODE: PLAYER  VS  CPU", FONT2, 79U, 211U, UI_COLOR_WHITE, UI_COLOR_BLACK);
   ILI9341_DrawText("JUMP: NEXT  ATTACK: SELECT", FONT1, 55U, 226U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
@@ -131,10 +169,13 @@ void GameUI_DrawDifficultySelect(uint8_t selectedDifficulty)
   ILI9341_DrawText("JUMP: CHANGE LEVEL", FONT1, 88U, 229U, UI_COLOR_GRAY, UI_COLOR_BLACK);
 }
 
-void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)
+void GameUI_DrawCharacterSelect(uint8_t selectedCharacter,
+                                uint8_t opponentCharacter,
+                                uint8_t vsPlayer,
+                                uint8_t activePlayer)
 {
   selectedCharacter %= CHOOSE_CHARACTER_COUNT;
-  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+  opponentCharacter %= CHOOSE_CHARACTER_COUNT;
 
   LCD_Port_DrawRGB565Bytes2x(0U,
                              0U,
@@ -144,20 +185,26 @@ void GameUI_DrawCharacterSelect(uint8_t selectedCharacter, uint8_t cpuCharacter)
 
   ILI9341_DrawFilledRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_SHADOW);
   ILI9341_DrawHollowRectangleCoord(37U, 12U, 283U, 39U, UI_COLOR_ORANGE);
-  ILI9341_DrawText("> SELECT CHARACTER <", FONT3, 52U, 18U, UI_COLOR_YELLOW, UI_COLOR_SHADOW);
+  ILI9341_DrawText((activePlayer == 2U) ? "> P2 SELECT <" : "> P1 SELECT <",
+                   FONT3, 82U, 18U, UI_COLOR_YELLOW, UI_COLOR_SHADOW);
 
   GameUI_DrawCharacterGrid();
-  GameUI_DrawCharacterBanners(selectedCharacter, cpuCharacter);
+  GameUI_DrawCharacterBanners(selectedCharacter,
+                              opponentCharacter,
+                              vsPlayer,
+                              activePlayer);
   GameUI_DrawCharacterCursor(selectedCharacter);
 }
 
 void GameUI_UpdateCharacterSelect(uint8_t previousCharacter,
                                   uint8_t selectedCharacter,
-                                  uint8_t cpuCharacter)
+                                  uint8_t opponentCharacter,
+                                  uint8_t vsPlayer,
+                                  uint8_t activePlayer)
 {
   previousCharacter %= CHOOSE_CHARACTER_COUNT;
   selectedCharacter %= CHOOSE_CHARACTER_COUNT;
-  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+  opponentCharacter %= CHOOSE_CHARACTER_COUNT;
 
   if (previousCharacter != selectedCharacter)
   {
@@ -171,7 +218,10 @@ void GameUI_UpdateCharacterSelect(uint8_t previousCharacter,
     GameUI_DrawCharacterAvatar(previousCharacter);
   }
 
-  GameUI_DrawCharacterBanners(selectedCharacter, cpuCharacter);
+  GameUI_DrawCharacterBanners(selectedCharacter,
+                              opponentCharacter,
+                              vsPlayer,
+                              activePlayer);
   GameUI_DrawCharacterCursor(selectedCharacter);
 }
 
@@ -324,21 +374,23 @@ static void GameUI_DrawCharacterCursor(uint8_t character)
 }
 
 static void GameUI_DrawCharacterBanners(uint8_t selectedCharacter,
-                                        uint8_t cpuCharacter)
+                                        uint8_t opponentCharacter,
+                                        uint8_t vsPlayer,
+                                        uint8_t activePlayer)
 {
   selectedCharacter %= CHOOSE_CHARACTER_COUNT;
-  cpuCharacter %= CHOOSE_CHARACTER_COUNT;
+  opponentCharacter %= CHOOSE_CHARACTER_COUNT;
 
   LCD_Port_DrawRGB565Bytes(CHARACTER_P1_BANNER_X,
                            CHARACTER_BANNER_Y,
                            CHOOSE_BANNER_WIDTH,
                            CHOOSE_BANNER_HEIGHT,
-                           choose_banner_maps[selectedCharacter]);
+                           choose_banner_maps[(activePlayer == 2U) ? opponentCharacter : selectedCharacter]);
   LCD_Port_DrawRGB565Bytes(CHARACTER_CPU_BANNER_X,
                            CHARACTER_BANNER_Y,
                            CHOOSE_BANNER_WIDTH,
                            CHOOSE_BANNER_HEIGHT,
-                           choose_banner_maps[cpuCharacter]);
+                           choose_banner_maps[(activePlayer == 2U) ? selectedCharacter : opponentCharacter]);
 
   ILI9341_DrawHollowRectangleCoord(CHARACTER_P1_BANNER_X,
                                    CHARACTER_BANNER_Y,
@@ -350,8 +402,15 @@ static void GameUI_DrawCharacterBanners(uint8_t selectedCharacter,
                                    (uint16_t)(CHARACTER_CPU_BANNER_X + CHOOSE_BANNER_WIDTH - 1U),
                                    (uint16_t)(CHARACTER_BANNER_Y + CHOOSE_BANNER_HEIGHT - 1U),
                                    UI_COLOR_RED);
-  ILI9341_DrawText("P1", FONT1, 12U, 187U, UI_COLOR_CYAN, UI_COLOR_BLACK);
-  ILI9341_DrawText("CPU", FONT1, 172U, 187U, UI_COLOR_RED, UI_COLOR_BLACK);
+  ILI9341_DrawText("P1", FONT1, 12U, 187U,
+                   (activePlayer == 1U) ? UI_COLOR_YELLOW : UI_COLOR_CYAN,
+                   UI_COLOR_BLACK);
+  ILI9341_DrawText((vsPlayer != 0U) ? "P2" : "CPU",
+                   FONT1,
+                   (vsPlayer != 0U) ? 173U : 172U,
+                   187U,
+                   (activePlayer == 2U) ? UI_COLOR_YELLOW : UI_COLOR_RED,
+                   UI_COLOR_BLACK);
 }
 
 static uint16_t GameUI_GetCharacterAvatarX(uint8_t character)

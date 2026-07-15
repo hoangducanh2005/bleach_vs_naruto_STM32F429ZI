@@ -181,6 +181,7 @@ static uint8_t s_secondsLeft;
 static uint32_t s_lastSecondUpdateMs;
 static CombatCharacterId s_playerCharacter = COMBAT_CHARACTER_VIZARD_ICHIGO;
 static CombatCharacterId s_cpuCharacter = COMBAT_CHARACTER_SASUKE;
+static uint8_t s_vsPlayer = 0U;
 
 static const CombatHitboxDef s_getsugaHitbox = {
     0U,
@@ -324,6 +325,11 @@ void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
   s_cpuCharacter = cpuCharacter;
 }
 
+void BattleDemo_SetVsPlayer(uint8_t enabled)
+{
+  s_vsPlayer = (enabled != 0U) ? 1U : 0U;
+}
+
 void BattleDemo_Init(uint8_t difficulty)
 {
   uint32_t now = HAL_GetTick();
@@ -407,7 +413,9 @@ uint8_t BattleDemo_Update(void)
   }
 
   uint8_t input = CombatInput_Read();
-  uint8_t cpuInput = Battle_AiUpdate(&s_cpuAi, &s_cpu, &s_player, now);
+  uint8_t cpuInput = (s_vsPlayer != 0U)
+                         ? CombatInput_ReadPlayer2()
+                         : Battle_AiUpdate(&s_cpuAi, &s_cpu, &s_player, now);
 
   CombatActor_FaceToward(&s_player, &s_cpu);
   CombatActor_FaceToward(&s_cpu, &s_player);
@@ -1521,8 +1529,13 @@ static void Battle_DrawHud(void)
   LCD_Port_FillRect(0U, 0U, LCD_PORT_WIDTH, 37U, RGB565_HUD_BG);
   LCD_Port_FillRect(0U, 36U, LCD_PORT_WIDTH, 1U, RGB565_HUD_FRAME);
 
-  ILI9341_DrawText("VIZARD", FONT1, 10U, 3U, RGB565_WHITE, RGB565_HUD_BG);
-  ILI9341_DrawText("SASUKE", FONT1, 262U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+  ILI9341_DrawText("P1", FONT1, 10U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+  ILI9341_DrawText((s_vsPlayer != 0U) ? "P2" : "CPU",
+                   FONT1,
+                   (s_vsPlayer != 0U) ? 286U : 274U,
+                   3U,
+                   RGB565_WHITE,
+                   RGB565_HUD_BG);
 
   Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U);
   Battle_DrawManaBar(10U, 27U, s_player.mana, 0U);
@@ -1543,7 +1556,17 @@ static void Battle_DrawBattleOverHud(uint8_t won)
   ILI9341_DrawHollowRectangleCoord(40U, 70U, 279U, 167U, accent);
   ILI9341_DrawHollowRectangleCoord(43U, 73U, 276U, 164U, RGB565_HUD_FRAME);
 
-  if (won != 0U)
+  if (s_vsPlayer != 0U)
+  {
+    ILI9341_DrawText((won != 0U) ? "P1 WINS" : "P2 WINS",
+                     FONT4,
+                     104U,
+                     91U,
+                     RGB565_WHITE,
+                     RGB565_HUD_BG);
+    ILI9341_DrawText("PLAYER BATTLE", FONT2, 98U, 119U, accent, RGB565_HUD_BG);
+  }
+  else if (won != 0U)
   {
     ILI9341_DrawText("YOU WIN", FONT4, 111U, 91U, RGB565_WHITE, RGB565_HUD_BG);
     ILI9341_DrawText("CPU DEFEATED", FONT2, 101U, 119U, accent, RGB565_HUD_BG);
@@ -1561,13 +1584,14 @@ static void Battle_DrawBattleOverHud(uint8_t won)
 static uint8_t Battle_UpdateBattleOver(uint32_t nowMs)
 {
   uint8_t input = CombatInput_Read();
+  uint8_t p2Input = (s_vsPlayer != 0U) ? CombatInput_ReadPlayer2() : 0U;
 
   if ((uint32_t)(nowMs - s_battleOverStartedMs) < BATTLE_OVER_INPUT_DELAY_MS)
   {
     return 0U;
   }
 
-  if ((input & BATTLE_OVER_CONFIRM_MASK) == 0U)
+  if (((input | p2Input) & BATTLE_OVER_CONFIRM_MASK) == 0U)
   {
     s_battleOverInputArmed = 1U;
     return 0U;
