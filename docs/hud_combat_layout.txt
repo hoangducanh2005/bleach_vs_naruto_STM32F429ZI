@@ -1,0 +1,65 @@
+HUD COMBAT LAYOUT - VIZARD DEMO
+Cap nhat: sau khi chot man combat muot va HUD moi.
+
+Man hinh:
+- LCD ngang 320x240.
+- HUD nam tren cung, cao 37 px: y = 0..36.
+- Vung combat gameplay bat dau tu sau HUD, nen don gian: troi + mat dat/duong.
+
+Mau chinh trong Core/Src/battle_demo.c:
+- RGB565_HUD_BG    = 0x0842
+- RGB565_HUD_FRAME = 0xC618
+- RGB565_BLACK     = 0x0000
+- RGB565_WHITE     = 0xFFFF
+- RGB565_HP_BACK   = 0x4208
+- RGB565_HP_GOOD   = 0x07E0
+- RGB565_HP_WARN   = 0xFD20
+- RGB565_MANA      = 0x04FF
+- RGB565_MANA_BACK = 0x18C6
+- RGB565_ACCENT_CYAN   = 0x07FF
+- RGB565_ACCENT_ORANGE = 0xFD20
+
+Nen HUD:
+- Fill full width: x=0, y=0, w=320, h=37, color RGB565_HUD_BG.
+- Duong ke duoi HUD: x=0, y=36, w=320, h=1, color RGB565_HUD_FRAME.
+
+Label nhan vat:
+- Player label: "VIZARD", FONT1, x=10, y=3, text RGB565_WHITE, bg RGB565_HUD_BG.
+- CPU label: "SASUKE", FONT1, x=262, y=3, text RGB565_WHITE, bg RGB565_HUD_BG.
+
+Player meters:
+- HP: x=10, y=15, w=104, h=8, reverse=0.
+- HP border: RGB565_ACCENT_CYAN.
+- Mana: x=10, y=27, w=84, h=5, reverse=0.
+- Mana hien tai full 100% vi chua co logic mana rieng.
+
+CPU meters:
+- HP: x=206, y=15, w=104, h=8, reverse=1.
+- HP border: RGB565_ACCENT_ORANGE.
+- Mana: x=226, y=27, w=84, h=5, reverse=1.
+- Reverse=1 de thanh do tu phai sang trai, nhin can doi voi player.
+
+Timer giua:
+- Luon hien thi "60".
+- Khung timer: hollow rect x=142, y=5 den x=177, y=27, color RGB565_HUD_FRAME.
+- Nen timer: fill x=143, y=6, w=34, h=21, color RGB565_BLACK.
+- Text timer: "60", FONT3, x=148, y=8, text RGB565_WHITE, bg RGB565_BLACK.
+
+Ham lien quan:
+- Battle_DrawHud(): ve toan bo HUD luc init/full redraw.
+- Battle_DrawHealthBar(x, y, hp, borderColor, reverse): ve HP.
+- Battle_UpdateHealthBar(...): cap nhat delta HP luc runtime, chi fill doan pixel thay doi de giam nhap nhay.
+- Battle_DrawManaBar(x, y, reverse): ve mana full tam thoi.
+- Battle_DrawMeter(...): ham chung ve meter co reverse.
+
+Cap nhat runtime:
+- Khi player HP doi: Battle_UpdateHealthBar(10U, 15U, oldHp, s_player.hp, RGB565_ACCENT_CYAN, 0U).
+- Khi CPU HP doi: Battle_UpdateHealthBar(206U, 15U, oldHp, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U).
+- Neu HP di qua nguong 30 thi redraw ca HP bar mot lan de doi mau fill.
+- Timer hien tai la static 60s, chua co countdown logic.
+
+Ghi chu de ghep HUD sau nay:
+- HUD nay dang uu tien gon, it che man combat, khong hien text huong dan nut.
+- Neu them mana logic that, chi can thay value trong Battle_DrawManaBar/Battle_DrawMeter.
+- Neu them countdown, cap nhat rieng vung timer x=142..177, y=5..27 de khong redraw ca HUD.
+- Nen giu HUD cao khoang 37 px de tranh anh huong sprite va gameplay da can lai.

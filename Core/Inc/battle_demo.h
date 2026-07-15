@@ -5,8 +5,12 @@
 extern "C" {
 #endif
 
-void BattleDemo_Init(void);
-void BattleDemo_Update(void);
+#include "combat_types.h"
+
+void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
+                              CombatCharacterId cpuCharacter);
+void BattleDemo_Init(uint8_t difficulty);
+uint8_t BattleDemo_Update(void);
 
 #ifdef __cplusplus
 }

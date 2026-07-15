@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "battle_demo.h"
+#include "app_flow.h"
+#include "buzzer.h"
 
 /* USER CODE END Includes */
 
@@ -86,7 +87,8 @@ int main(void) {
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  BattleDemo_Init();
+  AppFlow_Init();
+  Buzzer_Init();
 
   /* USER CODE END 2 */
 
@@ -96,7 +98,8 @@ int main(void) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    BattleDemo_Update();
+    AppFlow_Update();
+    Buzzer_Update();
   }
   /* USER CODE END 3 */
 }

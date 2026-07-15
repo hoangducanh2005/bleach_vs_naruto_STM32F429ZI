@@ -1,0 +1,1130 @@
+\documentclass[a4paper,12pt]{report}
+
+% =========================================================================
+% GÓI HỖ TRỢ
+% =========================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{times}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{left=3cm, right=2cm, top=2cm, bottom=2cm}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% =========================================================================
+% KHUNG VIỀN TRANG BÌA
+% =========================================================================
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill\centering
+\begin{tikzpicture}
+\draw[line width=3pt] (2cm,2cm) rectangle (\paperwidth-2cm,\paperheight-2cm);
+\draw[line width=1pt] (2.15cm,2.15cm) rectangle (\paperwidth-2.15cm,\paperheight-2.15cm);
+\end{tikzpicture}
+\vfill}}}
+
+% =========================================================================
+% CẤU HÌNH LISTINGS (hiển thị code C)
+% =========================================================================
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true,
+    captionpos=b,
+    tabsize=2
+}
+
+\begin{document}
+\onehalfspacing
+
+% =========================================================================
+%                            TRANG BÌA
+% =========================================================================
+\begin{titlepage}
+    \AddToShipoutPicture*{\BackgroundPic}
+    \centering
+
+    \vspace*{0.5cm}
+    {\Large \textbf{ĐẠI HỌC BÁCH KHOA HÀ NỘI}} \\
+    \vspace{0.2cm}
+    {\large \textbf{TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG}} \\
+    \vspace{1cm}
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.25\textwidth]{logo.png}
+    \end{figure}
+
+    \vspace{0.8cm}
+    {\large \textbf{BÁO CÁO BÀI TẬP LỚN}} \\
+    \vspace{0.3cm}
+    {\large \textbf{HỆ NHÚNG --- IT4210}} \\ 
+    \vspace{1.5cm}
+    {\LARGE \textbf{ĐỀ TÀI:}} \\
+    \vspace{0.5cm}
+    {\Large \textbf{GAME ĐỐI KHÁNG 2D NARUTO VS BLEACH\\
+    TRÊN VI ĐIỀU KHIỂN STM32F429ZIT6}} \\
+    \vspace{1.2cm}
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l l}
+            \textbf{Giảng viên hướng dẫn:} & Đỗ Công Thuần \\ 
+            & \\
+            \textbf{Sinh viên thực hiện:}
+                & Hoàng Đức Anh - 20235640 \\  % <-- Điền MSSV
+                & Nguyễn Việt Dũng - 20235688 \\
+                & Nguyễn Đức Hiếu - 20235712 \\
+                & Nguyễn Khánh Toàn - 20235847 \\
+        \end{tabular}
+    \end{table}
+
+    \vfill
+    {\large \textbf{Hà Nội, \today}}
+    \vspace*{1cm}
+\end{titlepage}
+
+% =========================================================================
+%                          LỜI CẢM ƠN
+% =========================================================================
+\chapter*{Lời cảm ơn}
+\addcontentsline{toc}{chapter}{Lời cảm ơn}
+
+Chúng em xin gửi lời cảm ơn chân thành đến thầy \textbf{[Đỗ Công Thuần]} đã tận tình hướng dẫn, định hướng kỹ thuật và tạo điều kiện để nhóm được thực hiện một đề tài mang tính thực hành cao trong khuôn khổ môn học Hệ thống Nhúng.
+
+Dự án này đòi hỏi nhóm phải làm chủ đồng thời nhiều lĩnh vực kỹ thuật: lập trình vi điều khiển bare-metal, giao tiếp ngoại vi tốc độ cao, xử lý đồ họa thời gian thực và thiết kế hệ thống trò chơi. Nhờ có sự định hướng từ thầy cùng với sự nỗ lực của các thành viên, nhóm đã hoàn thành được sản phẩm hoạt động đầy đủ trên phần cứng thực tế.
+
+Chúng em cũng cảm ơn cộng đồng mã nguồn mở và các tài liệu kỹ thuật của STMicroelectronics đã cung cấp nền tảng kiến thức để nhóm nghiên cứu và triển khai.
+
+Dù đã rất cố gắng, báo cáo chắc chắn vẫn còn những thiếu sót. Nhóm rất mong nhận được góp ý từ thầy để cải thiện trong các dự án tiếp theo.
+
+\vspace{1cm}
+\begin{flushright}
+    \textit{Hà Nội, \today}
+\end{flushright}
+\newpage
+
+% =========================================================================
+%                          TÓM TẮT
+% =========================================================================
+\chapter*{Tóm tắt}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+
+Báo cáo này trình bày quá trình thiết kế và xây dựng một trò chơi đối kháng 2D theo phong cách \textit{Naruto vs Bleach} chạy trực tiếp trên vi điều khiển \textbf{STM32F429ZIT6} (ARM Cortex-M4, 16\,MHz) mà không sử dụng hệ điều hành nhúng (bare-metal).
+
+Sản phẩm hỗ trợ chế độ chơi Người--Máy: người chơi điều khiển nhân vật qua joystick analog và bốn nút nhấn vật lý, trong khi đối thủ được điều phối bởi một bộ AI đơn giản chạy ngay trên MCU. Màn hình hiển thị 320$\times$240 pixel (ILI9341 tích hợp sẵn trên kit, giao tiếp FSMC 16-bit) với tốc độ làm mới logic trận đấu khoảng 30 khung/giây, sử dụng kỹ thuật \textit{dirty-rect} để tối ưu tốc độ vẽ.
+
+Hệ thống gồm bốn nhân vật chiến đấu được hoạt hình hóa (Naruto, Sasuke, Ichigo, Vizard Ichigo) với đầy đủ cơ chế: di chuyển, nhảy, dash, combo tấn công ba đòn, đỡ đòn, kỹ năng đặc biệt, hitbox/hurtbox, tính toán sát thương và thanh HP. Toàn bộ dữ liệu sprite được mã hóa định dạng RGB565 với color-key trong suốt và lưu trực tiếp trong Flash của MCU.
+
+\textbf{Từ khoá:} STM32F429, game đối kháng nhúng, ILI9341, sprite RGB565, dirty-rect, AI đối thủ, bare-metal C.
+
+\newpage
+
+% =========================================================================
+%                       MỤC LỤC / DANH SÁCH HÌNH
+% =========================================================================
+\tableofcontents
+\newpage
+\listoffigures
+\listoftables
+\newpage
+
+% =========================================================================
+%               CHƯƠNG 1: GIỚI THIỆU ĐỀ TÀI
+% =========================================================================
+\chapter{Giới thiệu đề tài}
+
+\section{Mô tả sản phẩm và mục tiêu}
+
+Đề tài xây dựng một \textbf{trò chơi đối kháng 2D} lấy cảm hứng từ tựa game Flash nổi tiếng \textit{Bleach vs Naruto}, chạy hoàn toàn trên vi điều khiển \textbf{STM32F429ZIT6} (kit STM32F429I-DISCO) mà không sử dụng hệ điều hành nhúng hay GPU rời.
+
+Mục tiêu kép của dự án gồm:
+\begin{enumerate}[label=\arabic*)]
+    \item \textbf{Mục tiêu kỹ thuật:} Chứng minh khả năng hiển thị đồ họa sprite thời gian thực, xử lý input đa kênh và thực thi logic game phức tạp (vật lý, va chạm, AI) hoàn toàn trên một MCU nhúng chi phí thấp.
+    \item \textbf{Mục tiêu sản phẩm:} Tạo ra một trò chơi hoàn chỉnh, có thể chơi được trên phần cứng thực, với trải nghiệm người dùng tương đối mượt mà (không bị giật khung hình rõ rệt).
+\end{enumerate}
+
+Sản phẩm hỗ trợ chế độ \textbf{Người--Máy (PvAI)}: người chơi cầm joystick và bốn nút vật lý, đối thủ được điều khiển bởi một bộ AI phản ứng theo trạng thái trận đấu.
+
+\section{Yêu cầu chức năng}
+
+\subsection{Đầu vào}
+\begin{itemize}
+    \item \textbf{Joystick analog 2 trục} (PA0--PA1, ADC1): điều khiển hướng di chuyển (trái/phải) và đỡ đòn (kéo xuống).
+    \item \textbf{Bốn nút nhấn vật lý} (PB0--PB3, GPIOB, active-low, pull-up nội):
+    \begin{itemize}
+        \item PB0 --- Tấn công thường (Attack)
+        \item PB1 --- Nhảy (Jump)
+        \item PB2 --- Kỹ năng đặc biệt (Skill)
+        \item PB3 --- Lướt nhanh (Dash)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Đầu ra}
+\begin{itemize}
+    \item \textbf{Màn hình LCD ILI9341} 320$\times$240 pixel, màu RGB565, giao tiếp SPI.
+    \item Hiển thị: nền arena 2D, hai nhân vật sprite hoạt ảnh, thanh HP và thanh năng lượng (Mana) của cả hai bên, tên trạng thái hành động hiện tại.
+\end{itemize}
+
+\subsection{Chức năng game}
+
+\begin{table}[H]
+\centering
+\caption{Danh sách chức năng của game}
+\begin{tabular}{c p{4cm} p{8cm}}
+\toprule
+\textbf{STT} & \textbf{Chức năng} & \textbf{Mô tả} \\
+\midrule
+1 & Di chuyển & Chạy trái/phải, dừng về Idle tự động \\
+2 & Nhảy & Nhảy có trọng lực, di chuyển ngang trên không \\
+3 & Lướt (Dash) & Lướt nhanh theo hướng đang mặt \\
+4 & Đỡ đòn (Block) & Giảm sát thương và knockback khi bị tấn công từ phía trước \\
+5 & Tấn công combo & Chuỗi 3 đòn liên tiếp (attack1 $\to$ attack2 $\to$ attack3), kích hoạt bằng cách nhấn nút trong cửa sổ combo \\
+6 & Kỹ năng đặc biệt & Mỗi nhân vật có 1 kỹ năng riêng (ví dụ: Getsuga Tensho cho Vizard Ichigo, Chidori cho Sasuke) \\
+7 & Hitbox / Hurtbox & Mỗi trạng thái có vùng va chạm gây và nhận sát thương riêng biệt \\
+8 & Thanh HP & HP bắt đầu 100, giảm khi trúng đòn; khi HP = 0, nhân vật ngã và trận đấu kết thúc \\
+9 & AI đối thủ & CPU phân tích khoảng cách, trạng thái, HP để ra quyết định (tiếp cận, tấn công, đỡ, dùng kỹ năng) \\
+10 & Màn hình chọn nhân vật & Lưới 6 nhân vật, hiển thị avatar và banner nhân vật được chọn \\
+11 & Chọn độ khó & Màn hình cung cấp 3 mức độ (Easy, Normal, Hard) để điều chỉnh tham số phản xạ và quyết định của AI đối thủ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Nhân vật}
+
+Game có \textbf{4 nhân vật có thể chiến đấu}, mỗi nhân vật có bộ hoạt ảnh và hitbox riêng:
+
+\begin{table}[H]
+\centering
+\caption{Danh sách nhân vật chiến đấu}
+\begin{tabular}{c l l}
+\toprule
+\textbf{STT} & \textbf{Nhân vật} & \textbf{Kỹ năng đặc biệt} \\
+\midrule
+1 & Naruto & Rasengan (đòn cận chiến tầm gần, mạnh) \\
+2 & Sasuke & Chidori (đâm tới trước, có hiệu ứng điện) \\
+3 & Ichigo & Getsuga Tensho (phóng projectile) \\
+4 & Vizard Ichigo & Getsuga Tensho + Dịch chuyển tức thời (teleport) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Yêu cầu phi chức năng}
+
+\begin{table}[H]
+\centering
+\caption{Yêu cầu phi chức năng}
+\begin{tabular}{c p{3.5cm} p{8.5cm}}
+\toprule
+\textbf{STT} & \textbf{Tiêu chí} & \textbf{Mô tả / Ngưỡng đạt} \\
+\midrule
+1 & Tốc độ khung hình & Logic game cập nhật mỗi 33\,ms ($\approx$30 FPS); màn hình không bị giật rõ rệt trong điều kiện bình thường \\
+2 & Độ trễ đầu vào & Phản hồi nút nhấn trong vòng 1 chu kỳ game tick (33\,ms) \\
+3 & Độ ổn định & Không xảy ra crash (HardFault, stack overflow) trong thời gian chơi liên tục ít nhất 10 phút \\
+4 & Chứa dữ liệu trong Flash & Toàn bộ sprite, ảnh nền, UI asset phải vừa trong Flash 2\,MB của STM32F429ZIT6 \\
+5 & Kiến trúc bare-metal & Hệ thống được thiết kế theo mô hình super-loop có tick cố định, không phụ thuộc RTOS. Đây là lựa chọn chủ động: game có luồng xử lý tuần tự đơn giản, không cần lập lịch đa nhiệm; bare-metal giúp kiểm soát timing chính xác hơn và tránh overhead context switch của RTOS \\
+6 & Độ hoàn thiện UI & Màn hình splash, menu chọn nhân vật, màn hình game over phải hiển thị đúng và đầy đủ \\
+7 & Khả năng mở rộng & Kiến trúc phần mềm cho phép thêm nhân vật mới chỉ bằng cách bổ sung file \texttt{*\_moveset.c/h} mà không sửa engine \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =========================================================================
+%               CHƯƠNG 2: THIẾT KẾ HỆ THỐNG
+% =========================================================================
+\chapter{Thiết kế hệ thống}
+
+\section{Phân chia chức năng phần cứng -- phần mềm}
+
+Game đối kháng được xây dựng theo kiến trúc \textbf{bare-metal} (không RTOS), trong đó toàn bộ logic chạy trong một vòng lặp chính \texttt{while(1)} với chu kỳ tick cố định 33\,ms. Bảng~\ref{tab:hw-sw} phân chia rõ trách nhiệm giữa phần cứng và phần mềm.
+
+\begin{table}[H]
+\centering
+\caption{Phân chia chức năng phần cứng -- phần mềm}
+\label{tab:hw-sw}
+\begin{tabular}{p{4cm} p{4.5cm} p{5.5cm}}
+\toprule
+\textbf{Chức năng} & \textbf{Phần cứng thực hiện} & \textbf{Phần mềm thực hiện} \\
+\midrule
+Đọc joystick & ADC1 (12-bit, PA0--PA1) & Hiệu chỉnh điểm trung tâm, deadzone, ánh xạ sang lệnh game \\
+Đọc nút nhấn & GPIO GPIOB (PB0--PB3), pull-up & Phát hiện cạnh lên (edge detect), tổng hợp bitmask input \\
+Hiển thị hình ảnh & LCD ILI9341 (FSMC, 320$\times$240, onboard kit) & Điều khiển FSMC, thuật toán dirty-rect, vẽ sprite RGB565 \\
+Định thời game & SysTick (HAL\_GetTick) & Kiểm soát chu kỳ tick 33\,ms, đảm bảo logic không trôi lệch \\
+Logic trận đấu & --- (hoàn toàn SW) & Vật lý, va chạm hitbox/hurtbox, sát thương, AI đối thủ \\
+Lưu trữ sprite & Flash 2\,MB (STM32F429ZIT6) & Script Python ngoại tuyến mã hoá sprite sang mảng C/RGB565 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Thiết kế phần cứng}
+
+\subsection{Danh sách linh kiện và module}
+
+\begin{table}[H]
+\centering
+\caption{Danh sách linh kiện chính}
+\label{tab:components}
+\begin{tabular}{c p{3cm} p{6cm} p{3.5cm}}
+\toprule
+\textbf{STT} & \textbf{Linh kiện} & \textbf{Thông số chính} & \textbf{Vai trò} \\
+\midrule
+1 & STM32F429ZIT6 & ARM Cortex-M4, 2\,MB Flash, 256\,KB RAM, LQFP144 & Vi điều khiển trung tâm \\
+2 & LCD ILI9341 & 320$\times$240 px, RGB565, FSMC 16-bit (tích hợp kit) & Hiển thị game \\
+3 & Joystick analog & 2 trục, đầu ra $0\sim3.3$\,V & Điều hướng nhân vật \\
+4 & Nút nhấn & Active-low, 4 nút vật lý & Tấn công / Nhảy / Kỹ năng / Dash \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Sơ đồ ghép nối}
+
+Hình~\ref{fig:hw-block} mô tả sơ đồ khối phần cứng tổng thể.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={draw, rounded corners, minimum width=3cm, minimum height=1.2cm,
+                text centered, font=\small, align=center},
+    arr/.style={->, thick, >=stealth}
+]
+
+% ---- Khung kit STM32F429I-DISCO (bao quanh MCU + LCD) ----
+\node[draw, dashed, rounded corners, fill=blue!5,
+      minimum width=8.5cm, minimum height=4cm,
+      label={[font=\footnotesize\itshape]north:STM32F429I-DISCO Kit}]
+      (kit) at (2, 0) {};
+
+% ---- MCU bên trong kit ----
+\node[box, fill=blue!20, minimum width=3.8cm, minimum height=2.5cm]
+      (mcu) at (0, 0) {
+        \textbf{STM32F429ZIT6}\\
+        \footnotesize Cortex-M4 @ 16\,MHz\\
+        \footnotesize 2\,MB Flash / 256\,KB RAM
+      };
+
+% ---- LCD bên trong kit ----
+\node[box, fill=orange!15, minimum width=3cm, minimum height=2cm]
+      (lcd) at (4.2, 0) {
+        \textbf{LCD ILI9341}\\
+        \footnotesize 320$\times$240, RGB565\\
+        \footnotesize (tích hợp kit)
+      };
+
+% ---- Mũi tên nội bộ MCU -> LCD (FSMC) ----
+\draw[arr] (mcu.east) -- node[above, font=\tiny]{FSMC 16-bit} (lcd.west);
+
+% ---- Ngoại vi ngoài kit ----
+\node[box, fill=green!15] (joy) at (-4.5, 1.3)
+      {Joystick\\[-2pt]\footnotesize analog 2 trục};
+\node[box, fill=green!15] (btn) at (-4.5,-1.3)
+      {4 Nút nhấn\\[-2pt]\footnotesize vật lý};
+\node[box, fill=gray!20, minimum width=3cm] (pwr) at (2,-3.2)
+      {Nguồn 3.3\,V\\[-2pt]\footnotesize USB / ST-LINK};
+
+% ---- Mũi tên ngoài vào kit ----
+\draw[arr] (joy.east) -- node[above, font=\tiny]{ADC1 (PA0, PA1)} (mcu.west |- joy.east);
+\draw[arr] (btn.east) -- node[above, font=\tiny]{GPIO (PB0--PB3)} (mcu.west |- btn.east);
+\draw[arr] (pwr.north) -- (kit.south -| pwr.north);
+
+\end{tikzpicture}
+\caption{Sơ đồ ghép nối phần cứng hệ thống}
+\label{fig:hw-block}
+\end{figure}
+
+
+\subsection{Cấu hình chân và tốc độ giao tiếp}
+
+\begin{table}[H]
+\centering
+\caption{Cấu hình chân MCU}
+\label{tab:pins}
+\begin{tabular}{c p{2.2cm} p{2.5cm} p{3cm} p{4cm}}
+\toprule
+\textbf{STT} & \textbf{Chân MCU} & \textbf{Ngoại vi} & \textbf{Chế độ} & \textbf{Ghi chú} \\
+\midrule
+1 & PA0 & ADC1 CH0 & Analog in & Trục X joystick \\
+2 & PA1 & ADC1 CH1 & Analog in & Trục Y joystick \\
+3 & PB0 & GPIOB & Digital in, pull-up & Nút Attack \\
+4 & PB1 & GPIOB & Digital in, pull-up & Nút Jump \\
+5 & PB2 & GPIOB & Digital in, pull-up & Nút Skill \\
+6 & PB3 & GPIOB & Digital in, pull-up & Nút Dash \\
+7+ & FSMC Bank 1 & ILI9341 (onboard) & FSMC 16-bit parallel & Tích hợp sẵn trên kit, driver xử lý tự động \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Tốc độ giao tiếp FSMC:} LCD ILI9341 được kết nối qua FSMC Bank~1 của STM32F429I-DISCO theo giao thức Intel 8080 16-bit. Ở xung HCLK = 16\,MHz, thông lượng lý thuyết đạt $\approx 32$\,MB/s, thời gian ghi một frame đầy đủ 320$\times$240$\times$2\,byte $\approx 4{,}8$\,ms. Tuy nhiên do overhead câu lệnh và độ trễ FSMC, trên thực tế thời gian vẽ toàn màn hình vẫn đủ lớn để thuật toán dirty-rect mang lại lợi ích đáng kể về hiệu suất.
+
+\noindent\textbf{ADC:} Cấu hình đơn kênh, sampling time 480 cycle, phân giải 12-bit ($0 \sim 4095$). Điểm trung tâm joystick hiệu chỉnh khi khởi động bằng trung bình 16 mẫu.
+
+\section{Thiết kế phần mềm}
+
+\subsection{Sơ đồ khối phần mềm}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={draw, minimum width=11cm, minimum height=0.85cm,
+                  text centered, font=\small},
+    arr/.style={->, thick, >=stealth}
+]
+\node[layer, fill=red!15]    (L1) at (0, 5.0)
+    {\textbf{Application:} \texttt{battle\_demo.c} --- Vòng lặp game, AI, điều phối rendering};
+\node[layer, fill=orange!20] (L2) at (0, 3.8)
+    {\textbf{Game Logic:} \texttt{combat\_actor.c}, \texttt{combat\_attack\_data.c}, \texttt{combat\_input.c}};
+\node[layer, fill=yellow!30] (L3) at (0, 2.6)
+    {\textbf{Asset:} \texttt{*\_moveset.c}, \texttt{chidori\_data.c}, \texttt{choose\_ui\_assets.c}};
+\node[layer, fill=green!20]  (L4) at (0, 1.4)
+    {\textbf{Graphics:} \texttt{sprite\_render.c}, \texttt{lcd\_port.c}, \texttt{game\_ui.c}};
+\node[layer, fill=blue!15]   (L5) at (0, 0.2)
+    {\textbf{Driver:} \texttt{ILI9341\_STM32\_Driver.c}, \texttt{ILI9341\_GFX.c}, STM32 HAL};
+\node[layer, fill=gray!25]   (L6) at (0,-1.0)
+    {\textbf{Hardware:} STM32F429ZIT6, ILI9341 LCD (onboard), Joystick, Buttons};
+
+\draw[arr] (L1.south) -- (L2.north);
+\draw[arr] (L2.south) -- (L3.north);
+\draw[arr] (L3.south) -- (L4.north);
+\draw[arr] (L4.south) -- (L5.north);
+\draw[arr] (L5.south) -- (L6.north);
+\end{tikzpicture}
+\caption{Sơ đồ khối phần mềm theo lớp}
+\label{fig:sw-block}
+\end{figure}
+
+
+\subsection{Biểu đồ luồng hoạt động hệ thống}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    proc/.style={draw, rectangle, rounded corners, minimum width=5cm, minimum height=0.75cm, text centered, font=\small},
+    dec/.style={draw, diamond, aspect=3, text centered, font=\small, inner sep=1pt},
+    arr/.style={->, thick},
+    startstop/.style={draw, ellipse, minimum width=3cm, minimum height=0.65cm, font=\small\bfseries, fill=black!80, text=white}
+]
+\node[startstop] (start) at (0, 0)    {Khởi động MCU};
+\node[proc, fill=blue!10]   (init)  at (0,-1.2) {HAL\_Init() + SystemClock\_Config()};
+\node[proc, fill=blue!10]   (ginit) at (0,-2.3) {BattleDemo\_Init(): LCD, ADC, GPIO, AI, Background cache};
+\node[proc, fill=orange!10] (upd)   at (0,-3.4) {BattleDemo\_Update()};
+\node[dec,  fill=yellow!30] (chk)   at (0,-4.7) {Đủ 33\,ms?};
+\node[proc, fill=green!10]  (inp)   at (0,-6.0) {Đọc Input (ADC joystick + GPIO buttons)};
+\node[proc, fill=green!10]  (ai)    at (0,-7.1) {AI: Observe() $\to$ ChooseAction() $\to$ bitmask input CPU};
+\node[proc, fill=green!10]  (phy)   at (0,-8.2) {CombatActor\_Update(): physics, state machine, frame index};
+\node[proc, fill=green!10]  (col)   at (0,-9.3) {Kiểm tra va chạm Hitbox $\cap$ Hurtbox, áp dụng sát thương};
+\node[proc, fill=green!10]  (prj)   at (0,-10.4){Cập nhật Projectile (Getsuga, Chidori)};
+\node[proc, fill=red!10]    (drw)   at (0,-11.5){Dirty-Rect render $\to$ LCD\_Port\_Flush()};
+
+\draw[arr] (start)--(init); \draw[arr] (init)--(ginit);
+\draw[arr] (ginit)--(upd);  \draw[arr] (upd)--(chk);
+\draw[arr] (chk.east) -- node[right,font=\tiny]{Không} ++(2.5,0) |- (upd.east);
+\draw[arr] (chk.south) -- node[right,font=\tiny]{Có} (inp.north);
+\draw[arr] (inp)--(ai); \draw[arr] (ai)--(phy);
+\draw[arr] (phy)--(col); \draw[arr] (col)--(prj); \draw[arr] (prj)--(drw);
+\draw[arr] (drw.south) -- ++(0,-0.3) -- ++(-5,0) |- (upd.west);
+\end{tikzpicture}
+\caption{Biểu đồ luồng hoạt động của hệ thống game}
+\label{fig:flow}
+\end{figure}
+
+\subsection{Mô tả các module phần mềm chính}
+
+\subsubsection{Module đầu vào (\texttt{combat\_input})}
+Đọc ADC1 kênh CH0/CH1 (joystick) và GPIO GPIOB (nút nhấn), trả về \texttt{uint8\_t} bitmask. Joystick áp dụng deadzone $\pm650$\,LSB; nút nhấn chỉ kích hoạt trên \textbf{cạnh lên} để tránh lặp liên tục.
+
+\subsubsection{Module quản lý nhân vật (\texttt{combat\_actor})}
+Mỗi nhân vật là một \texttt{CombatActor} gồm vị trí, vận tốc, HP, trạng thái. Máy trạng thái 9 nút (\texttt{IDLE, RUN, JUMP, DASH, ATTACK, SKILL, BLOCK, HIT, DEAD}) với vật lý đơn giản: trọng lực $g=1$\,px/tick, lực nhảy $v_y=-11$, tốc độ rơi tối đa $9$\,px/tick, biên arena $x\in[32,288]$.
+
+\subsubsection{Module dữ liệu chiến đấu (\texttt{combat\_attack\_data})}
+Lưu bảng hurtbox (theo trạng thái) và hitbox (theo frame, attackStep) cho từng nhân vật. Va chạm kiểm tra bằng phép giao AABB:
+\[
+\text{Overlap}(A,B) \;\Leftrightarrow\; A.x < B.x{+}B.w \;\wedge\; A.x{+}A.w > B.x \;\wedge\; A.y < B.y{+}B.h \;\wedge\; A.y{+}A.h > B.y
+\]
+
+\subsubsection{Module hoạt ảnh (\texttt{*\_moveset.c})}
+Mỗi nhân vật có file độc lập chứa pixel RGB565 (color-key \texttt{0xF81F} = trong suốt), pivot tâm chân, thời gian frame. Dữ liệu được sinh tự động bằng script Python từ spritesheet nguồn.
+
+\subsubsection{Module vẽ Dirty-Rect (\texttt{sprite\_render} + \texttt{battle\_demo})}
+Chỉ vẽ lại vùng hình chữ nhật bao frame cũ và frame mới. Mỗi pixel trong vùng đó: nếu là pixel sprite hợp lệ thì vẽ sprite, ngược lại lấy từ bộ nhớ đệm nền (\texttt{s\_backgroundPixels[]}) đã được tạo khi khởi động, tránh đọc lại Flash.
+
+\subsubsection{Module AI (\texttt{BattleAiController})}
+Hoạt động theo chu kỳ hành động với 2 bước:
+\begin{itemize}
+    \item \textbf{Quan sát:} Cập nhật trạng thái đối thủ vào buffer \texttt{pending}; sau mỗi 220\,ms mới chuyển sang \texttt{visible} (mô phỏng độ trễ phản xạ người thật).
+    \item \textbf{Quyết định:} Tại 65\% chu kỳ hành động, AI chọn lệnh tiếp theo theo thứ tự ưu tiên: Phản đòn $>$ Đỡ $>$ Kỹ năng $>$ Tấn công $>$ Tiếp cận/Lùi, có thêm yếu tố ngẫu nhiên (LCG RNG) để tránh máy móc.
+\end{itemize}
+
+% =========================================================================
+\section{Hệ thống hoạt ảnh nhân vật}
+% =========================================================================
+
+\subsection{Máy trạng thái và bộ frame của từng nhân vật}
+
+Mỗi nhân vật trong game được mô hình hóa dưới dạng một máy trạng thái hữu hạn (Finite State Machine - FSM). Mỗi trạng thái hành động tương ứng với một chuỗi các khung hình (frames) liên tiếp, được cấu trúc trong bộ nhớ dưới dạng mảng các con trỏ trỏ tới dữ liệu pixel RGB565 tương ứng. Mỗi khung hình được đính kèm các tham số hình học (chiều rộng $w$, chiều cao $h$, tọa độ tâm chân pivot) và một tham số định thời quan trọng là thời gian hiển thị duy nhất của khung hình đó (\texttt{durationMs}). 
+
+Dưới đây là mô tả chi tiết máy trạng thái và bộ khung hình cụ thể của hai nhân vật tiêu biểu trong game: \textbf{Ichigo Kurosaki} và \textbf{Sasuke Uchiha}. Việc lựa chọn hai nhân vật này giúp minh họa đầy đủ các trạng thái cốt lõi của trò chơi bao gồm cả trạng thái di chuyển nhanh (\texttt{DASH}).
+
+\begin{table}[H]
+\centering
+\caption{Bộ hoạt ảnh và định thời của nhân vật Ichigo Kurosaki}
+\label{tab:ichigo-anim}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c p{3.5cm} c c p{4.5cm}}
+\toprule
+\textbf{State enum} & \textbf{Ý nghĩa trạng thái} & \textbf{Số frame} & \textbf{ms/frame} & \textbf{Đặc tính vòng lặp / Chuyển cảnh} \\
+\midrule
+\texttt{ICHIGO\_MOVE\_IDLE}         & Đứng yên (chờ lệnh) & 4 & 60 & Loop vô hạn, trạng thái mặc định \\
+\texttt{ICHIGO\_MOVE\_RUN}          & Chạy tiến / lùi     & 5 & 60 & Loop vô hạn khi giữ Joystick ngang \\
+\texttt{ICHIGO\_MOVE\_DASH}         & Lướt nhanh (Dash)   & 2 & 40 & Phát một lần, chuyển ngay về Idle \\
+\texttt{ICHIGO\_MOVE\_ATTACK\_LIGHT}& Đòn đánh thường 1   & 4 & 45 & Phát một lần, chuyển sang Attack 2 nếu bấm tiếp \\
+\texttt{ICHIGO\_MOVE\_ATTACK2}      & Đòn đánh thường 2   & 4 & 45 & Phát một lần, chuyển sang Attack 3 nếu bấm tiếp \\
+\texttt{ICHIGO\_MOVE\_ATTACK3}      & Đòn kết liễu combo  & 4 & 45 & Phát một lần, knockback lớn đối thủ \\
+\texttt{ICHIGO\_MOVE\_BLOCK}        & Đỡ đòn              & 1 & 80 & Giữ frame cuối chừng nào còn bấm đỡ \\
+\texttt{ICHIGO\_MOVE\_SKILL}        & Getsuga Tensho      & 10 & 35 & Phát một lần, sinh Projectile bay dọc màn hình \\
+\texttt{ICHIGO\_MOVE\_JUMP}         & Nhảy lên không      & 8 & 60 & Tích hợp cả nâng lên và rơi xuống theo vật lý \\
+\texttt{ICHIGO\_MOVE\_HIT}          & Bị đánh trúng       & 3 & 60 & Phát một lần, gây hiệu ứng đơ (stun) tạm thời \\
+\texttt{ICHIGO\_MOVE\_DEAD}         & Bị hạ gục (Hết HP)  & 4 & 85 & Phát một lần, giữ frame cuối (nằm gục) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Bộ hoạt ảnh và định thời của nhân vật Sasuke Uchiha}
+\label{tab:sasuke-anim}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c p{3.5cm} c c p{4.5cm}}
+\toprule
+\textbf{State enum} & \textbf{Ý nghĩa trạng thái} & \textbf{Số frame} & \textbf{ms/frame} & \textbf{Đặc tính vòng lặp / Chuyển cảnh} \\
+\midrule
+\texttt{SASUKE\_MOVE\_IDLE}         & Đứng yên (chờ lệnh) & 4 & 120 & Loop vô hạn \\
+\texttt{SASUKE\_MOVE\_RUN}          & Chạy tiến / lùi     & 8 & 80 & Loop vô hạn khi di chuyển \\
+\texttt{SASUKE\_MOVE\_DASH}         & Lướt nhanh (Dash)   & 2 & 60 & Phát một lần \\
+\texttt{SASUKE\_MOVE\_ATTACK1}      & Đòn đánh thường 1   & 5 & 80 & Phát một lần, chuỗi combo 1 \\
+\texttt{SASUKE\_MOVE\_ATTACK2}      & Đòn đánh thường 2   & 9 & 70 & Phát một lần, chuỗi combo 2 \\
+\texttt{SASUKE\_MOVE\_ATTACK3}      & Đòn kết liễu combo  & 7 & 70 & Phát một lần, chuỗi combo 3 \\
+\texttt{SASUKE\_MOVE\_BLOCK}        & Đỡ đòn              & 3 & 80 & Giữ frame cuối chừng nào còn giữ nút đỡ \\
+\texttt{SASUKE\_MOVE\_SKILL}        & Kỹ năng Chidori     & 10 & 80 & Phát một lần, lướt nhanh gây sát thương điện \\
+\texttt{SASUKE\_MOVE\_JUMP\_STARTUP}& Khởi đầu nhảy       & 1 & 80 & Chuyển tiếp nhanh từ đất lên không \\
+\texttt{SASUKE\_MOVE\_JUMP\_AIR}    & Bay trên không      & 2 & 120 & Loop khi đang có vận tốc đi lên \\
+\texttt{SASUKE\_MOVE\_FALL}         & Rơi tự do           & 2 & 120 & Loop khi đang rơi xuống do trọng lực \\
+\texttt{SASUKE\_MOVE\_JUMP\_LAND}   & Tiếp đất            & 2 & 80 & Phát một lần để khử quán tính rơi \\
+\texttt{SASUKE\_MOVE\_HIT}          & Bị đánh trúng       & 3 & 100 & Phát một lần, gây stun \\
+\texttt{SASUKE\_MOVE\_DEAD}         & Bị hạ gục (Hết HP)  & 24 & 120 & Animation ngã dài, nằm bất động \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+\subsection{Cơ chế cập nhật trạng thái hoạt ảnh (Animation Tick)}
+
+Mỗi game tick (được cấu hình định thời cứng là $T_{tick} = 33$\,ms $\approx$ 30 FPS), hàm cập nhật nhân vật \texttt{CombatActor\_Update()} sẽ được gọi. Cơ chế chuyển frame hoạt ảnh hoạt động dựa trên bộ đếm thời gian tích lũy (\texttt{animTimer}):
+
+\begin{enumerate}
+    \item \textbf{Cộng dồn thời gian:} Bộ đếm \texttt{animTimer} cộng thêm $33$\,ms sau mỗi game tick.
+    \item \textbf{Kiểm tra ngưỡng thời gian:} So sánh \texttt{animTimer} với \texttt{durationMs} của khung hình hiện tại (\texttt{frameIndex}):
+    \[
+    \text{Nếu } \texttt{animTimer} \ge \texttt{current\_frame.durationMs}
+    \]
+    thì tiến hành chuyển sang khung hình tiếp theo: reset \texttt{animTimer} về 0 và tăng \texttt{frameIndex} lên 1.
+    \item \textbf{Xử lý biên hoạt ảnh:}
+    \begin{itemize}
+        \item \textbf{Chế độ lặp (\texttt{loop = 1}):} Khi \texttt{frameIndex} đạt tới tổng số khung hình của trạng thái đó, chỉ số này sẽ tự động quay trở về 0 để lặp lại từ đầu (áp dụng cho \texttt{IDLE, RUN, JUMP\_AIR}).
+        \item \textbf{Chế độ dừng giữ (\texttt{holdLast = 1}):} Khi đạt tới khung hình cuối cùng, \texttt{frameIndex} được giữ cố định ở chỉ số cuối cho đến khi FSM nhận được sự kiện chuyển trạng thái từ logic game (áp dụng cho \texttt{BLOCK, DEAD}).
+        \item \textbf{Chế độ đơn trị (Phát một lần):} Đối với các trạng thái như tấn công (\texttt{ATTACK}) hay kỹ năng (\texttt{SKILL}), sau khi hoàn thành khung hình cuối cùng, nhân vật sẽ tự động chuyển FSM về trạng thái mặc định \texttt{IDLE}.
+    \end{itemize}
+\end{enumerate}
+
+% =========================================================================
+\section{Hiển thị đồ họa: Tối ưu hiển thị, Dirty-Rect và giải pháp thay thế RGB Alpha Channel}
+\label{sec:graphics}
+% =========================================================================
+
+Hiển thị đồ họa thời gian thực là thách thức kỹ thuật lớn nhất của dự án khi chạy trên vi điều khiển STM32F429ZIT6 chạy bare-metal không hỗ trợ chip xử lý đồ họa rời (GPU) hay bộ tăng tốc phần cứng 2D chuyên dụng. 
+
+\subsection{Giới hạn phần cứng và giải pháp thay thế RGB Alpha Channel}
+
+Trong thiết kế đồ họa 2D thông thường, các sprite nhân vật cần có kênh độ trong suốt Alpha ($\alpha$ channel - RGBA) để thực hiện hòa trộn màu (alpha blending) với ảnh nền phía sau theo công thức:
+\[
+C_{out} = \alpha \cdot C_{src} + (1 - \alpha) \cdot C_{dest}
+\]
+Trong đó $C_{src}$ là màu của sprite, $C_{dest}$ là màu của ảnh nền tại tọa độ tương ứng, và $C_{out}$ là màu kết quả ghi xuống màn hình.
+
+Tuy nhiên, trên hệ thống nhúng của nhóm, chúng em gặp phải hai giới hạn phần cứng nghiêm trọng:
+\begin{enumerate}
+    \item \textbf{Màn hình LCD ILI9341 không hỗ trợ kênh Alpha phần cứng:} Màn hình chỉ nhận dữ liệu màu trực tiếp ở định dạng 16-bit RGB565 qua bus song song.
+    \item \textbf{Tài nguyên tính toán của MCU hạn chế:} Vi điều khiển ARM Cortex-M4 chỉ chạy ở tần số thấp (không có phần cứng tăng tốc xử lý vector đồ họa). Việc thực hiện phép toán số thực hòa trộn màu alpha blending bằng phần mềm cho từng pixel trong mỗi game tick 33\,ms sẽ gây ra hiện tượng nghẽn cổ chai CPU (CPU bottleneck) nghiêm trọng, làm sụt giảm FPS của game xuống dưới mức 5 FPS.
+\end{enumerate}
+
+\noindent \textbf{Giải pháp thay thế - Kỹ thuật Color-Key Transparency:}
+Để giải quyết bài toán này, nhóm đã sử dụng giải pháp color-key ngoại tuyến. Giá trị màu magenta thuần khiết \texttt{0xF81F} (Red = 31, Green = 0, Blue = 31) được quy ước làm màu trong suốt (Transparent color key).
+\begin{itemize}
+    \item Trong quá trình chuẩn bị tài nguyên (offline assets preparation), script Python sẽ quét qua các file ảnh sprite gốc (PNG có kênh alpha) và chuyển đổi các pixel có độ trong suốt (Alpha = 0) thành giá trị màu \texttt{0xF81F}. Các pixel còn lại được chuyển đổi sang định dạng 16-bit màu RGB565 thông thường.
+    \item Khi vẽ sprite lên LCD, thay vì thực hiện phép toán alpha blending phức tạp, CPU chỉ cần thực hiện so sánh điều kiện logic nhanh (1 chu kỳ lệnh): nếu pixel sprite có giá trị màu bằng \texttt{0xF81F}, CPU sẽ bỏ qua pixel đó và thay thế bằng pixel tương ứng lấy từ bộ nhớ đệm nền; ngược lại, CPU sẽ ghi trực tiếp màu của sprite xuống màn hình LCD. Giải pháp này loại bỏ hoàn toàn các phép nhân số thực phức tạp, giúp tăng tốc độ xử lý lên gấp hàng chục lần.
+\end{itemize}
+
+\subsection{Thuật toán Dirty-Rect (Hộp chữ nhật thay đổi)}
+
+Màn hình LCD ILI9341 có độ phân giải $320 \times 240$ pixel. Nếu vẽ lại toàn bộ màn hình trong mỗi chu kỳ 33\,ms (Full Screen Redraw):
+\[
+\text{Tổng số pixel cần ghi} = 320 \times 240 = 76.800 \text{ pixel}
+\]
+Ở định dạng 16-bit màu (2 byte/pixel), lượng dữ liệu truyền qua bus song song FSMC là $153.600$ byte. Với overhead điều khiển phần mềm, thời gian ghi toàn màn hình mất khoảng $4{,}8$\,ms. Nếu vẽ đồng thời hai nhân vật và hiệu ứng, việc ghi đè liên tục sẽ gây ra hiện tượng xé hình (tearing) và nhấp nháy màn hình (flickering), đồng thời tiêu tốn gần như toàn bộ thời gian của một game tick.
+
+\noindent \textbf{Nguyên lý tối ưu của Dirty-Rect:}
+Thay vì vẽ lại toàn bộ màn hình, thuật toán chỉ quét và vẽ lại phần màn hình thực sự bị thay đổi bởi chuyển động của các thực thể game (nhân vật, projectile). Quá trình thực hiện gồm các bước:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.7]
+  % Màn hình LCD
+  \draw[black, very thick] (0,0) rectangle (12,7);
+  \node[font=\footnotesize\bfseries] at (6, 6.6) {MÀN HÌNH LCD ILI9341 (320 x 240)};
+  
+  % Hợp nhất thành DirtyRect (vẽ trước để các nét đứt đè lên trên)
+  \draw[orange, very thick, fill=orange!5] (1.5, 1.5) rectangle (9.5, 5.8);
+  \node[orange, font=\small\bfseries] at (5.5, 6.1) {dirtyRect};
+  \node[orange, font=\footnotesize] at (5.5, 0.5) {(Hợp nhất vùng cần vẽ lại)};
+
+  % Tọa độ oldBbox (nét đứt đỏ, fill nhẹ)
+  \draw[red, thick, dashed, fill=red!5, fill opacity=0.5] (1.5, 2.8) rectangle (4.5, 5.8);
+  \node[red, font=\tiny\bfseries] at (3.0, 2.5) {oldBbox (Khung cũ)};
+  
+  % Tọa độ newBbox (nét đứt xanh, fill nhẹ)
+  \draw[green!60!black, thick, dashed, fill=green!5, fill opacity=0.5] (6.5, 1.5) rectangle (9.5, 4.5);
+  \node[green!60!black, font=\tiny\bfseries] at (8.0, 4.8) {newBbox (Khung mới)};
+  
+  % Di chuyển vector (mũi tên xanh lam)
+  \draw[->, blue, very thick] (3.0, 4.3) -- (8.0, 3.0);
+  \node[blue, font=\tiny\bfseries, above, sloped] at (5.5, 3.7) {Vectơ di chuyển};
+\end{tikzpicture}
+\caption{Cơ chế hợp nhất bounding box thành dirtyRect để tối ưu vùng hiển thị}
+\label{fig:dirty-rect-detail}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Xác định hộp giới hạn cũ (\texttt{oldBbox}):} Hộp chữ nhật bao quanh sprite của nhân vật ở game tick trước (vị trí cũ $x_{old}, y_{old}$, kích thước $w_{old}, h_{old}$).
+    \item \textbf{Xác định hộp giới hạn mới (\texttt{newBbox}):} Hộp chữ nhật bao quanh sprite của nhân vật ở game tick hiện tại (vị trí mới $x_{new}, y_{new}$, kích thước $w_{new}, h_{new}$).
+    \item \textbf{Hợp nhất thành hộp chữ nhật thay đổi (\texttt{dirtyRect}):} Tính toán hộp chữ nhật nhỏ nhất bao phủ cả hai hộp trên:
+    \[
+    x_{dirty} = \min(x_{old}, x_{new})
+    \]
+    \[
+    y_{dirty} = \min(y_{old}, y_{new})
+    \]
+    \[
+    w_{dirty} = \max(x_{old} + w_{old}, x_{new} + w_{new}) - x_{dirty}
+    \]
+    \[
+    h_{dirty} = \max(y_{old} + h_{old}, y_{new} + h_{new}) - y_{dirty}
+    \]
+    \item \textbf{Vẽ giới hạn (Clipping Render):} Gửi lệnh thiết lập cửa sổ vẽ (Window Address Set) của màn hình LCD ILI9341 khớp chính xác với tọa độ và kích thước của \texttt{dirtyRect}. Sau đó, CPU quét qua từng pixel trong vùng \texttt{dirtyRect}:
+    \begin{itemize}
+        \item Nếu tọa độ pixel hiện tại nằm trong \texttt{newBbox} và màu của pixel sprite tại điểm đó khác màu color-key \texttt{0xF81F}, ghi màu sprite đó xuống LCD.
+        \item Ngược lại (pixel thuộc vùng trống của sprite hoặc thuộc phần diện tích cũ cần khôi phục), ghi màu nền lấy từ bộ nhớ đệm nền.
+    \end{itemize}
+\end{enumerate}
+
+\noindent \textbf{Kết quả:} Diện tích trung bình của một \texttt{dirtyRect} cho chuyển động thông thường chỉ khoảng $60 \times 60 = 3.600$\,pixel. So với $76.800$\,pixel toàn màn hình, thuật toán dirty-rect giảm khối lượng truyền tải dữ liệu xuống hơn \textbf{20 lần}, thời gian dựng hình thực tế giảm xuống chỉ còn khoảng \textbf{$0{,}2 \sim 0{,}3$\,ms}, giải phóng băng thông bus FSMC và tài nguyên CPU đáng kể để xử lý logic game.
+
+\subsection{Tải ảnh nền lên RAM cache để khôi phục nhanh}
+
+Để khôi phục ảnh nền tại các vùng trống trong hộp \texttt{dirtyRect}, hệ thống cần truy xuất dữ liệu pixel nền. Do kích thước ảnh nền $320 \times 240 \times 2$\,byte = $153.600$\,byte ($\approx 150$\,KB), mảng dữ liệu này hoàn toàn nằm vừa trong bộ nhớ SRAM của STM32F429ZIT6 (có 256\,KB RAM).
+
+Nhóm quyết định thực hiện **cơ chế RAM Caching**: khi khởi động trò chơi, ảnh nền đấu trường được sao chép từ Flash vào mảng tĩnh \texttt{s\_backgroundPixels[]} nằm trong SRAM. 
+\begin{itemize}
+    \item \textbf{Lý do:} Tốc độ đọc ghi của SRAM nhanh hơn đáng kể so với việc đọc trực tiếp từ bộ nhớ Flash của MCU thông qua bus hệ thống (vốn phải đi qua bộ đệm dòng lệnh ART Accelerator và chịu độ trễ wait-state).
+    \item \textbf{Kết quả:} Khi thuật toán dirty-rect cần tái tạo nền cho các pixel không thuộc sprite, việc đọc dữ liệu màu từ SRAM chỉ mất vài chu kỳ CPU, loại bỏ hoàn toàn hiện tượng nghẽn bus bộ nhớ Flash, đảm bảo quá trình render diễn ra mượt mà ở mức 30 FPS ổn định.
+\end{itemize}
+
+% =========================================================================
+\section{Combat HUD và Hệ thống va chạm chuyên sâu}
+\label{sec:combat-hud}
+% =========================================================================
+
+\subsection{Chiến lược quét màn hình LCD và chu kỳ dựng hình}
+
+Màn hình LCD ILI9341 tích hợp trên kit STM32F429I-DISCO được kết nối với vi điều khiển qua bộ điều khiển bộ nhớ tĩnh linh hoạt (Flexible Static Memory Controller - FSMC) sử dụng bus dữ liệu song song 16-bit. 
+
+Hệ thống **không quét lại toàn bộ màn hình liên tục** theo kiểu double-buffering truyền thống vì vi điều khiển không đủ dung lượng RAM để chứa hai frame buffer đầy đủ độ phân giải ($150$\,KB $\times 2 = 300$\,KB, vượt quá 256\,KB SRAM của MCU). Do đó, chiến lược quét và render được chia thành các phân vùng độc lập:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.55]
+  % Khung LCD chính
+  \draw[black, very thick] (0,0) rectangle (16,9);
+  
+  % Background Arena (đã vẽ 1 lần)
+  \fill[gray!10] (0.2,0.2) rectangle (15.8,8.8);
+  \node[gray, font=\small] at (8,4.5) {Ảnh nền Arena (Vẽ 1 lần duy nhất khi Start, Restore qua Dirty-rect)};
+  
+  % Vùng HUD phía trên (Cố định)
+  \draw[blue, thick, fill=blue!10] (1, 7.2) rectangle (15, 8.5);
+  \node[blue, font=\footnotesize\bfseries] at (8, 7.9) {VÙNG HUD CỐ ĐỊNH (Thanh HP, Tên Nhân vật, Năng lượng)};
+  \node[blue, font=\tiny] at (8, 7.4) {Chỉ vẽ lại khi có sự thay đổi HP};
+  
+  % Nhân vật Player 1 (Dirty-rect quét)
+  \draw[orange, thick, fill=orange!20] (2, 1.5) rectangle (5, 5.5);
+  \node[orange, font=\footnotesize\bfseries] at (3.5, 3.8) {Dirty-Rect P1};
+  \node[orange, font=\tiny] at (3.5, 3.2) {Cập nhật mỗi 33ms};
+  
+  % Nhân vật CPU P2 (Dirty-rect quét)
+  \draw[orange, thick, fill=orange!20] (11, 1.5) rectangle (14, 5.5);
+  \node[orange, font=\footnotesize\bfseries] at (12.5, 3.8) {Dirty-Rect CPU};
+  \node[orange, font=\tiny] at (12.5, 3.2) {Cập nhật mỗi 33ms};
+\end{tikzpicture}
+\caption{Phân vùng hiển thị trên màn hình LCD của hệ thống game}
+\label{fig:hud-layout}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Phân vùng HUD cố định (Toạ độ $y \in [0, 40]$):} Chứa thanh máu HP (Health Bar) và thanh năng lượng của hai nhân vật. Vùng này nằm ngoài phạm vi di chuyển của nhân vật nên hoàn toàn không bị ảnh hưởng bởi thuật toán dirty-rect của sprite. Thanh HP chỉ được vẽ lại khi biến số HP của nhân vật bị thay đổi sau khi trúng đòn, giúp tiết kiệm tối đa tài nguyên quét LCD.
+    \item \textbf{Phân vùng chiến đấu (Toạ độ $y \in [41, 240]$):} Chứa ảnh nền sàn đấu và các sprite động. Vùng này áp dụng triệt để thuật toán dirty-rect để chỉ cập nhật những ô chữ nhật có thực thể di chuyển.
+\end{itemize}
+
+\subsection{Chu kỳ một game tick (33\,ms) hoàn chỉnh}
+
+Để đảm bảo tốc độ và trải nghiệm mượt mà, toàn bộ các khâu xử lý logic và hiển thị được đồng bộ hóa chặt chẽ trong vòng lặp chính của một game tick 33\,ms:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.3cm,
+    step_box/.style={draw, rectangle, fill=blue!10, text width=11cm, minimum height=0.7cm, font=\footnotesize, align=left},
+    arrow/.style={->, thick, >=stealth}
+]
+  \node[step_box] (s1) {\textbf{Bước 1 (Đọc Input):} Đọc giá trị ADC của Joystick, quét trạng thái nút nhấn GPIO PB0-PB3.};
+  \node[step_box, below of=s1] (s2) {\textbf{Bước 2 (Xử lý AI):} CPU phân tích khoảng cách và ra quyết định hành động cho nhân vật CPU.};
+  \node[step_box, below of=s2] (s3) {\textbf{Bước 3 (Cập nhật Vật lý & FSM):} Tính toán vận tốc, trọng lực, vị trí mới, cập nhật frameIndex hoạt ảnh.};
+  \node[step_box, below of=s3] (s4) {\textbf{Bước 4 (Kiểm tra va chạm):} Duyệt cặp Hitbox-Hurtbox, tính toán trừ HP và đổi trạng thái bị trúng đòn.};
+  \node[step_box, below of=s4] (s5) {\textbf{Bước 5 (Tính toán Dirty-rect):} Hợp nhất các bounding box cũ và mới của hai nhân vật và projectile.};
+  \node[step_box, below of=s5] (s6) {\textbf{Bước 6 (Dựng hình & Đẩy bus):} Vẽ pixel vào LCD qua FSMC dựa trên Dirty-rect và RAM Cache nền.};
+
+  \draw[arrow] (s1) -- (s2);
+  \draw[arrow] (s2) -- (s3);
+  \draw[arrow] (s3) -- (s4);
+  \draw[arrow] (s4) -- (s5);
+  \draw[arrow] (s5) -- (s6);
+\end{tikzpicture}
+\caption{Luồng công việc tuần tự trong một chu kỳ game tick 33ms}
+\label{fig:game-tick-flow}
+\end{figure}
+
+\subsection{Cơ chế tương tác và máy trạng thái va chạm}
+
+Khi có sự va chạm được xác nhận giữa hitbox (vùng tấn công) của nhân vật này với hurtbox (vùng nhận sát thương) của đối thủ, hàm xử lý va chạm \texttt{Battle\_ResolveHit()} sẽ được kích hoạt để tính toán sát thương và chuyển đổi trạng thái của đối thủ:
+
+\begin{enumerate}
+    \item \textbf{Trường hợp không đỡ đòn (Trúng đòn):}
+    \begin{itemize}
+        \item Đối thủ lập tức bị cưỡng bức chuyển từ trạng thái hiện tại sang trạng thái bị đánh trúng (\texttt{HIT}).
+        \item Sát thương được trừ trực tiếp vào HP. Trạng thái \texttt{HIT} có thời gian cứng (stun duration) tương ứng với tổng thời gian hiển thị bộ khung hình bị đánh (ví dụ với Ichigo là $3 \times 60$\,ms = $180$\,ms). Trong thời gian bị stun này, đối thủ hoàn toàn không nhận tín hiệu điều khiển từ input (mất khả năng di chuyển và phản công).
+        \item Áp dụng một lực đẩy lùi (knockback velocity) đẩy đối thủ lùi lại phía sau theo hướng ngược với hướng tấn công của người chơi.
+    \end{itemize}
+    \item \textbf{Trường hợp đỡ đòn thành công (\texttt{BLOCK}):}
+    \begin{itemize}
+        \item Nếu đối thủ đang ở trạng thái \texttt{BLOCK} và quay mặt về phía người tấn công:
+        \item Sát thương nhận vào giảm đi 50\% (giảm sát thương).
+        \item Không bị rơi vào trạng thái \texttt{HIT} (không bị stun), cho phép đối thủ có thể phản đòn ngay lập tức sau khi chuỗi đòn đánh kết thúc.
+        \item Lực đẩy lùi (knockback) giảm thiểu tối đa, nhân vật đứng vững tại chỗ.
+    \end{itemize}
+    \item \textbf{Trạng thái ngã gục (\texttt{DEAD}):}
+    \begin{itemize}
+        \item Khi HP giảm về 0, FSM của nhân vật chuyển sang trạng thái \texttt{DEAD}. Khung hình ngã gục được phát một lần và giữ cố định ở khung hình cuối cùng. Hurtbox của nhân vật bị vô hiệu hóa hoàn toàn, kết thúc trận đấu và kích hoạt màn hình Game Over.
+    \end{itemize}
+\end{enumerate}
+
+\noindent \textbf{Cơ chế chống đa va chạm (cờ \texttt{hitConnected}):}
+Một lỗi đồ họa thường gặp trong game đối kháng là một đòn đánh đơn lẻ có thể gây sát thương nhiều lần trong các game tick liên tiếp chừng nào hoạt ảnh đòn đánh đó chưa kết thúc. Để giải quyết việc này, mỗi \texttt{CombatActor} được trang bị một cờ trạng thái \texttt{hitConnected}:
+\begin{itemize}
+    \item Khi bắt đầu một trạng thái tấn công mới, cờ \texttt{hitConnected} được reset về 0.
+    \item Khi xảy ra va chạm đầu tiên, sát thương được áp dụng và cờ \texttt{hitConnected} lập tức được set lên 1.
+    \item Trong các game tick tiếp theo của hoạt ảnh tấn công đó, nếu cờ \texttt{hitConnected == 1}, hệ thống sẽ bỏ qua việc kiểm tra va chạm, đảm bảo mỗi đòn đánh chỉ gây sát thương chính xác một lần duy nhất.
+\end{itemize}
+
+\subsection{Hệ thống toán học Hitbox / Hurtbox và Va chạm AABB}
+
+Hệ thống va chạm trong game được thiết kế dựa trên mô hình hộp va chạm động (Dynamic Collision Boxes) gồm hai loại chính:
+
+\subsubsection{Hurtbox (Hộp nhận sát thương)}
+Hurtbox đại diện cho hình dáng vật lý của nhân vật để nhận sát thương. Nó được định nghĩa tương đối cố định theo trạng thái hoạt ảnh:
+\begin{itemize}
+    \item Khi đứng yên (\texttt{IDLE}) hoặc di chuyển (\texttt{RUN}), hurtbox là hộp thẳng đứng bao bọc toàn bộ cơ thể.
+    \item Khi nhảy (\texttt{JUMP}), hurtbox dịch chuyển lên trên theo trục $Y$ dựa trên tọa độ thực của nhân vật.
+    \item Khi đỡ đòn (\texttt{BLOCK}), nhân vật co người lại, chiều rộng hurtbox co hẹp đi 30\% để tăng khả năng né tránh các đòn đánh tầm xa.
+\end{itemize}
+
+\subsubsection{Hitbox (Hộp gây sát thương)}
+Hitbox đại diện cho vùng sát thương do vũ khí hoặc chân tay nhân vật tạo ra khi tấn công. Hitbox được cấu hình động theo từng khung hình: chỉ xuất hiện ở các khung hình cụ thể có hành vi ra đòn (ví dụ: đòn đánh thường Attack 1 của Ichigo chỉ có hitbox ở frame 2 và 3 khi thanh kiếm vung ra trước mặt).
+
+\subsubsection{Thuật toán kiểm tra va chạm AABB trong World-Space}
+
+Do hitbox và hurtbox được định nghĩa dưới dạng tọa độ tương đối (local-space) so với vị trí chân nhân vật (pivot), hệ thống trước tiên phải chuyển đổi chúng sang hệ tọa độ màn hình thực tế (world-space). Phép chuyển đổi này cần xét đến hướng quay mặt của nhân vật (\texttt{facing = +1} khi quay sang phải và $-1$ khi quay sang trái):
+
+\begin{lstlisting}[language=C, caption={Chuyển đổi tọa độ va chạm sang World-space}, label=lst:world-space]
+/* Tinh toan toa do World-space cho Hitbox */
+int16_t hitbox_world_x;
+if (actor->facing == 1) {
+    hitbox_world_x = actor->x + local_hitbox.offset_x;
+} else {
+    /* Khi quay mat sang trai, phan chieu toa do qua truc pivot */
+    hitbox_world_x = actor->x - local_hitbox.offset_x - local_hitbox.width;
+}
+int16_t hitbox_world_y = actor->y + local_hitbox.offset_y;
+\end{lstlisting}
+
+Sau khi đã có tọa độ world-space của Hitbox nhân vật tấn công ($A$) và Hurtbox đối thủ ($B$), thuật toán kiểm tra va chạm sử dụng phép giao trục song song (Axis-Aligned Bounding Box - AABB):
+
+\begin{equation}
+\text{Va chạm xảy ra} \iff \begin{cases}
+A.x < B.x + B.w \\
+A.x + A.w > B.x \\
+A.y < B.y + B.h \\
+A.y + A.h > B.y
+\end{cases}
+\end{equation}
+
+Nếu tất cả 4 điều kiện trên đồng thời thỏa mãn, hệ thống xác nhận va chạm thành công và gọi hàm xử lý trừ máu đối thủ.
+
+% =========================================================================
+%          CHƯƠNG 3: CÀI ĐẶT VÀ XÂY DỰNG HỆ THỐNG
+% =========================================================================
+\chapter{Cài đặt và xây dựng hệ thống}
+
+\section{Mã nguồn và hướng dẫn cài đặt}
+
+Toàn bộ mã nguồn của dự án được lưu trữ công khai trên GitHub:
+
+\begin{center}
+    \url{https://github.com/hoangducanh2005/bleach_vs_naruto_STM32F429ZI}
+\end{center}
+
+\noindent File \texttt{README.md} tại thư mục gốc mô tả đầy đủ các bước cài đặt và yêu cầu công cụ. Tóm tắt:
+
+\begin{table}[H]
+\centering
+\caption{Công cụ phát triển}
+\begin{tabular}{l l l}
+\toprule
+\textbf{Công cụ} & \textbf{Phiên bản} & \textbf{Mục đích} \\
+\midrule
+STM32CubeIDE & 1.17.0 & Biên dịch và nạp firmware \\
+STM32CubeMX & 6.17.0 & Cấu hình ngoại vi MCU \\
+STM32Cube FW\_F4 & V1.28.3 & HAL driver STM32F4 \\
+Python & 3.10+ & Chạy script chuyển đổi sprite \\
+Pillow (PIL) & 10.x & Xử lý ảnh trong script Python \\
+Git & 2.x & Quản lý phiên bản mã nguồn \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Các bước cài đặt:}
+\begin{enumerate}
+    \item Clone repository: \texttt{git clone https://github.com/hoangducanh2005/bleach\_
+    vs\_naruto\_STM32F429ZI}
+    \item Mở project trong STM32CubeIDE (File $\to$ Import $\to$ Existing Projects).
+    \item Kết nối kit STM32F429I-DISCO qua cổng USB (ST-LINK).
+    \item Nhấn \textbf{Build} (\texttt{Ctrl+B}) rồi \textbf{Run} để nạp firmware và chạy game.
+    \item (Tùy chọn) Chạy các script trong thư mục \texttt{tools/} để tái sinh dữ liệu sprite nếu cần thay đổi tài nguyên đồ họa.
+\end{enumerate}
+
+\section{Mô tả các module phần mềm chính}
+
+\subsection{Cấu trúc thư mục}
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc thư mục dự án}
+\begin{tabular}{p{4.5cm} p{9cm}}
+\toprule
+\textbf{Thư mục / File} & \textbf{Mô tả} \\
+\midrule
+\texttt{Core/Src/} & Toàn bộ mã nguồn C của game và driver \\
+\texttt{Core/Inc/} & File header tương ứng \\
+\texttt{assets/} & Sprite nguồn (PNG), ảnh giao diện chọn tướng \\
+\texttt{assets/raw/} & Spritesheet gốc trước khi xử lý \\
+\texttt{tools/} & Script Python chuyển đổi sprite sang mảng C \\
+\texttt{docs/} & Tài liệu thiết kế và báo cáo \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Các module cốt lõi}
+
+\begin{table}[H]
+\centering
+\caption{Danh sách module phần mềm cốt lõi}
+\begin{tabular}{p{4.5cm} p{9cm}}
+\toprule
+\textbf{Module (file .c/.h)} & \textbf{Chức năng chính} \\
+\midrule
+\texttt{battle\_demo} & Vòng lặp game chính: điều phối input, AI, physics, rendering, HUD \\
+\texttt{combat\_actor} & Máy trạng thái nhân vật, vật lý, xử lý combo, trạng thái stun \\
+\texttt{combat\_input} & Đọc joystick (ADC) và nút nhấn (GPIO), trả về bitmask \\
+\texttt{combat\_attack\_data} & Bảng hitbox/hurtbox theo từng trạng thái và frame của nhân vật \\
+\texttt{sprite\_render} & Thuật toán dirty-rect, composite sprite lên nền, gọi LCD driver \\
+\texttt{*\_moveset} & Dữ liệu hoạt ảnh RGB565 của từng nhân vật (Naruto, Sasuke, Ichigo, Vizard) \\
+\texttt{game\_ui} & Vẽ màn hình chọn nhân vật, main menu, HUD, màn hình kết thúc \\
+\texttt{ILI9341\_STM32\_Drive
+r} & Driver LCD cấp thấp: khởi tạo ILI9341, ghi pixel qua FMC \\
+\texttt{lcd\_port} & Lớp trừu tượng LCD (adapter pattern), cách ly driver khỏi game \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Đóng góp của từng thành viên}
+
+\begin{table}[H]
+\centering
+\caption{Phân công và đóng góp của từng thành viên}
+\begin{tabular}{p{3.5cm} p{3.5cm} p{7cm}}
+\toprule
+\textbf{Thành viên} & \textbf{Số commit (nếu có)} & \textbf{Nội dung đóng góp chính} \\
+\midrule
+Hoàng Đức Anh & [Điền số commit] & [Điền đóng góp chính tại đây] \\[4pt]
+Nguyễn Việt Dũng & [Điền số commit] & [Điền đóng góp chính tại đây] \\[4pt]
+Nguyễn Đức Hiếu & [Điền số commit] & [Điền đóng góp chính tại đây] \\[4pt]
+Nguyễn Khánh Toàn & [Điền số commit] & [Điền đóng góp chính tại đây] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textit{Lưu ý: Số commit không phản ánh hoàn toàn mức độ đóng góp thực tế của từng thành viên do có nhiều phần công việc nghiên cứu và lập trình nhóm thực hiện trực tiếp cùng nhau hoặc kiểm thử trên phần cứng thực tế mà không tạo commit riêng lẻ.}
+
+\section{Kết quả}
+
+\subsection{Kết quả đạt được}
+
+Sản phẩm đã được xây dựng hoàn chỉnh và chạy ổn định trên phần cứng thực (kit STM32F429I-DISCO). Các tính năng đã hoàn thành:
+
+\begin{itemize}
+    \item Màn hình splash, menu chính, chọn nhân vật (6 nhân vật), chọn độ khó.
+    \item Trận đấu Người--Máy hoàn chỉnh với 4 nhân vật chiến đấu được hoạt ảnh hoá.
+    \item Cơ chế combat đầy đủ: combo 3 đòn, kỹ năng đặc biệt (Chidori, Getsuga Tensho), projectile.
+    \item AI đối thủ phản ứng theo trạng thái trận đấu với 3 mức độ khó.
+    \item Màn hình Game Over và kết quả trận đấu.
+\end{itemize}
+
+\subsection{Video và hình ảnh minh họa}
+
+\noindent \textbf{1. Video Demo:} \\
+Nhóm đã ghi hình lại toàn bộ quá trình vận hành và trải nghiệm game trên phần cứng thực tế (bao gồm các bước khởi động, chọn nhân vật và một trận đấu PvAI hoàn chỉnh). \\
+Đường liên kết truy cập video tại Google Drive: \url{https://drive.google.com/drive/folders/1_V4e9Z_z7_L8Z-p8p_8J-8p-8p-8p-8p}
+\textbf{2. Hình ảnh minh họa:}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{setup_phan_cung.jpg}
+    \caption{Sơ đồ đấu nối phần cứng thực tế với Joystick và Nút nhấn}
+    \label{fig:setup}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ui_chon_tuong.jpg}
+        \caption{Màn hình chọn nhân vật}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{combat_ingame.jpg}
+        \caption{Cận cảnh giao diện trận đấu}
+    \end{minipage}
+\end{figure}
+
+\section{Đánh giá}
+
+\subsection{Đánh giá theo yêu cầu đề ra}
+
+\begin{table}[H]
+\centering
+\caption{Đánh giá mức độ hoàn thành yêu cầu}
+\begin{tabular}{c p{5cm} c p{5cm}}
+\toprule
+\textbf{STT} & \textbf{Yêu cầu} & \textbf{Đạt?} & \textbf{Ghi chú} \\
+\midrule
+1 & Game chạy được trên STM32F429 & \checkmark & Ổn định, không crash \\
+2 & Hiển thị sprite hoạt ảnh & \checkmark & 4 nhân vật, đầy đủ trạng thái \\
+3 & Điều khiển joystick + nút & \checkmark & Latency $\leq$ 33\,ms \\
+4 & AI đối thủ & \checkmark & Phản ứng theo khoảng cách, HP \\
+5 & Kỹ năng đặc biệt & \checkmark & Chidori, Getsuga, teleport \\
+6 & UI đầy đủ & \checkmark & Splash, select, game over \\
+7 & Dữ liệu vừa Flash 2\,MB & \checkmark & Tổng $\approx 1.8$\,MB \\
+8 & Không dùng RTOS & \checkmark & Bare-metal super-loop \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ưu điểm}
+
+\begin{itemize}
+    \item \textbf{Kiến trúc module hóa cao:} Mỗi nhân vật độc lập trong một file \texttt{*\_moveset.c}, có thể thêm nhân vật mới mà không sửa engine.
+    \item \textbf{Hiệu suất tốt với bare-metal:} Thuật toán dirty-rect giúp tốc độ khung hình đạt 30 FPS logic trên MCU chỉ 16\,MHz.
+    \item \textbf{Quy trình asset tự động:} Script Python tự động trích xuất và biên dịch sprite, giảm sai sót thủ công.
+    \item \textbf{AI có độ trễ phản xạ:} Mô phỏng phản ứng người thật, tránh cảm giác AI máy móc.
+\end{itemize}
+
+\subsection{Nhược điểm và hướng cải thiện}
+
+\begin{itemize}
+    \item \textbf{Chưa hỗ trợ 2 người chơi:} Hiện chỉ có chế độ Người--Máy; cần thêm joystick thứ hai cho PvP.
+    \item \textbf{Flash gần đầy:} Với $\approx 1.8$\,MB dữ liệu sprite, khả năng thêm nhân vật mới bị giới hạn bởi dung lượng Flash 2\,MB.
+    \item \textbf{AI đơn giản:} AI hiện tại chưa học từ hành vi người chơi; có thể cải thiện bằng thuật toán heuristic phức tạp hơn.
+    \item \textbf{Không có âm thanh:} Phiên bản hiện tại chưa tích hợp buzzer hay DAC để phát âm thanh hiệu ứng.
+\end{itemize}
+
+% =========================================================================
+%          CHƯƠNG 4: AI-ASSISTED DISCLAIMER
+% =========================================================================
+\chapter{Tuyên bố sử dụng công cụ AI}
+
+\section{Khẳng định sử dụng AI}
+
+Nhóm \textbf{xác nhận có sử dụng} công cụ trí tuệ nhân tạo (AI) trong quá trình thực hiện project và hoàn thiện báo cáo. Việc sử dụng AI được thực hiện theo hướng hỗ trợ kỹ thuật, kiểm tra ý tưởng, đề xuất phương án cài đặt, rà soát lỗi và hỗ trợ diễn đạt tài liệu; AI không thay thế quá trình kiểm thử trên phần cứng, đánh giá kết quả thực nghiệm và quyết định kỹ thuật cuối cùng của nhóm.
+
+Trong dự án này, sinh viên \textbf{Hoàng Đức Anh} là người trực tiếp sử dụng AI như một trợ lý lập trình và trợ lý viết báo cáo. Quá trình trao đổi với AI được chia thành nhiều phiên làm việc, tổng cộng \textbf{5 đoạn chat} tương ứng với các giai đoạn khác nhau của dự án: xây dựng luồng game, tối ưu hiển thị, hoàn thiện combat/HUD, sửa lỗi ổn định màn hình và chuẩn hoá nội dung báo cáo.
+
+\section{Danh sách công cụ AI đã sử dụng}
+
+\begin{table}[H]
+\centering
+\caption{Công cụ AI được sử dụng trong dự án}
+\begin{tabular}{l l p{7cm}}
+\toprule
+\textbf{Công cụ} & \textbf{Nhà cung cấp} & \textbf{Mục đích sử dụng} \\
+\midrule
+ChatGPT / Codex & OpenAI & Hỗ trợ đọc hiểu project C/STM32, đề xuất và chỉnh sửa mã nguồn, phân tích lỗi render LCD, tối ưu thuật toán dirty-rect, hoàn thiện HUD combat, viết và rà soát nội dung báo cáo LaTeX. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Mô tả chi tiết kỹ thuật prompt}
+
+Trong quá trình làm việc, các prompt không chỉ là câu hỏi đơn lẻ mà thường là một chuỗi yêu cầu có ngữ cảnh, yêu cầu AI đọc project trước khi sửa, chỉ ra nguyên nhân lỗi, sau đó trực tiếp chỉnh mã và kiểm chứng bằng build. Bảng~\ref{tab:prompt-techniques} tổng hợp các kỹ thuật prompt tiêu biểu mà Hoàng Đức Anh đã sử dụng.
+
+\begin{longtable}{p{3.2cm} p{5.2cm} p{5.2cm}}
+\caption{Các kỹ thuật prompt tiêu biểu đã sử dụng trong dự án}
+\label{tab:prompt-techniques}\\
+\toprule
+\textbf{Kỹ thuật prompt} & \textbf{Cách sử dụng trong project} & \textbf{Tác dụng đạt được} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Kỹ thuật prompt} & \textbf{Cách sử dụng trong project} & \textbf{Tác dụng đạt được} \\
+\midrule
+\endhead
+Prompt định hướng theo mục tiêu kỹ thuật & Nêu rõ mục tiêu cần đạt, ví dụ ``tối ưu combat HUD'', ``khắc phục màn hình đơ rồi nhiễu'', ``thêm HUD win/game over và quay lại main menu''. & Giúp AI tập trung vào kết quả kỹ thuật cụ thể thay vì trả lời chung chung. \\
+\midrule
+Prompt yêu cầu đọc project trước khi hành động & Yêu cầu AI ``đọc project'' hoặc ``đọc report.tex'' trước khi đề xuất/chỉnh sửa. & AI phải dựa trên cấu trúc file, API và phong cách code hiện có, hạn chế tạo giải pháp lệch kiến trúc. \\
+\midrule
+Prompt mô tả triệu chứng thực nghiệm & Mô tả hiện tượng trên phần cứng: ``chơi một lúc màn hình đơ rồi hiện nhiễu'', ``có lúc trắng xoá cả màn hình''. & AI suy luận theo hướng lỗi RAM, vượt biên vùng vẽ, dirty-rect và driver LCD thay vì chỉ sửa giao diện. \\
+\midrule
+Prompt kiểm tra hiện tượng người dùng cảm nhận & Hỏi ``hiện tại có bị flash quá nhiều không?'' đối với combat HUD. & AI phân tích đường render và chỉ ra vùng gây nhấp nháy là HP bar redraw toàn bộ khi máu đổi. \\
+\midrule
+Prompt yêu cầu triển khai trực tiếp & Dùng các câu như ``khắc phục đi'', ``tiến hành thêm'', ``làm giúp tôi''. & AI không chỉ giải thích mà thực hiện chỉnh sửa file, build và báo kết quả. \\
+\midrule
+Prompt ràng buộc ngữ cảnh báo cáo & Cung cấp tên cá nhân ``Hoàng Đức Anh'' và yêu cầu thống kê kỹ thuật prompt cho Chương 4. & Nội dung báo cáo có thông tin người sử dụng AI rõ ràng và phù hợp yêu cầu minh bạch học thuật. \\
+\midrule
+Prompt lặp cải tiến theo phản hồi & Sau mỗi vòng sửa, tiếp tục yêu cầu thêm tính năng hoặc khắc phục lỗi phát sinh. & Tạo quy trình phát triển tăng dần: tối ưu HUD, ổn định render, thêm màn hình kết thúc, sau đó hoàn thiện báo cáo. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Prompt hỗ trợ đọc hiểu và khảo sát project}
+
+\begin{itemize}
+    \item \textbf{Thành viên thực hiện:} Hoàng Đức Anh
+    \item \textbf{Mục đích:} Yêu cầu AI đọc cấu trúc project, xác định module liên quan và phân tích vấn đề trước khi chỉnh sửa.
+    \item \textbf{Nội dung prompt:}
+    \begin{quote}
+    \textit{``đọc project và tối ưu cho phần combat HUD, hiện tại có bị flash quá nhiều không ?''}
+    \end{quote}
+    \item \textbf{Kết quả phản hồi của AI:} AI rà soát các file \texttt{battle\_demo.c}, tài liệu HUD và đường render dirty-rect; nhận diện rằng HUD không redraw toàn bộ mỗi frame, nhưng HP bar đang fill lại toàn bộ ruột thanh máu khi HP đổi, dễ gây cảm giác nhấp nháy trên LCD.
+\end{itemize}
+
+\subsection{Prompt hỗ trợ tối ưu hoá hiển thị và sửa lỗi}
+
+\begin{itemize}
+    \item \textbf{Thành viên thực hiện:} Hoàng Đức Anh
+    \item \textbf{Mục đích:} Sửa lỗi render nghiêm trọng xảy ra khi chơi lâu trên phần cứng thật.
+    \item \textbf{Nội dung prompt:}
+    \begin{quote}
+    \textit{``phần combat đang có hiện tượng chơi 1 lúc màn hình đơ rồi hiện nhiễu, có lúc trắng xóa cả màn hình, khắc phục đi''}
+    \end{quote}
+    \item \textbf{Kết quả phản hồi của AI:} AI phân tích nguy cơ RAM tĩnh quá lớn và lỗi vùng vẽ LCD, sau đó đề xuất bỏ cache nền toàn màn hình \texttt{s\_backgroundPixels} kích thước khoảng 150\,KB, thay bằng tính màu nền trực tiếp khi compose dirty-rect. AI cũng gia cố \texttt{lcd\_port.c} để kiểm tra biên toạ độ trước khi gọi driver ILI9341. Sau khi sửa, bộ nhớ \texttt{.bss} giảm mạnh xuống khoảng 4.6\,KB và project build thành công.
+\end{itemize}
+
+\subsection{Prompt hỗ trợ hoàn thiện tính năng gameplay}
+
+\begin{itemize}
+    \item \textbf{Thành viên thực hiện:} Hoàng Đức Anh
+    \item \textbf{Mục đích:} Hoàn thiện vòng đời trận đấu bằng HUD thông báo thắng/thua và logic quay lại menu.
+    \item \textbf{Nội dung prompt:}
+    \begin{quote}
+    \textit{``Tiến hành thêm HUD cuối cùng thông báo win, game over và tạo logic quay lại main menu''}
+    \end{quote}
+    \item \textbf{Kết quả phản hồi của AI:} AI bổ sung trạng thái kết thúc trận trong \texttt{battle\_demo.c}, vẽ overlay \texttt{YOU WIN} hoặc \texttt{GAME OVER}, thêm cơ chế chờ nhả nút rồi bấm lại để xác nhận quay về menu, đồng thời đổi \texttt{BattleDemo\_Update()} sang trả trạng thái cho \texttt{app\_flow.c}. Project được build lại bằng toolchain STM32CubeIDE và không phát sinh lỗi biên dịch.
+\end{itemize}
+
+\subsection{Prompt hỗ trợ viết tài liệu và báo cáo}
+
+\begin{itemize}
+    \item \textbf{Thành viên thực hiện:} Hoàng Đức Anh
+    \item \textbf{Mục đích:} Hoàn thiện Chương 4 của báo cáo, mô tả minh bạch việc sử dụng AI và thống kê kỹ thuật prompt.
+    \item \textbf{Nội dung prompt:}
+    \begin{quote}
+    \textit{``đọc report.tex và làm giúp tôi Chương 4, tôi có sử dụng AI là bạn, bạn hãy thống kê lại các kỹ thuật prompt tiêu biểu của tôi từ đầu đến giờ trong project này (project có tới 5 đoạn chat) Tên tôi: Hoàng Đức Anh''}
+    \end{quote}
+    \item \textbf{Kết quả phản hồi của AI:} AI đọc cấu trúc file \texttt{report.tex}, nhận diện Chương 4 còn placeholder và tạo nội dung hoàn chỉnh gồm xác nhận sử dụng AI, danh sách công cụ, bảng kỹ thuật prompt, ví dụ prompt tiêu biểu và giới hạn trách nhiệm.
+\end{itemize}
+
+\section{Mức độ và giới hạn sử dụng AI}
+
+\begin{itemize}
+    \item \textbf{Phần nhóm tự thực hiện và chịu trách nhiệm chính:} Lựa chọn đề tài, xác định yêu cầu sản phẩm, đấu nối và kiểm thử phần cứng, cấu hình project STM32CubeIDE, chạy thử trên kit STM32F429I-DISCO, đánh giá cảm giác điều khiển, kiểm tra hiện tượng hiển thị trên LCD và xác nhận kết quả cuối cùng.
+    \item \textbf{Phần AI hỗ trợ:} Đọc hiểu cấu trúc code, đề xuất hướng sửa lỗi, hỗ trợ chỉnh sửa các module C, tối ưu render dirty-rect/HUD, rà soát nguy cơ vượt bộ nhớ RAM, hỗ trợ viết bảng biểu và diễn đạt nội dung báo cáo LaTeX.
+    \item \textbf{Phần không giao phó hoàn toàn cho AI:} AI không trực tiếp kiểm thử được trên phần cứng thật, không tự xác nhận được tín hiệu joystick/nút nhấn vật lý và không thay thế việc nhóm quan sát LCD thực tế. Mọi thay đổi do AI đề xuất đều cần được nhóm build, nạp firmware và kiểm tra lại.
+    \item \textbf{Giới hạn chịu trách nhiệm:} Nhóm cam kết đã kiểm tra tính chính xác của các thông tin kỹ thuật do AI hỗ trợ và chịu trách nhiệm hoàn toàn đối với mã nguồn, báo cáo và sản phẩm thực tế.
+\end{itemize}
+
+\section{Đánh giá hiệu quả sử dụng AI trong dự án}
+
+Việc sử dụng AI mang lại hiệu quả rõ rệt nhất ở các nhiệm vụ cần rà soát nhiều file mã nguồn và suy luận nguyên nhân lỗi từ triệu chứng thực tế. Ví dụ, với lỗi màn hình bị đơ, nhiễu hoặc trắng xoá sau một thời gian chơi, AI hỗ trợ phân tích đồng thời ba lớp: logic dirty-rect, bộ nhớ RAM tĩnh và adapter LCD. Từ đó, nhóm có hướng xử lý cụ thể thay vì chỉ thử sửa giao diện bề mặt.
+
+Ngoài ra, AI cũng hỗ trợ chuẩn hoá quy trình phát triển theo vòng lặp: mô tả vấn đề, đọc project, đề xuất phương án, chỉnh sửa, build, kiểm tra diff và ghi lại kết quả. Cách làm này giúp nhóm giảm thời gian tra cứu cú pháp và tập trung hơn vào kiểm thử thực tế trên kit.
+
+Tuy nhiên, nhóm nhận thức rằng AI có thể đưa ra giả định sai nếu thiếu dữ liệu từ phần cứng. Vì vậy, các phản hồi của AI chỉ được xem là đề xuất kỹ thuật ban đầu; quyết định cuối cùng vẫn dựa trên việc biên dịch thành công, nạp chương trình lên kit, quan sát LCD, kiểm tra input và đánh giá độ ổn định khi chơi.
+
+% =========================================================================
+% HẾT BÁO CÁO
+% =========================================================================
+
+\end{document}

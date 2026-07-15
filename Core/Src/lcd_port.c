@@ -29,14 +29,25 @@ void LCD_Port_Init(void)
 
 void LCD_Port_DrawPixel(uint16_t x, uint16_t y, uint16_t color)
 {
+  if ((x >= LCD_PORT_WIDTH) || (y >= LCD_PORT_HEIGHT))
+  {
+    return;
+  }
+
   ILI9341_DrawPixel(x, y, color);
 }
 
 void LCD_Port_DrawPixels(uint16_t x, uint16_t y, uint16_t width, const uint16_t *colors)
 {
-  if ((width == 0U) || (colors == 0))
+  if ((width == 0U) || (colors == 0) ||
+      (x >= LCD_PORT_WIDTH) || (y >= LCD_PORT_HEIGHT))
   {
     return;
+  }
+
+  if (width > (uint16_t)(LCD_PORT_WIDTH - x))
+  {
+    width = (uint16_t)(LCD_PORT_WIDTH - x);
   }
 
   ILI9341_DrawRGB565Buffer(x, y, width, 1U, colors);
@@ -44,7 +55,14 @@ void LCD_Port_DrawPixels(uint16_t x, uint16_t y, uint16_t width, const uint16_t 
 
 void LCD_Port_DrawRGB565Bytes(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *bytes)
 {
-  if ((width == 0U) || (height == 0U) || (bytes == 0))
+  if ((width == 0U) || (height == 0U) || (bytes == 0) ||
+      (x >= LCD_PORT_WIDTH) || (y >= LCD_PORT_HEIGHT))
+  {
+    return;
+  }
+
+  if ((width > (uint16_t)(LCD_PORT_WIDTH - x)) ||
+      (height > (uint16_t)(LCD_PORT_HEIGHT - y)))
   {
     return;
   }
@@ -54,9 +72,19 @@ void LCD_Port_DrawRGB565Bytes(uint16_t x, uint16_t y, uint16_t width, uint16_t h
 
 void LCD_Port_FillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
 {
-  if ((width == 0U) || (height == 0U))
+  if ((width == 0U) || (height == 0U) ||
+      (x >= LCD_PORT_WIDTH) || (y >= LCD_PORT_HEIGHT))
   {
     return;
+  }
+
+  if (width > (uint16_t)(LCD_PORT_WIDTH - x))
+  {
+    width = (uint16_t)(LCD_PORT_WIDTH - x);
+  }
+  if (height > (uint16_t)(LCD_PORT_HEIGHT - y))
+  {
+    height = (uint16_t)(LCD_PORT_HEIGHT - y);
   }
 
   ILI9341_DrawRectangle(x, y, width, height, color);

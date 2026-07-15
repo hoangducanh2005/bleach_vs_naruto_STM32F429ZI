@@ -13,7 +13,7 @@
 #define COMBAT_BLOCK_SKILL_DECAY      20
 #define COMBAT_STABILITY_RECOVERY_MS  1500U
 #define COMBAT_INVINCIBLE_DURATION_MS 500U
-#define COMBAT_KNOCKDOWN_DURATION_MS  600U
+#define COMBAT_KNOCKDOWN_DURATION_MS  1500U
 
 // Kiểm tra xem nhân vật có đang trong trạng thái bất tử hay không
 uint8_t CombatRules_IsInvincible(const CombatActor *actor, uint32_t nowMs);

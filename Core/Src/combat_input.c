@@ -6,6 +6,7 @@
 #define COMBAT_INPUT_ADC_Y_CHANNEL 1U
 #define COMBAT_INPUT_ADC_TIMEOUT 10000U
 #define COMBAT_INPUT_CENTER_SAMPLES 16U
+#define COMBAT_INPUT_AXIS_SAMPLES 4U
 #define COMBAT_INPUT_DEADZONE 650
 #define COMBAT_INPUT_BUTTON_ACTIVE_LOW 1U
 #define COMBAT_INPUT_ATTACK_BUTTON_PORT GPIOB
@@ -26,6 +27,7 @@ static uint16_t s_centerY = 2048U;
 static uint8_t s_lastButtons;
 
 static uint16_t CombatInput_ReadAdc(uint8_t channel);
+static uint16_t CombatInput_ReadAxis(uint8_t channel);
 static void CombatInput_InitButtonGpio(void);
 static uint8_t CombatInput_ReadButtonsRaw(void);
 static uint8_t CombatInput_IsButtonPressed(GPIO_TypeDef *port, uint32_t pin);
@@ -35,6 +37,7 @@ void CombatInput_Init(void)
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
   (void)RCC->AHB1ENR;
 
+  GPIOA->MODER &= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1);
   GPIOA->MODER |= GPIO_MODER_MODE0 | GPIO_MODER_MODE1;
   GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1);
 
@@ -55,8 +58,8 @@ void CombatInput_Init(void)
 
   for (uint8_t i = 0U; i < COMBAT_INPUT_CENTER_SAMPLES; i++)
   {
-    sumX += CombatInput_ReadAdc(COMBAT_INPUT_ADC_X_CHANNEL);
-    sumY += CombatInput_ReadAdc(COMBAT_INPUT_ADC_Y_CHANNEL);
+    sumX += CombatInput_ReadAxis(COMBAT_INPUT_ADC_X_CHANNEL);
+    sumY += CombatInput_ReadAxis(COMBAT_INPUT_ADC_Y_CHANNEL);
   }
 
   s_centerX = (uint16_t)(sumX / COMBAT_INPUT_CENTER_SAMPLES);
@@ -69,9 +72,9 @@ uint8_t CombatInput_Read(void)
   uint8_t input = COMBAT_INPUT_NONE;
   uint8_t buttons = CombatInput_ReadButtonsRaw();
   uint8_t pressedEdges = (uint8_t)(buttons & (uint8_t)~s_lastButtons);
-  int16_t dx = (int16_t)CombatInput_ReadAdc(COMBAT_INPUT_ADC_X_CHANNEL) -
+  int16_t dx = (int16_t)CombatInput_ReadAxis(COMBAT_INPUT_ADC_X_CHANNEL) -
                (int16_t)s_centerX;
-  int16_t dy = (int16_t)CombatInput_ReadAdc(COMBAT_INPUT_ADC_Y_CHANNEL) -
+  int16_t dy = (int16_t)CombatInput_ReadAxis(COMBAT_INPUT_ADC_Y_CHANNEL) -
                (int16_t)s_centerY;
 
   s_lastButtons = buttons;
@@ -136,6 +139,18 @@ static uint16_t CombatInput_ReadAdc(uint8_t channel)
   }
 
   return (uint16_t)(ADC1->DR & 0x0FFFU);
+}
+
+static uint16_t CombatInput_ReadAxis(uint8_t channel)
+{
+  uint32_t sum = 0U;
+
+  for (uint8_t i = 0U; i < COMBAT_INPUT_AXIS_SAMPLES; i++)
+  {
+    sum += CombatInput_ReadAdc(channel);
+  }
+
+  return (uint16_t)(sum / COMBAT_INPUT_AXIS_SAMPLES);
 }
 
 static void CombatInput_InitButtonGpio(void)

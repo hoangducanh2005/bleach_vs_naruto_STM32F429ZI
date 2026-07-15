@@ -16,6 +16,7 @@
 #include "sprite_render.h"
 #include "stm32f4xx_hal.h"
 #include "vizard_moveset.h"
+#include "buzzer.h"
 
 #define BATTLE_TICK_MS 33U
 #define BATTLE_GROUND_Y 205
@@ -41,6 +42,9 @@
 #define BATTLE_AI_FAR_RANGE 132
 #define BATTLE_AI_ACTION_MIN_MS 120U
 #define BATTLE_AI_ACTION_MAX_MS 520U
+#define BATTLE_OVER_INPUT_DELAY_MS 500U
+#define BATTLE_OVER_CONFIRM_MASK \
+  (COMBAT_INPUT_ATTACK | COMBAT_INPUT_SKILL | COMBAT_INPUT_JUMP | COMBAT_INPUT_DASH)
 
 #define RGB565_BLACK 0x0000U
 #define RGB565_WHITE 0xFFFFU
@@ -59,9 +63,13 @@
 #define RGB565_LINE 0xEF5DU
 #define RGB565_ACCENT_ORANGE 0xFD20U
 #define RGB565_ACCENT_CYAN 0x07FFU
+#define RGB565_HUD_BG 0x0842U
+#define RGB565_HUD_FRAME 0xC618U
 #define RGB565_HP_BACK 0x4208U
 #define RGB565_HP_GOOD 0x07E0U
 #define RGB565_HP_WARN 0xFD20U
+#define RGB565_MANA 0x04FFU
+#define RGB565_MANA_BACK 0x18C6U
 #define RGB565_HURTBOX 0x07E0U
 #define RGB565_HITBOX 0xF800U
 
@@ -135,6 +143,7 @@ typedef struct
   uint32_t actionDurationMs;
   uint32_t nextThinkMs;
   uint32_t rng;
+  uint8_t difficulty;
 } BattleAiController;
 
 static CombatActor s_player;
@@ -148,7 +157,6 @@ static BattleActorSnapshot s_getsugaSnapshot;
 static BattleActorSnapshot s_chidoriSnapshot;
 static BattleActorSnapshot s_ninetailsBombSnapshot;
 static uint16_t s_compositeRun[LCD_PORT_WIDTH];
-static uint16_t s_backgroundPixels[LCD_PORT_WIDTH * LCD_PORT_HEIGHT];
 static uint32_t s_lastTickMs;
 static uint16_t s_lastPlayerHp;
 static uint16_t s_lastCpuHp;
@@ -158,7 +166,15 @@ static uint32_t s_lastGetsugaSkillStartMs;
 static uint32_t s_lastVizardSkillStartMs;
 static uint32_t s_lastVizardProjectileSkillStartMs;
 static uint32_t s_lastNinetailsBombSkillStartMs;
+static uint32_t s_battleOverStartedMs;
 static uint8_t s_vizardTeleported;
+static uint8_t s_battleOver;
+static uint8_t s_battleWon;
+static uint8_t s_battleOverInputArmed;
+static uint8_t s_secondsLeft;
+static uint32_t s_lastSecondUpdateMs;
+static CombatCharacterId s_playerCharacter = COMBAT_CHARACTER_VIZARD_ICHIGO;
+static CombatCharacterId s_cpuCharacter = COMBAT_CHARACTER_SASUKE;
 
 static const CombatHitboxDef s_getsugaHitbox = {
     0U,
@@ -205,7 +221,7 @@ static const CombatHitboxDef s_ninetailsBombHitbox = {
 static void Battle_DrawFrame(void);
 static void Battle_DrawActorsInitial(void);
 static void Battle_UpdateActors(void);
-static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs);
+static void Battle_AiInit(BattleAiController *ai, uint8_t difficulty, uint32_t nowMs);
 static uint8_t Battle_AiUpdate(BattleAiController *ai,
                                const CombatActor *self,
                                const CombatActor *target,
@@ -236,15 +252,25 @@ static void Battle_ResolveProjectileHit(BattleProjectile *projectile,
                                         CombatActor *target,
                                         uint32_t nowMs);
 static void Battle_DrawBackground(void);
-static void Battle_BuildBackgroundCache(void);
 static void Battle_DrawStaticSky(void);
 static void Battle_DrawGround(void);
 static void Battle_DrawArenaMarks(void);
 static void Battle_DrawHud(void);
+static void Battle_DrawBattleOverHud(uint8_t won);
+static uint8_t Battle_UpdateBattleOver(uint32_t nowMs);
+static void Battle_CheckBattleOver(uint32_t nowMs);
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
-                                 uint16_t borderColor);
+                                 uint16_t borderColor, uint8_t reverse);
+static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
+                                   uint16_t newHp, uint16_t borderColor,
+                                   uint8_t reverse);
 static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana,
-                               uint16_t borderColor);
+                               uint8_t reverse);
+static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
+                             uint16_t height, uint16_t value,
+                             uint16_t maxValue, uint16_t fillColor,
+                             uint16_t backColor, uint16_t borderColor,
+                             uint8_t reverse);
 static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureActor(const CombatActor *actor,
@@ -285,20 +311,27 @@ static uint16_t Battle_GetBackgroundPixel(uint16_t x, uint16_t y);
 static void Battle_FillSafe(int16_t x, int16_t y, int16_t width,
                             int16_t height, uint16_t color);
 
-void BattleDemo_Init(void)
+void BattleDemo_SetCharacters(CombatCharacterId playerCharacter,
+                              CombatCharacterId cpuCharacter)
+{
+  s_playerCharacter = playerCharacter;
+  s_cpuCharacter = cpuCharacter;
+}
+
+void BattleDemo_Init(uint8_t difficulty)
 {
   uint32_t now = HAL_GetTick();
 
   LCD_Port_Init();
   CombatInput_Init();
   CombatActor_Init(&s_player,
-                   COMBAT_CHARACTER_NARUTO_FULL_NINE_TAILS,
+                   s_playerCharacter,
                    BATTLE_P1_START_X,
                    BATTLE_GROUND_Y,
                    1,
                    now);
   CombatActor_Init(&s_cpu,
-                   COMBAT_CHARACTER_SASUKE,
+                   s_cpuCharacter,
                    BATTLE_CPU_START_X,
                    BATTLE_GROUND_Y,
                    -1,
@@ -320,24 +353,52 @@ void BattleDemo_Init(void)
   s_lastVizardSkillStartMs = 0U;
   s_lastVizardProjectileSkillStartMs = 0U;
   s_lastNinetailsBombSkillStartMs = 0U;
+  s_battleOverStartedMs = 0U;
   s_vizardTeleported = 0U;
-  Battle_AiInit(&s_cpuAi, now);
+  s_battleOver = 0U;
+  s_battleWon = 0U;
+  s_battleOverInputArmed = 0U;
+  s_secondsLeft = 60U;
+  s_lastSecondUpdateMs = now;
+  Battle_AiInit(&s_cpuAi, difficulty, now);
 
-  Battle_BuildBackgroundCache();
   Battle_DrawFrame();
   LCD_Port_Flush();
 }
 
-void BattleDemo_Update(void)
+uint8_t BattleDemo_Update(void)
 {
   uint32_t now = HAL_GetTick();
 
   if ((now - s_lastTickMs) < BATTLE_TICK_MS)
   {
-    return;
+    return 0U;
   }
 
   s_lastTickMs += BATTLE_TICK_MS;
+
+  /* Update countdown timer once per 1000ms */
+  if ((now - s_lastSecondUpdateMs) >= 1000U)
+  {
+    s_lastSecondUpdateMs += 1000U;
+    if (s_secondsLeft > 0U)
+    {
+      s_secondsLeft--;
+
+      char timerStr[3];
+      timerStr[0] = (char)('0' + (s_secondsLeft / 10U));
+      timerStr[1] = (char)('0' + (s_secondsLeft % 10U));
+      timerStr[2] = '\0';
+
+      LCD_Port_FillRect(143U, 6U, 34U, 21U, RGB565_BLACK);
+      ILI9341_DrawText(timerStr, FONT3, 148U, 8U, RGB565_WHITE, RGB565_BLACK);
+    }
+  }
+
+  if (s_battleOver != 0U)
+  {
+    return Battle_UpdateBattleOver(now);
+  }
 
   uint8_t input = CombatInput_Read();
   uint8_t cpuInput = Battle_AiUpdate(&s_cpuAi, &s_cpu, &s_player, now);
@@ -358,30 +419,34 @@ void BattleDemo_Update(void)
 
   if (s_player.hp != s_lastPlayerHp)
   {
-    Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
+    Battle_UpdateHealthBar(10U, 15U, s_lastPlayerHp, s_player.hp,
+                           RGB565_ACCENT_CYAN, 0U);
     s_lastPlayerHp = s_player.hp;
   }
 
   if (s_cpu.hp != s_lastCpuHp)
   {
-    Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);
+    Battle_UpdateHealthBar(206U, 15U, s_lastCpuHp, s_cpu.hp,
+                           RGB565_ACCENT_ORANGE, 1U);
     s_lastCpuHp = s_cpu.hp;
   }
 
   if (s_player.mana != s_lastPlayerMana)
   {
-    Battle_DrawManaBar(12U, 32U, s_player.mana, RGB565_ACCENT_CYAN);
+    Battle_DrawManaBar(10U, 27U, s_player.mana, 0U);
     s_lastPlayerMana = s_player.mana;
   }
 
   if (s_cpu.mana != s_lastCpuMana)
   {
-    Battle_DrawManaBar(202U, 32U, s_cpu.mana, RGB565_ACCENT_ORANGE);
+    Battle_DrawManaBar(226U, 27U, s_cpu.mana, 1U);
     s_lastCpuMana = s_cpu.mana;
   }
 
   Battle_UpdateActors();
+  Battle_CheckBattleOver(now);
   LCD_Port_Flush();
+  return 0U;
 }
 
 static void Battle_ResolveHit(CombatActor *attacker, CombatActor *target,
@@ -528,7 +593,7 @@ static void Battle_UpdateActors(void)
   s_ninetailsBombSnapshot = nextNinetailsBomb;
 }
 
-static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
+static void Battle_AiInit(BattleAiController *ai, uint8_t difficulty, uint32_t nowMs)
 {
   if (ai == 0)
   {
@@ -544,6 +609,7 @@ static void Battle_AiInit(BattleAiController *ai, uint32_t nowMs)
   ai->actionDurationMs = BATTLE_AI_ACTION_MIN_MS;
   ai->nextThinkMs = nowMs;
   ai->rng = 0x13572468UL;
+  ai->difficulty = difficulty;
 }
 
 static uint8_t Battle_AiUpdate(BattleAiController *ai,
@@ -560,10 +626,20 @@ static uint8_t Battle_AiUpdate(BattleAiController *ai,
 
   if ((self->state == COMBAT_ANIM_HIT) || (self->state == COMBAT_ANIM_DEAD))
   {
+    uint32_t reactionMs = 220U;
+    if (ai->difficulty == 0U)
+    {
+      reactionMs = 450U;
+    }
+    else if (ai->difficulty == 2U)
+    {
+      reactionMs = 110U;
+    }
+
     ai->action = BATTLE_AI_ACTION_HOLD;
     ai->queuedAction = BATTLE_AI_ACTION_HOLD;
     ai->actionStartedMs = nowMs;
-    ai->nextThinkMs = nowMs + BATTLE_AI_REACTION_MS;
+    ai->nextThinkMs = nowMs + reactionMs;
     return COMBAT_INPUT_NONE;
   }
 
@@ -626,8 +702,18 @@ static void Battle_AiObserve(BattleAiController *ai,
   ai->pending.targetOnGround = target->onGround;
   ai->pending.valid = 1U;
 
+  uint32_t reactionMs = 220U;
+  if (ai->difficulty == 0U)
+  {
+    reactionMs = 450U;
+  }
+  else if (ai->difficulty == 2U)
+  {
+    reactionMs = 110U;
+  }
+
   if ((ai->visible.valid == 0U) ||
-      ((nowMs - ai->pendingSeenMs) >= BATTLE_AI_REACTION_MS))
+      ((nowMs - ai->pendingSeenMs) >= reactionMs))
   {
     ai->visible = ai->pending;
     ai->pendingSeenMs = nowMs;
@@ -672,16 +758,33 @@ static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
     return BATTLE_AI_ACTION_ATTACK;
   }
 
+  uint16_t blockRate = 60U;
+  uint16_t skillRate = 50U;
+  uint16_t retreatRate = 40U;
+
+  if (ai->difficulty == 0U)
+  {
+    blockRate = 25U;
+    skillRate = 20U;
+    retreatRate = 15U;
+  }
+  else if (ai->difficulty == 2U)
+  {
+    blockRate = 90U;
+    skillRate = 80U;
+    retreatRate = 70U;
+  }
+
   if ((targetActive != 0U) &&
       (distance <= BATTLE_AI_NEAR_RANGE) &&
-      (Battle_AiRandom(ai, 100U) < 82U))
+      (Battle_AiRandom(ai, 100U) < blockRate))
   {
     return BATTLE_AI_ACTION_BLOCK;
   }
 
   if ((distance <= BATTLE_AI_SKILL_RANGE) &&
       ((ai->visible.targetHp <= 45U) || (ai->visible.selfHp <= 35U)) &&
-      (Battle_AiRandom(ai, 100U) < 58U))
+      (Battle_AiRandom(ai, 100U) < skillRate))
   {
     return BATTLE_AI_ACTION_SKILL;
   }
@@ -693,7 +796,7 @@ static BattleAiAction Battle_AiChooseAction(BattleAiController *ai,
 
   if ((distance <= 34) &&
       (ai->visible.selfHp < ai->visible.targetHp) &&
-      (Battle_AiRandom(ai, 100U) < 46U))
+      (Battle_AiRandom(ai, 100U) < retreatRate))
   {
     return BATTLE_AI_ACTION_RETREAT;
   }
@@ -1279,8 +1382,7 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
     for (int16_t col = 0; col < rect.w; col++)
     {
       uint16_t x = (uint16_t)(rect.x + col);
-      s_compositeRun[col] =
-          s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x];
+      s_compositeRun[col] = Battle_GetBackgroundPixel(x, y);
     }
 
     Battle_ComposeActorRow(rect, player, y);
@@ -1391,70 +1493,207 @@ static void Battle_DrawBox(CombatBox box, uint16_t color)
 
 static void Battle_DrawHud(void)
 {
-  ILI9341_DrawFilledRectangleCoord(6U, 6U, 314U, 42U, RGB565_BLACK);
-  ILI9341_DrawText("P1 VIZARD", FONT2, 12U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("CPU SASUKE", FONT2, 214U, 10U, RGB565_WHITE, RGB565_BLACK);
-  ILI9341_DrawText("BTN:ATK JMP SKL DSH", FONT2, 93U, 24U, RGB565_LINE,
-                   RGB565_BLACK);
-  Battle_DrawHealthBar(12U, 22U, s_player.hp, RGB565_ACCENT_CYAN);
-  Battle_DrawHealthBar(202U, 22U, s_cpu.hp, RGB565_ACCENT_ORANGE);
-  Battle_DrawManaBar(12U, 32U, s_player.mana, RGB565_ACCENT_CYAN);
-  Battle_DrawManaBar(202U, 32U, s_cpu.mana, RGB565_ACCENT_ORANGE);
+  LCD_Port_FillRect(0U, 0U, LCD_PORT_WIDTH, 37U, RGB565_HUD_BG);
+  LCD_Port_FillRect(0U, 36U, LCD_PORT_WIDTH, 1U, RGB565_HUD_FRAME);
+
+  ILI9341_DrawText("VIZARD", FONT1, 10U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+  ILI9341_DrawText("SASUKE", FONT1, 262U, 3U, RGB565_WHITE, RGB565_HUD_BG);
+
+  Battle_DrawHealthBar(10U, 15U, s_player.hp, RGB565_ACCENT_CYAN, 0U);
+  Battle_DrawManaBar(10U, 27U, s_player.mana, 0U);
+
+  Battle_DrawHealthBar(206U, 15U, s_cpu.hp, RGB565_ACCENT_ORANGE, 1U);
+  Battle_DrawManaBar(226U, 27U, s_cpu.mana, 1U);
+
+  ILI9341_DrawHollowRectangleCoord(142U, 5U, 177U, 27U, RGB565_HUD_FRAME);
+  LCD_Port_FillRect(143U, 6U, 34U, 21U, RGB565_BLACK);
+  ILI9341_DrawText("60", FONT3, 148U, 8U, RGB565_WHITE, RGB565_BLACK);
+}
+
+static void Battle_DrawBattleOverHud(uint8_t won)
+{
+  uint16_t accent = (won != 0U) ? RGB565_ACCENT_CYAN : RGB565_ACCENT_ORANGE;
+
+  LCD_Port_FillRect(40U, 70U, 240U, 98U, RGB565_HUD_BG);
+  ILI9341_DrawHollowRectangleCoord(40U, 70U, 279U, 167U, accent);
+  ILI9341_DrawHollowRectangleCoord(43U, 73U, 276U, 164U, RGB565_HUD_FRAME);
+
+  if (won != 0U)
+  {
+    ILI9341_DrawText("YOU WIN", FONT4, 111U, 91U, RGB565_WHITE, RGB565_HUD_BG);
+    ILI9341_DrawText("CPU DEFEATED", FONT2, 101U, 119U, accent, RGB565_HUD_BG);
+  }
+  else
+  {
+    ILI9341_DrawText("GAME OVER", FONT4, 96U, 91U, RGB565_WHITE, RGB565_HUD_BG);
+    ILI9341_DrawText("PLAYER DOWN", FONT2, 104U, 119U, accent, RGB565_HUD_BG);
+  }
+
+  ILI9341_DrawText("ATTACK: MAIN MENU", FONT1, 91U, 146U,
+                   RGB565_WHITE, RGB565_HUD_BG);
+}
+
+static uint8_t Battle_UpdateBattleOver(uint32_t nowMs)
+{
+  uint8_t input = CombatInput_Read();
+
+  if ((uint32_t)(nowMs - s_battleOverStartedMs) < BATTLE_OVER_INPUT_DELAY_MS)
+  {
+    return 0U;
+  }
+
+  if ((input & BATTLE_OVER_CONFIRM_MASK) == 0U)
+  {
+    s_battleOverInputArmed = 1U;
+    return 0U;
+  }
+
+  return (s_battleOverInputArmed != 0U) ? 1U : 0U;
+}
+
+static void Battle_CheckBattleOver(uint32_t nowMs)
+{
+  if (s_battleOver != 0U)
+  {
+    return;
+  }
+
+  if ((s_player.hp != 0U) && (s_cpu.hp != 0U) && (s_secondsLeft != 0U))
+  {
+    return;
+  }
+
+  s_battleOver = 1U;
+  if (s_secondsLeft == 0U)
+  {
+    s_battleWon = (s_player.hp >= s_cpu.hp) ? 1U : 0U;
+  }
+  else
+  {
+    s_battleWon = (s_cpu.hp == 0U) && (s_player.hp != 0U) ? 1U : 0U;
+  }
+  s_battleOverStartedMs = nowMs;
+  s_battleOverInputArmed = 0U;
+  s_getsuga.active = 0U;
+  Battle_DrawBattleOverHud(s_battleWon);
+
+  if (s_battleWon != 0U)
+  {
+    Buzzer_Play(BUZZER_SFX_GAME_WIN);
+  }
+  else
+  {
+    Buzzer_Play(BUZZER_SFX_GAME_LOSE);
+  }
 }
 
 static void Battle_DrawHealthBar(uint16_t x, uint16_t y, uint16_t hp,
-                                 uint16_t borderColor)
+                                 uint16_t borderColor, uint8_t reverse)
 {
   uint16_t fill = (hp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
-  uint16_t width = (uint16_t)((hp > 100U) ? 100U : hp);
 
-  ILI9341_DrawHollowRectangleCoord(x, y, (uint16_t)(x + 102U),
-                                   (uint16_t)(y + 8U), borderColor);
-  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), 100U, 6U,
-                    RGB565_HP_BACK);
-  if (width != 0U)
-  {
-    LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), width, 6U,
-                      fill);
-  }
+  Battle_DrawMeter(x, y, 104U, 8U, hp, 100U, fill, RGB565_HP_BACK,
+                   borderColor, reverse);
 }
 
-static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana,
-                               uint16_t borderColor)
+static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
+                                   uint16_t newHp, uint16_t borderColor,
+                                   uint8_t reverse)
 {
-  uint16_t width = (uint16_t)((mana > 100U) ? 100U : mana);
+  uint16_t oldFill = (oldHp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
+  uint16_t newFill = (newHp > 30U) ? RGB565_HP_GOOD : RGB565_HP_WARN;
+  uint16_t innerWidth = 102U;
+  uint16_t innerHeight = 6U;
+  uint16_t oldValue = (oldHp > 100U) ? 100U : oldHp;
+  uint16_t newValue = (newHp > 100U) ? 100U : newHp;
+  uint16_t oldFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * oldValue) / 100U);
+  uint16_t newFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * newValue) / 100U);
+  uint16_t changedWidth;
+  uint16_t changedX;
 
-  ILI9341_DrawHollowRectangleCoord(x, y, (uint16_t)(x + 102U),
-                                   (uint16_t)(y + 6U), borderColor);
-  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), 100U, 4U,
-                    RGB565_HP_BACK);
-  if (width != 0U)
+  if (oldFill != newFill)
   {
-    LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U), width, 4U,
-                      0x24FFU); // Vibrant Blue
+    Battle_DrawHealthBar(x, y, newHp, borderColor, reverse);
+    return;
   }
-  // Vạch dọc phân đôi 50x2 ở chính giữa (x + 51)
-  LCD_Port_FillRect((uint16_t)(x + 51U), (uint16_t)(y + 1U), 1U, 4U,
-                    RGB565_BLACK);
+
+  if (oldFillWidth == newFillWidth)
+  {
+    return;
+  }
+
+  changedWidth = (oldFillWidth > newFillWidth)
+                     ? (uint16_t)(oldFillWidth - newFillWidth)
+                     : (uint16_t)(newFillWidth - oldFillWidth);
+
+  if (newFillWidth > oldFillWidth)
+  {
+    changedX = (reverse != 0U)
+                   ? (uint16_t)(x + 1U + innerWidth - newFillWidth)
+                   : (uint16_t)(x + 1U + oldFillWidth);
+    LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                      innerHeight, newFill);
+    return;
+  }
+
+  changedX = (reverse != 0U)
+                 ? (uint16_t)(x + 1U + innerWidth - oldFillWidth)
+                 : (uint16_t)(x + 1U + newFillWidth);
+  LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                    innerHeight, RGB565_HP_BACK);
 }
+
+static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana, uint8_t reverse)
+{
+  Battle_DrawMeter(x, y, 84U, 5U, mana, 100U, RGB565_MANA,
+                   RGB565_MANA_BACK, RGB565_HUD_FRAME, reverse);
+}
+
+static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
+                             uint16_t height, uint16_t value,
+                             uint16_t maxValue, uint16_t fillColor,
+                             uint16_t backColor, uint16_t borderColor,
+                             uint8_t reverse)
+{
+  if ((width < 3U) || (height < 3U) || (maxValue == 0U))
+  {
+    return;
+  }
+
+  uint16_t innerWidth = (uint16_t)(width - 2U);
+  uint16_t innerHeight = (uint16_t)(height - 2U);
+  uint16_t clampedValue = (value > maxValue) ? maxValue : value;
+  uint16_t fillWidth =
+      (uint16_t)(((uint32_t)innerWidth * clampedValue) / maxValue);
+
+  ILI9341_DrawHollowRectangleCoord(x, y,
+                                   (uint16_t)(x + width - 1U),
+                                   (uint16_t)(y + height - 1U),
+                                   borderColor);
+  LCD_Port_FillRect((uint16_t)(x + 1U), (uint16_t)(y + 1U),
+                    innerWidth, innerHeight, backColor);
+
+  if (fillWidth == 0U)
+  {
+    return;
+  }
+
+  uint16_t fillX = (reverse != 0U)
+                       ? (uint16_t)(x + 1U + innerWidth - fillWidth)
+                       : (uint16_t)(x + 1U);
+  LCD_Port_FillRect(fillX, (uint16_t)(y + 1U), fillWidth, innerHeight,
+                    fillColor);
+}
+
+
 
 static void Battle_DrawBackground(void)
 {
   Battle_DrawStaticSky();
   Battle_DrawGround();
   Battle_DrawArenaMarks();
-}
-
-static void Battle_BuildBackgroundCache(void)
-{
-  for (uint16_t y = 0U; y < LCD_PORT_HEIGHT; y++)
-  {
-    for (uint16_t x = 0U; x < LCD_PORT_WIDTH; x++)
-    {
-      s_backgroundPixels[((uint32_t)y * LCD_PORT_WIDTH) + x] =
-          Battle_GetBackgroundPixel(x, y);
-    }
-  }
 }
 
 static void Battle_DrawStaticSky(void)

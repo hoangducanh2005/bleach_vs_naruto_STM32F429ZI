@@ -1,4 +1,0 @@
-../Core/Src/sprite_render.c:17:13:SpriteRender_FlushRun	16	static
-../Core/Src/sprite_render.c:27:6:SpriteRender_Draw	40	static
-../Core/Src/sprite_render.c:79:6:SpriteRender_DrawDiff	56	static
-../Core/Src/sprite_render.c:152:6:SpriteRender_Erase	48	static
