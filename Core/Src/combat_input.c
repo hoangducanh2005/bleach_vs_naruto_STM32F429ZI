@@ -4,8 +4,8 @@
 
 #define COMBAT_INPUT_ADC_X_CHANNEL 0U
 #define COMBAT_INPUT_ADC_Y_CHANNEL 1U
-#define COMBAT_INPUT_P2_ADC_X_CHANNEL 2U
-#define COMBAT_INPUT_P2_ADC_Y_CHANNEL 3U
+#define COMBAT_INPUT_P2_ADC_X_CHANNEL 6U
+#define COMBAT_INPUT_P2_ADC_Y_CHANNEL 7U
 #define COMBAT_INPUT_ADC_TIMEOUT 10000U
 #define COMBAT_INPUT_CENTER_SAMPLES 16U
 #define COMBAT_INPUT_AXIS_SAMPLES 4U
@@ -47,6 +47,7 @@ static uint8_t s_p2LastButtons;
 
 static uint16_t CombatInput_ReadAdc(uint8_t channel);
 static uint16_t CombatInput_ReadAxis(uint8_t channel);
+static uint16_t CombatInput_SanitizeCenter(uint16_t center);
 static void CombatInput_InitButtonGpio(void);
 static uint8_t CombatInput_ReadButtonsRaw(void);
 static uint8_t CombatInput_ReadPlayer2ButtonsRaw(void);
@@ -73,11 +74,17 @@ void CombatInput_Init(void)
   (void)RCC->AHB1ENR;
 
   GPIOA->MODER &= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1 |
-                    GPIO_MODER_MODE2 | GPIO_MODER_MODE3);
+                    GPIO_MODER_MODE2 | GPIO_MODER_MODE3 |
+                    GPIO_MODER_MODE4 | GPIO_MODER_MODE5 |
+                    GPIO_MODER_MODE6 | GPIO_MODER_MODE7);
   GPIOA->MODER |= GPIO_MODER_MODE0 | GPIO_MODER_MODE1 |
-                  GPIO_MODER_MODE2 | GPIO_MODER_MODE3;
+                  GPIO_MODER_MODE2 | GPIO_MODER_MODE3 |
+                  GPIO_MODER_MODE4 | GPIO_MODER_MODE5 |
+                  GPIO_MODER_MODE6 | GPIO_MODER_MODE7;
   GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1 |
-                    GPIO_PUPDR_PUPD2 | GPIO_PUPDR_PUPD3);
+                    GPIO_PUPDR_PUPD2 | GPIO_PUPDR_PUPD3 |
+                    GPIO_PUPDR_PUPD4 | GPIO_PUPDR_PUPD5 |
+                    GPIO_PUPDR_PUPD6 | GPIO_PUPDR_PUPD7);
 
   RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
   (void)RCC->APB2ENR;
@@ -89,7 +96,11 @@ void CombatInput_Init(void)
   ADC1->SMPR2 |= (ADC_SMPR2_SMP0_2 | ADC_SMPR2_SMP0_1 | ADC_SMPR2_SMP0_0 |
                   ADC_SMPR2_SMP1_2 | ADC_SMPR2_SMP1_1 | ADC_SMPR2_SMP1_0 |
                   ADC_SMPR2_SMP2_2 | ADC_SMPR2_SMP2_1 | ADC_SMPR2_SMP2_0 |
-                  ADC_SMPR2_SMP3_2 | ADC_SMPR2_SMP3_1 | ADC_SMPR2_SMP3_0);
+                  ADC_SMPR2_SMP3_2 | ADC_SMPR2_SMP3_1 | ADC_SMPR2_SMP3_0 |
+                  ADC_SMPR2_SMP4_2 | ADC_SMPR2_SMP4_1 | ADC_SMPR2_SMP4_0 |
+                  ADC_SMPR2_SMP5_2 | ADC_SMPR2_SMP5_1 | ADC_SMPR2_SMP5_0 |
+                  ADC_SMPR2_SMP6_2 | ADC_SMPR2_SMP6_1 | ADC_SMPR2_SMP6_0 |
+                  ADC_SMPR2_SMP7_2 | ADC_SMPR2_SMP7_1 | ADC_SMPR2_SMP7_0);
   ADC1->CR2 |= ADC_CR2_ADON;
   CombatInput_InitButtonGpio();
 
@@ -106,10 +117,10 @@ void CombatInput_Init(void)
     p2SumY += CombatInput_ReadAxis(COMBAT_INPUT_P2_ADC_Y_CHANNEL);
   }
 
-  s_centerX = (uint16_t)(sumX / COMBAT_INPUT_CENTER_SAMPLES);
-  s_centerY = (uint16_t)(sumY / COMBAT_INPUT_CENTER_SAMPLES);
-  s_p2CenterX = (uint16_t)(p2SumX / COMBAT_INPUT_CENTER_SAMPLES);
-  s_p2CenterY = (uint16_t)(p2SumY / COMBAT_INPUT_CENTER_SAMPLES);
+  s_centerX = CombatInput_SanitizeCenter((uint16_t)(sumX / COMBAT_INPUT_CENTER_SAMPLES));
+  s_centerY = CombatInput_SanitizeCenter((uint16_t)(sumY / COMBAT_INPUT_CENTER_SAMPLES));
+  s_p2CenterX = CombatInput_SanitizeCenter((uint16_t)(p2SumX / COMBAT_INPUT_CENTER_SAMPLES));
+  s_p2CenterY = CombatInput_SanitizeCenter((uint16_t)(p2SumY / COMBAT_INPUT_CENTER_SAMPLES));
   s_lastButtons = CombatInput_ReadButtonsRaw();
   s_p2LastButtons = CombatInput_ReadPlayer2ButtonsRaw();
 }
@@ -279,6 +290,16 @@ static uint16_t CombatInput_ReadAxis(uint8_t channel)
   }
 
   return (uint16_t)(sum / COMBAT_INPUT_AXIS_SAMPLES);
+}
+
+static uint16_t CombatInput_SanitizeCenter(uint16_t center)
+{
+  if ((center < COMBAT_INPUT_AXIS_LOW) || (center > COMBAT_INPUT_AXIS_HIGH))
+  {
+    return 2048U;
+  }
+
+  return center;
 }
 
 static void CombatInput_InitButtonGpio(void)

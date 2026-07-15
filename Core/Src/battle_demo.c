@@ -25,7 +25,7 @@
 #define BATTLE_DEBUG_BOXES 0
 #define BATTLE_GETSUGA_SPEED 10
 #define BATTLE_GETSUGA_FRAME_MS 40U
-#define BATTLE_GETSUGA_SPAWN_FRAME 4U
+#define BATTLE_GETSUGA_SPAWN_FRAME 7U
 #define BATTLE_PROJECTILE_GETSUGA 0U
 #define BATTLE_PROJECTILE_VIZARD 1U
 #define BATTLE_PROJECTILE_NINETAILS_BOMB 2U
@@ -76,6 +76,7 @@
 typedef struct
 {
   const uint16_t *pixels;
+  const void *sourcePixels;
   uint16_t width;
   uint16_t height;
   int16_t x;
@@ -273,11 +274,18 @@ static void Battle_UpdateHealthBar(uint16_t x, uint16_t y, uint16_t oldHp,
                                    uint8_t reverse);
 static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana,
                                uint8_t reverse);
+static void Battle_UpdateManaBar(uint16_t x, uint16_t y, uint16_t oldMana,
+                                 uint16_t newMana, uint8_t reverse);
 static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
                              uint16_t height, uint16_t value,
                              uint16_t maxValue, uint16_t fillColor,
                              uint16_t backColor, uint16_t borderColor,
                              uint8_t reverse);
+static void Battle_UpdateMeter(uint16_t x, uint16_t y, uint16_t width,
+                               uint16_t height, uint16_t oldValue,
+                               uint16_t newValue, uint16_t maxValue,
+                               uint16_t fillColor, uint16_t backColor,
+                               uint8_t reverse);
 static void Battle_DrawActor(const CombatActor *actor,
                              BattleActorSnapshot *snapshot);
 static uint8_t Battle_CaptureActor(const CombatActor *actor,
@@ -297,12 +305,14 @@ static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
                                       const BattleActorSnapshot *cpu,
                                       const BattleActorSnapshot *projectile,
                                       const BattleActorSnapshot *chidori,
+                                      const BattleActorSnapshot *ninetailsBomb,
                                       uint8_t allowSplit);
 static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
                                  const BattleActorSnapshot *cpu,
                                  const BattleActorSnapshot *projectile,
-                                 const BattleActorSnapshot *chidori);
+                                 const BattleActorSnapshot *chidori,
+                                 const BattleActorSnapshot *ninetailsBomb);
 static uint8_t Battle_DirtyRectsShouldSplit(BattleDirtyRect a,
                                             BattleDirtyRect b);
 static void Battle_ComposeActorRow(BattleDirtyRect rect,
@@ -447,13 +457,13 @@ uint8_t BattleDemo_Update(void)
 
   if (s_player.mana != s_lastPlayerMana)
   {
-    Battle_DrawManaBar(10U, 27U, s_player.mana, 0U);
+    Battle_UpdateManaBar(10U, 27U, s_lastPlayerMana, s_player.mana, 0U);
     s_lastPlayerMana = s_player.mana;
   }
 
   if (s_cpu.mana != s_lastCpuMana)
   {
-    Battle_DrawManaBar(226U, 27U, s_cpu.mana, 1U);
+    Battle_UpdateManaBar(226U, 27U, s_lastCpuMana, s_cpu.mana, 1U);
     s_lastCpuMana = s_cpu.mana;
   }
 
@@ -553,6 +563,7 @@ static void Battle_UpdateActors(void)
                               &nextCpu,
                               &nextGetsuga,
                               &nextChidori,
+                              &nextNinetailsBomb,
                               allowPlayerSplit);
   }
 
@@ -564,6 +575,7 @@ static void Battle_UpdateActors(void)
                               &nextCpu,
                               &nextGetsuga,
                               &nextChidori,
+                              &nextNinetailsBomb,
                               0U);
   }
 
@@ -575,6 +587,7 @@ static void Battle_UpdateActors(void)
                               &nextCpu,
                               &nextGetsuga,
                               &nextChidori,
+                              &nextNinetailsBomb,
                               0U);
   }
 
@@ -586,6 +599,7 @@ static void Battle_UpdateActors(void)
                               &nextCpu,
                               &nextGetsuga,
                               &nextChidori,
+                              &nextNinetailsBomb,
                               0U);
   }
 
@@ -597,6 +611,7 @@ static void Battle_UpdateActors(void)
                               &nextCpu,
                               &nextGetsuga,
                               &nextChidori,
+                              &nextNinetailsBomb,
                               0U);
   }
 
@@ -969,6 +984,7 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
   {
     uint16_t *decompressBuf = (actor == &s_player) ? s_playerDecompressBuf : s_cpuDecompressBuf;
     uint32_t totalPixels = (uint32_t)frame.width * frame.height;
+    snapshot->sourcePixels = frame.pixels;
     if (totalPixels <= (185U * 130U))
     {
       Battle_DecompressRLE(decompressBuf, frame.pixels, totalPixels);
@@ -982,6 +998,7 @@ static uint8_t Battle_CaptureActor(const CombatActor *actor,
   else
   {
     snapshot->pixels = frame.pixels;
+    snapshot->sourcePixels = frame.pixels;
   }
 
   snapshot->width = frame.width;
@@ -1151,12 +1168,14 @@ static uint8_t Battle_CaptureGetsuga(const BattleProjectile *projectile,
         &projectileAnim->frames[projectile->frameIndex];
 
     snapshot->pixels = frame->pixels;
+    snapshot->sourcePixels = frame->pixels;
     snapshot->width = frame->width;
     snapshot->height = frame->height;
   }
   else
   {
     snapshot->pixels = getsuga_projectile_frames[projectile->frameIndex];
+    snapshot->sourcePixels = getsuga_projectile_frames[projectile->frameIndex];
     snapshot->width = GETSUGA_PROJECTILE_WIDTH;
     snapshot->height = GETSUGA_PROJECTILE_HEIGHT;
   }
@@ -1220,6 +1239,7 @@ static uint8_t Battle_CaptureChidori(const CombatActor *actor,
 
   const ChidoriFrame *frame = &frames[frameIndex];
   snapshot->pixels = frame->pixels;
+  snapshot->sourcePixels = frame->pixels;
   snapshot->width = frame->width;
   snapshot->height = frame->height;
   snapshot->y = (int16_t)(actor->y - 36 - (int16_t)(frame->height / 2U));
@@ -1262,8 +1282,17 @@ static uint8_t Battle_ActorSnapshotEqual(const BattleActorSnapshot *a,
     return 0U;
   }
 
-  return ((a->valid == b->valid) &&
-          (a->pixels == b->pixels) &&
+  if (a->valid != b->valid)
+  {
+    return 0U;
+  }
+
+  if (a->valid == 0U)
+  {
+    return 1U;
+  }
+
+  return ((a->sourcePixels == b->sourcePixels) &&
           (a->width == b->width) &&
           (a->height == b->height) &&
           (a->x == b->x) &&
@@ -1349,6 +1378,7 @@ static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
                                       const BattleActorSnapshot *cpu,
                                       const BattleActorSnapshot *projectile,
                                       const BattleActorSnapshot *chidori,
+                                      const BattleActorSnapshot *ninetailsBomb,
                                       uint8_t allowSplit)
 {
   BattleDirtyRect dirty = {0, 0, 0, 0, 0U};
@@ -1361,14 +1391,14 @@ static void Battle_DrawSnapshotChange(const BattleActorSnapshot *previous,
   if ((allowSplit != 0U) &&
       (Battle_DirtyRectsShouldSplit(previousDirty, nextDirty) != 0U))
   {
-    Battle_DrawDirtyRect(previousDirty, player, cpu, projectile, chidori);
-    Battle_DrawDirtyRect(nextDirty, player, cpu, projectile, chidori);
+    Battle_DrawDirtyRect(previousDirty, player, cpu, projectile, chidori, ninetailsBomb);
+    Battle_DrawDirtyRect(nextDirty, player, cpu, projectile, chidori, ninetailsBomb);
     return;
   }
 
   Battle_DirtyRectAddSnapshot(&dirty, previous);
   Battle_DirtyRectAddSnapshot(&dirty, next);
-  Battle_DrawDirtyRect(dirty, player, cpu, projectile, chidori);
+  Battle_DrawDirtyRect(dirty, player, cpu, projectile, chidori, ninetailsBomb);
 }
 
 static uint8_t Battle_DirtyRectsShouldSplit(BattleDirtyRect a,
@@ -1401,7 +1431,8 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
                                  const BattleActorSnapshot *player,
                                  const BattleActorSnapshot *cpu,
                                  const BattleActorSnapshot *projectile,
-                                 const BattleActorSnapshot *chidori)
+                                 const BattleActorSnapshot *chidori,
+                                 const BattleActorSnapshot *ninetailsBomb)
 {
   if ((rect.valid == 0U) || (rect.w <= 0) || (rect.h <= 0))
   {
@@ -1422,6 +1453,7 @@ static void Battle_DrawDirtyRect(BattleDirtyRect rect,
     Battle_ComposeActorRow(rect, cpu, y);
     Battle_ComposeActorRow(rect, projectile, y);
     Battle_ComposeActorRow(rect, chidori, y);
+    Battle_ComposeActorRow(rect, ninetailsBomb, y);
 
     LCD_Port_DrawPixels((uint16_t)rect.x,
                         y,
@@ -1700,6 +1732,13 @@ static void Battle_DrawManaBar(uint16_t x, uint16_t y, uint16_t mana, uint8_t re
                    RGB565_MANA_BACK, RGB565_HUD_FRAME, reverse);
 }
 
+static void Battle_UpdateManaBar(uint16_t x, uint16_t y, uint16_t oldMana,
+                                 uint16_t newMana, uint8_t reverse)
+{
+  Battle_UpdateMeter(x, y, 84U, 5U, oldMana, newMana, 100U, RGB565_MANA,
+                     RGB565_MANA_BACK, reverse);
+}
+
 static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
                              uint16_t height, uint16_t value,
                              uint16_t maxValue, uint16_t fillColor,
@@ -1734,6 +1773,54 @@ static void Battle_DrawMeter(uint16_t x, uint16_t y, uint16_t width,
                        : (uint16_t)(x + 1U);
   LCD_Port_FillRect(fillX, (uint16_t)(y + 1U), fillWidth, innerHeight,
                     fillColor);
+}
+
+static void Battle_UpdateMeter(uint16_t x, uint16_t y, uint16_t width,
+                               uint16_t height, uint16_t oldValue,
+                               uint16_t newValue, uint16_t maxValue,
+                               uint16_t fillColor, uint16_t backColor,
+                               uint8_t reverse)
+{
+  if ((width < 3U) || (height < 3U) || (maxValue == 0U))
+  {
+    return;
+  }
+
+  uint16_t innerWidth = (uint16_t)(width - 2U);
+  uint16_t innerHeight = (uint16_t)(height - 2U);
+  uint16_t oldClamped = (oldValue > maxValue) ? maxValue : oldValue;
+  uint16_t newClamped = (newValue > maxValue) ? maxValue : newValue;
+  uint16_t oldFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * oldClamped) / maxValue);
+  uint16_t newFillWidth =
+      (uint16_t)(((uint32_t)innerWidth * newClamped) / maxValue);
+  uint16_t changedWidth;
+  uint16_t changedX;
+
+  if (oldFillWidth == newFillWidth)
+  {
+    return;
+  }
+
+  changedWidth = (oldFillWidth > newFillWidth)
+                     ? (uint16_t)(oldFillWidth - newFillWidth)
+                     : (uint16_t)(newFillWidth - oldFillWidth);
+
+  if (newFillWidth > oldFillWidth)
+  {
+    changedX = (reverse != 0U)
+                   ? (uint16_t)(x + 1U + innerWidth - newFillWidth)
+                   : (uint16_t)(x + 1U + oldFillWidth);
+    LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                      innerHeight, fillColor);
+    return;
+  }
+
+  changedX = (reverse != 0U)
+                 ? (uint16_t)(x + 1U + innerWidth - oldFillWidth)
+                 : (uint16_t)(x + 1U + newFillWidth);
+  LCD_Port_FillRect(changedX, (uint16_t)(y + 1U), changedWidth,
+                    innerHeight, backColor);
 }
 
 
@@ -1965,6 +2052,7 @@ static uint8_t Battle_CaptureNinetailsBomb(const BattleProjectile *projectile,
   }
 
   snapshot->pixels = anim->projectileFrames[idx];
+  snapshot->sourcePixels = anim->projectileFrames[idx];
   snapshot->width  = anim->projectileWidth;
   snapshot->height = anim->projectileHeight;
   
