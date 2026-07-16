@@ -1,6 +1,6 @@
 # 🎮 Game Đối Kháng Bleach vs Naruto - STM32F429ZIT6
 
-Dự án game đối kháng **Bleach vs Naruto** được lập trình bằng ngôn ngữ C, chạy trên hệ thống vi điều khiển **STM32F429ZIT6** tích hợp màn hình **TFT LCD ILI9341** và hệ điều hành thời gian thực **FreeRTOS**.
+Dự án game đối kháng **Bleach vs Naruto** được lập trình bằng ngôn ngữ C thuần, chạy trên vi điều khiển **STM32F429ZIT6** tích hợp màn hình **TFT LCD ILI9341**. Hệ thống hoạt động theo kiến trúc **bare-metal superloop**, không sử dụng RTOS.
 
 ---
 
@@ -33,13 +33,11 @@ Dự án game đối kháng **Bleach vs Naruto** được lập trình bằng ng
 
 ---
 
-## ⚙️ Kiến trúc Hệ thống (FreeRTOS)
-Dự án được phân chia thành **2 Task chính** đồng bộ qua khóa **Mutex** để đảm bảo tính thời gian thực:
-*   **Task 1: Xử lý Trận đấu (Mức ưu tiên cao):**
-    *   Tính toán logic vật lý, trạng thái nhân vật (Idle, Run, Jump, Attack, Hit, Dead).
-    *   Quét va chạm, cập nhật HP/Mana, thực thi AI cho Robot, xuất âm thanh ra Buzzer.
-*   **Task 2: Hiển thị giao diện - Render (Mức ưu tiên thấp):**
-    *   Nhận bản sao dữ liệu được bảo vệ bằng Mutex từ Task 1 và render nhanh lên LCD ILI9341.
+## ⚙️ Kiến trúc Hệ thống (Bare-metal Superloop)
+Dự án chạy theo mô hình **bare-metal**, không sử dụng RTOS. Toàn bộ logic được điều phối trong vòng lặp `while(1)` chính:
+*   **`AppFlow_Update()`:** State machine quản lý màn hình (Splash → Menu → Chọn nhân vật → Chiến đấu). Khi đang ở màn chiến đấu, gọi `BattleDemo_Update()` mỗi vòng lặp.
+*   **`BattleDemo_Update()`:** Tick logic game ở tốc độ cố định **33ms (~30 FPS)** dùng `HAL_GetTick()`. Mỗi tick: đọc input → tính vật lý → phát hiện va chạm → cập nhật HP/Mana → render Dirty Rectangles lên LCD.
+*   **`Buzzer_Update()`:** Cập nhật hiệu ứng âm thanh PWM theo thời gian thực.
 
 ---
 
@@ -48,7 +46,7 @@ Dự án được phân chia thành **2 Task chính** đồng bộ qua khóa **M
 *   **Đỡ đòn (Block):** Nhận 20% sát thương thông thường. Bị đẩy lùi nhẹ.
 *   **Năng lượng (Mana):** Giới hạn tối đa 100 điểm. Đánh thường trúng tăng 10 mana, đối thủ đỡ đòn chỉ tăng 1 mana. Tung Skill tốn **50 mana**.
 *   **Bất tử tạm thời (I-Frames):** Sau khi bị trúng đòn, nhân vật bất tử trong **500 ms** để tránh bị dồn combo liên tục.
-*   **Điểm kiên định (Stability - Giáp ẩn):** Tối đa 100. Trúng đòn thường giảm 20. Khi về 0, nhân vật rơi vào trạng thái **Ngã sàn (Knockdown)** bất tử trong **600 ms** trước khi tự đứng dậy hồi phục lại giáp.
+*   **Điểm kiên định (Stability - Giáp ẩn):** Tối đa 100. Trúng đòn thường giảm 20. Khi về 0, nhân vật rơi vào trạng thái **Ngã sàn (Knockdown)** bất tử trong **1500 ms (1.5 giây)** trước khi tự đứng dậy hồi phục lại giáp.
 
 ---
 
